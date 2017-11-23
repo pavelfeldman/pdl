@@ -1,26 +1,32 @@
 const fs = require('fs')
-fs.readFile('browser_protocol.json', 'utf8', (err, data) => {
-  if (err) {
-    return console.log(err);
-  }
-  const protocol = JSON.parse(data);
-  const result = [];
-  for (let domain of protocol.domains) {
-    result.push(``);
-    if (domain.description)
-      result.push(`# ${domain.description}`);
-    result.push(`${domain.experimental ? 'experimental ' : ''}domain ${domain.domain}`);
-    (domain.types || []).forEach(type => printType(result, type));
-    (domain.commands || []).forEach(command => printCommand(result, command));
-    (domain.events || []).forEach(event => printEvent(result, event));
-  }
-  console.log(result.join('\n'));
-});
+
+convert('browser');
+convert('js');
+
+function convert(name) {
+  fs.readFile(name + '_protocol.json', 'utf8', (err, data) => {
+    if (err) {
+      return console.log(err);
+    }
+    const protocol = JSON.parse(data);
+    const result = [];
+    result.push('# Protocol definition generated from ' + name + '_protocol.json');
+    for (let domain of protocol.domains) {
+      result.push(``);
+      printDescription(result, domain.description, ``);
+      result.push(`${domain.experimental ? 'experimental ' : ''}domain ${domain.domain}`);
+      (domain.types || []).forEach(type => printType(result, type));
+      (domain.commands || []).forEach(command => printCommand(result, command));
+      (domain.events || []).forEach(event => printEvent(result, event));
+    }
+    result.push('');
+    fs.writeFile(name + '_protocol.protocol', result.join('\n'), () => {});
+  });
+}
 
 function printType(result, type) {
   result.push(``);
-  if (type.description)
-    result.push(`  # ${type.description}`);
+  printDescription(result, type.description, `  `);
   result.push(`  ${type.experimental ? 'experimental ' : ''}type ${type.id} extends ${type.type}`);
   if (type.properties && type.properties.length) {
     result.push(`    properties`);
@@ -34,8 +40,7 @@ function printType(result, type) {
 
 function printCommand(result, command) {
   result.push(``);
-  if (command.description)
-    result.push(`  # ${command.description}`);
+  printDescription(result, command.description, `  `);
   result.push(`  ${command.experimental ? 'experimental ' : ''}command ${command.name}`);
   if (command.redirect)
     result.push(`    # Use '${command.redirect}.${command.name}' instead`);
@@ -53,8 +58,7 @@ function printCommand(result, command) {
 
 function printEvent(result, event) {
   result.push(``);
-  if (event.description)
-    result.push(`  # ${event.description}`);
+  printDescription(result, event.description, `  `);
   result.push(`  ${event.experimental ? 'experimental ' : ''}event ${event.name}`);
   if (event.deprecated)
     result.push(`    deprecated`);
@@ -65,8 +69,7 @@ function printEvent(result, event) {
 }
 
 function printParam(result, param) {
-  if (param.description)
-    result.push(`      # ${param.description}`);
+  printDescription(result, param.description, `      `);
   let type = param['$ref'] || param.type;
   if (param.type === 'array')
     type = `array of ${param.items['$ref'] || param.items.type}`;
@@ -76,3 +79,20 @@ function printParam(result, param) {
 function printEnumLiteral(result, literal) {
   result.push(`      ${literal}`);
 }
+
+function printDescription(result, description, indent) {
+  if (!description)
+    return;
+  description = description.replace(/<\/?code>/g, '`');
+  let line = indent + '#';
+  const tokens = description.split(' ');
+  for (let token of description.split(' ')) {
+    if (line.length + token.length + 1 > 100) {
+      result.push(line);
+      line = indent + '#';
+    }
+    line += ' ' + token;
+  }
+  result.push(line);
+}
+

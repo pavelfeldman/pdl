@@ -1,3 +1,4 @@
+# Protocol definition generated from js_protocol.json
 
 # Provides information about the protocol schema.
 domain Schema
@@ -16,7 +17,11 @@ domain Schema
       # List of supported domains.
       array of Domain domains
 
-# Runtime domain exposes JavaScript runtime by means of remote evaluation and mirror objects. Evaluation results are returned as mirror object that expose object type, string representation and unique identifier that can be used for further object reference. Original objects are maintained in memory unless they are either explicitly released or are released along with the other objects in their object group.
+# Runtime domain exposes JavaScript runtime by means of remote evaluation and mirror objects.
+# Evaluation results are returned as mirror object that expose object type, string representation
+# and unique identifier that can be used for further object reference. Original objects are
+# maintained in memory unless they are either explicitly released or are released along with the
+# other objects in their object group.
 domain Runtime
 
   # Unique script identifier.
@@ -38,19 +43,20 @@ domain Runtime
     properties
       # Object type.
       string type
-      # Object subtype hint. Specified for <code>object</code> type values only.
+      # Object subtype hint. Specified for `object` type values only.
       optional string subtype
-      # Object class (constructor) name. Specified for <code>object</code> type values only.
+      # Object class (constructor) name. Specified for `object` type values only.
       optional string className
       # Remote object value in case of primitive values or JSON values (if it was requested).
       optional any value
-      # Primitive value which can not be JSON-stringified does not have <code>value</code>, but gets this property.
+      # Primitive value which can not be JSON-stringified does not have `value`, but gets this
+      # property.
       optional UnserializableValue unserializableValue
       # String representation of the object.
       optional string description
       # Unique object identifier (for non-primitive values).
       optional RemoteObjectId objectId
-      # Preview containing abbreviated property values. Specified for <code>object</code> type values only.
+      # Preview containing abbreviated property values. Specified for `object` type values only.
       experimental optional ObjectPreview preview
       experimental optional CustomPreview customPreview
 
@@ -67,7 +73,7 @@ domain Runtime
     properties
       # Object type.
       string type
-      # Object subtype hint. Specified for <code>object</code> type values only.
+      # Object subtype hint. Specified for `object` type values only.
       optional string subtype
       # String representation of the object.
       optional string description
@@ -75,7 +81,7 @@ domain Runtime
       boolean overflow
       # List of the properties.
       array of PropertyPreview properties
-      # List of the entries. Specified for <code>map</code> and <code>set</code> subtype values only.
+      # List of the entries. Specified for `map` and `set` subtype values only.
       optional array of EntryPreview entries
 
   experimental type PropertyPreview extends object
@@ -88,7 +94,7 @@ domain Runtime
       optional string value
       # Nested value preview.
       optional ObjectPreview valuePreview
-      # Object subtype hint. Specified for <code>object</code> type values only.
+      # Object subtype hint. Specified for `object` type values only.
       optional string subtype
 
   experimental type EntryPreview extends object
@@ -107,19 +113,23 @@ domain Runtime
       optional RemoteObject value
       # True if the value associated with the property may be changed (data descriptors only).
       optional boolean writable
-      # A function which serves as a getter for the property, or <code>undefined</code> if there is no getter (accessor descriptors only).
+      # A function which serves as a getter for the property, or `undefined` if there is no getter
+      # (accessor descriptors only).
       optional RemoteObject get
-      # A function which serves as a setter for the property, or <code>undefined</code> if there is no setter (accessor descriptors only).
+      # A function which serves as a setter for the property, or `undefined` if there is no setter
+      # (accessor descriptors only).
       optional RemoteObject set
-      # True if the type of this property descriptor may be changed and if the property may be deleted from the corresponding object.
+      # True if the type of this property descriptor may be changed and if the property may be
+      # deleted from the corresponding object.
       boolean configurable
-      # True if this property shows up during enumeration of the properties on the corresponding object.
+      # True if this property shows up during enumeration of the properties on the corresponding
+      # object.
       boolean enumerable
       # True if the result was thrown during the evaluation.
       optional boolean wasThrown
       # True if the property is owned for the object.
       optional boolean isOwn
-      # Property symbol object, if the property is of the <code>symbol</code> type.
+      # Property symbol object, if the property is of the `symbol` type.
       optional RemoteObject symbol
 
   # Object internal property descriptor. This property isn't normally visible in JavaScript code.
@@ -130,7 +140,8 @@ domain Runtime
       # The value associated with the property.
       optional RemoteObject value
 
-  # Represents function call argument. Either remote object id <code>objectId</code>, primitive <code>value</code>, unserializable primitive value or neither of (for undefined) them should be specified.
+  # Represents function call argument. Either remote object id `objectId`, primitive `value`,
+  # unserializable primitive value or neither of (for undefined) them should be specified.
   type CallArgument extends object
     properties
       # Primitive value or serializable javascript object.
@@ -146,7 +157,8 @@ domain Runtime
   # Description of an isolated world.
   type ExecutionContextDescription extends object
     properties
-      # Unique id of the execution context. It can be used to specify in which execution context script evaluation should be performed.
+      # Unique id of the execution context. It can be used to specify in which execution context
+      # script evaluation should be performed.
       ExecutionContextId id
       # Execution context origin.
       string origin
@@ -155,7 +167,8 @@ domain Runtime
       # Embedder-specific auxiliary data.
       optional object auxData
 
-  # Detailed information about exception (or error) that was thrown during script compilation or execution.
+  # Detailed information about exception (or error) that was thrown during script compilation or
+  # execution.
   type ExceptionDetails extends object
     properties
       # Exception id.
@@ -197,7 +210,8 @@ domain Runtime
   # Call frames for assertions or error messages.
   type StackTrace extends object
     properties
-      # String label of this stack trace. For async traces this may be a name of the function that initiated the async call.
+      # String label of this stack trace. For async traces this may be a name of the function that
+      # initiated the async call.
       optional string description
       # JavaScript function name.
       array of CallFrame callFrames
@@ -215,9 +229,11 @@ domain Runtime
       optional string objectGroup
       # Determines whether Command Line API should be available during the evaluation.
       optional boolean includeCommandLineAPI
-      # In silent mode exceptions thrown during evaluation are not reported and do not pause execution. Overrides <code>setPauseOnException</code> state.
+      # In silent mode exceptions thrown during evaluation are not reported and do not pause
+      # execution. Overrides `setPauseOnException` state.
       optional boolean silent
-      # Specifies in which execution context to perform evaluation. If the parameter is omitted the evaluation will be performed in the context of the inspected page.
+      # Specifies in which execution context to perform evaluation. If the parameter is omitted the
+      # evaluation will be performed in the context of the inspected page.
       optional ExecutionContextId contextId
       # Whether the result is expected to be a JSON object that should be sent by value.
       optional boolean returnByValue
@@ -225,7 +241,8 @@ domain Runtime
       experimental optional boolean generatePreview
       # Whether execution should be treated as initiated by user in the UI.
       experimental optional boolean userGesture
-      # Whether execution should <code>await</code> for resulting value and return once awaited promise is resolved.
+      # Whether execution should `await` for resulting value and return once awaited promise is
+      # resolved.
       optional boolean awaitPromise
     returns
       # Evaluation result.
@@ -248,16 +265,20 @@ domain Runtime
       # Exception details if stack strace is available.
       optional ExceptionDetails exceptionDetails
 
-  # Calls function with given declaration on the given object. Object group of the result is inherited from the target object.
+  # Calls function with given declaration on the given object. Object group of the result is
+  # inherited from the target object.
   command callFunctionOn
     parameters
       # Declaration of the function to call.
       string functionDeclaration
-      # Identifier of the object to call function on. Either objectId or executionContextId should be specified.
+      # Identifier of the object to call function on. Either objectId or executionContextId should
+      # be specified.
       optional RemoteObjectId objectId
-      # Call arguments. All call arguments must belong to the same JavaScript world as the target object.
+      # Call arguments. All call arguments must belong to the same JavaScript world as the target
+      # object.
       optional array of CallArgument arguments
-      # In silent mode exceptions thrown during evaluation are not reported and do not pause execution. Overrides <code>setPauseOnException</code> state.
+      # In silent mode exceptions thrown during evaluation are not reported and do not pause
+      # execution. Overrides `setPauseOnException` state.
       optional boolean silent
       # Whether the result is expected to be a JSON object which should be sent by value.
       optional boolean returnByValue
@@ -265,11 +286,14 @@ domain Runtime
       experimental optional boolean generatePreview
       # Whether execution should be treated as initiated by user in the UI.
       experimental optional boolean userGesture
-      # Whether execution should <code>await</code> for resulting value and return once awaited promise is resolved.
+      # Whether execution should `await` for resulting value and return once awaited promise is
+      # resolved.
       optional boolean awaitPromise
-      # Specifies execution context which global object will be used to call function on. Either executionContextId or objectId should be specified.
+      # Specifies execution context which global object will be used to call function on. Either
+      # executionContextId or objectId should be specified.
       optional ExecutionContextId executionContextId
-      # Symbolic group name that can be used to release multiple objects. If objectGroup is not specified and objectId is, objectGroup will be inherited from object.
+      # Symbolic group name that can be used to release multiple objects. If objectGroup is not
+      # specified and objectId is, objectGroup will be inherited from object.
       optional string objectGroup
     returns
       # Call result.
@@ -277,14 +301,17 @@ domain Runtime
       # Exception details.
       optional ExceptionDetails exceptionDetails
 
-  # Returns properties of a given object. Object group of the result is inherited from the target object.
+  # Returns properties of a given object. Object group of the result is inherited from the target
+  # object.
   command getProperties
     parameters
       # Identifier of the object to return properties for.
       RemoteObjectId objectId
-      # If true, returns properties belonging only to the element itself, not to its prototype chain.
+      # If true, returns properties belonging only to the element itself, not to its prototype
+      # chain.
       optional boolean ownProperties
-      # If true, returns accessor properties (with getter/setter) only; internal properties are not returned either.
+      # If true, returns accessor properties (with getter/setter) only; internal properties are not
+      # returned either.
       experimental optional boolean accessorPropertiesOnly
       # Whether preview should be generated for the results.
       experimental optional boolean generatePreview
@@ -311,7 +338,9 @@ domain Runtime
   # Tells inspected instance to run if it was waiting for debugger to attach.
   command runIfWaitingForDebugger
 
-  # Enables reporting of execution contexts creation by means of <code>executionContextCreated</code> event. When the reporting gets enabled the event will be sent immediately for each existing execution context.
+  # Enables reporting of execution contexts creation by means of `executionContextCreated` event.
+  # When the reporting gets enabled the event will be sent immediately for each existing execution
+  # context.
   command enable
 
   # Disables reporting of execution contexts creation.
@@ -333,7 +362,8 @@ domain Runtime
       string sourceURL
       # Specifies whether the compiled script should be persisted.
       boolean persistScript
-      # Specifies in which execution context to perform script run. If the parameter is omitted the evaluation will be performed in the context of the inspected page.
+      # Specifies in which execution context to perform script run. If the parameter is omitted the
+      # evaluation will be performed in the context of the inspected page.
       optional ExecutionContextId executionContextId
     returns
       # Id of the script.
@@ -346,11 +376,13 @@ domain Runtime
     parameters
       # Id of the script to run.
       ScriptId scriptId
-      # Specifies in which execution context to perform script run. If the parameter is omitted the evaluation will be performed in the context of the inspected page.
+      # Specifies in which execution context to perform script run. If the parameter is omitted the
+      # evaluation will be performed in the context of the inspected page.
       optional ExecutionContextId executionContextId
       # Symbolic group name that can be used to release multiple objects.
       optional string objectGroup
-      # In silent mode exceptions thrown during evaluation are not reported and do not pause execution. Overrides <code>setPauseOnException</code> state.
+      # In silent mode exceptions thrown during evaluation are not reported and do not pause
+      # execution. Overrides `setPauseOnException` state.
       optional boolean silent
       # Determines whether Command Line API should be available during the evaluation.
       optional boolean includeCommandLineAPI
@@ -358,7 +390,8 @@ domain Runtime
       optional boolean returnByValue
       # Whether preview should be generated for the result.
       optional boolean generatePreview
-      # Whether execution should <code>await</code> for resulting value and return once awaited promise is resolved.
+      # Whether execution should `await` for resulting value and return once awaited promise is
+      # resolved.
       optional boolean awaitPromise
     returns
       # Run result.
@@ -409,7 +442,7 @@ domain Runtime
     parameters
       # Reason describing why exception was revoked.
       string reason
-      # The id of revoked exception, as reported in <code>exceptionThrown</code>.
+      # The id of revoked exception, as reported in `exceptionThrown`.
       integer exceptionId
 
   # Issued when console API was called.
@@ -425,16 +458,20 @@ domain Runtime
       Timestamp timestamp
       # Stack trace captured when the call was made.
       optional StackTrace stackTrace
-      # Console context descriptor for calls on non-default console context (not console.*): 'anonymous#unique-logger-id' for call on unnamed context, 'name#unique-logger-id' for call on named context.
+      # Console context descriptor for calls on non-default console context (not console.*):
+      # 'anonymous#unique-logger-id' for call on unnamed context, 'name#unique-logger-id' for call
+      # on named context.
       experimental optional string context
 
-  # Issued when object should be inspected (for example, as a result of inspect() command line API call).
+  # Issued when object should be inspected (for example, as a result of inspect() command line API
+  # call).
   event inspectRequested
     parameters
       RemoteObject object
       object hints
 
-# Debugger domain exposes JavaScript debugging capabilities. It allows setting and removing breakpoints, stepping through execution, exploring stack traces, etc.
+# Debugger domain exposes JavaScript debugging capabilities. It allows setting and removing
+# breakpoints, stepping through execution, exploring stack traces, etc.
 domain Debugger
 
   # Breakpoint identifier.
@@ -446,7 +483,7 @@ domain Debugger
   # Location in the source code.
   type Location extends object
     properties
-      # Script identifier as reported in the <code>Debugger.scriptParsed</code>.
+      # Script identifier as reported in the `Debugger.scriptParsed`.
       Runtime.ScriptId scriptId
       # Line number in the script (0-based).
       integer lineNumber
@@ -474,7 +511,7 @@ domain Debugger
       string url
       # Scope chain for this call frame.
       array of Scope scopeChain
-      # <code>this</code> object for this call frame.
+      # `this` object for this call frame.
       Runtime.RemoteObject this
       # The value being returned, if the function is at return point.
       optional Runtime.RemoteObject returnValue
@@ -484,7 +521,9 @@ domain Debugger
     properties
       # Scope type.
       string type
-      # Object representing the scope. For <code>global</code> and <code>with</code> scopes it represents the actual object; for the rest of the scopes, it is artificial transient object enumerating scope variables as its properties.
+      # Object representing the scope. For `global` and `with` scopes it represents the actual
+      # object; for the rest of the scopes, it is artificial transient object enumerating scope
+      # variables as its properties.
       Runtime.RemoteObject object
       optional string name
       # Location in the source code where scope starts
@@ -502,7 +541,7 @@ domain Debugger
 
   experimental type BreakLocation extends object
     properties
-      # Script identifier as reported in the <code>Debugger.scriptParsed</code>.
+      # Script identifier as reported in the `Debugger.scriptParsed`.
       Runtime.ScriptId scriptId
       # Line number in the script (0-based).
       integer lineNumber
@@ -510,7 +549,8 @@ domain Debugger
       optional integer columnNumber
       optional string type
 
-  # Enables debugger for the given page. Clients should not assume that the debugging has been enabled until the result for this command is received.
+  # Enables debugger for the given page. Clients should not assume that the debugging has been
+  # enabled until the result for this command is received.
   command enable
 
   # Disables debugger for given page.
@@ -528,20 +568,25 @@ domain Debugger
       # New value for skip pauses state.
       boolean skip
 
-  # Sets JavaScript breakpoint at given location specified either by URL or URL regex. Once this command is issued, all existing parsed scripts will have breakpoints resolved and returned in <code>locations</code> property. Further matching script parsing will result in subsequent <code>breakpointResolved</code> events issued. This logical breakpoint will survive page reloads.
+  # Sets JavaScript breakpoint at given location specified either by URL or URL regex. Once this
+  # command is issued, all existing parsed scripts will have breakpoints resolved and returned in
+  # `locations` property. Further matching script parsing will result in subsequent
+  # `breakpointResolved` events issued. This logical breakpoint will survive page reloads.
   command setBreakpointByUrl
     parameters
       # Line number to set breakpoint at.
       integer lineNumber
       # URL of the resources to set breakpoint on.
       optional string url
-      # Regex pattern for the URLs of the resources to set breakpoints on. Either <code>url</code> or <code>urlRegex</code> must be specified.
+      # Regex pattern for the URLs of the resources to set breakpoints on. Either `url` or
+      # `urlRegex` must be specified.
       optional string urlRegex
       # Script hash of the resources to set breakpoint on.
       experimental optional string scriptHash
       # Offset in the line to set breakpoint at.
       optional integer columnNumber
-      # Expression to use as a breakpoint condition. When specified, debugger will only stop on the breakpoint if this expression evaluates to true.
+      # Expression to use as a breakpoint condition. When specified, debugger will only stop on the
+      # breakpoint if this expression evaluates to true.
       optional string condition
     returns
       # Id of the created breakpoint for further reference.
@@ -554,7 +599,8 @@ domain Debugger
     parameters
       # Location to set breakpoint in.
       Location location
-      # Expression to use as a breakpoint condition. When specified, debugger will only stop on the breakpoint if this expression evaluates to true.
+      # Expression to use as a breakpoint condition. When specified, debugger will only stop on the
+      # breakpoint if this expression evaluates to true.
       optional string condition
     returns
       # Id of the created breakpoint for further reference.
@@ -567,12 +613,14 @@ domain Debugger
     parameters
       BreakpointId breakpointId
 
-  # Returns possible locations for breakpoint. scriptId in start and end range locations should be the same.
+  # Returns possible locations for breakpoint. scriptId in start and end range locations should be
+  # the same.
   experimental command getPossibleBreakpoints
     parameters
       # Start of range to search possible breakpoint locations in.
       Location start
-      # End of range to search possible breakpoint locations in (excluding). When not specified, end of scripts is used as end of range.
+      # End of range to search possible breakpoint locations in (excluding). When not specified, end
+      # of scripts is used as end of range.
       optional Location end
       # Only consider locations which are in the same (non-nested) function as start.
       optional boolean restrictToFunction
@@ -598,7 +646,8 @@ domain Debugger
   # Steps into the function call.
   command stepInto
     parameters
-      # Debugger will issue additional Debugger.paused notification if any async task is scheduled before next pause.
+      # Debugger will issue additional Debugger.paused notification if any async task is scheduled
+      # before next pause.
       experimental optional boolean breakOnAsyncCall
 
   # Steps out of the function call.
@@ -607,7 +656,10 @@ domain Debugger
   # Stops on the next JavaScript statement.
   command pause
 
-  # This method is deprecated - use Debugger.stepInto with breakOnAsyncCall and Debugger.pauseOnAsyncTask instead. Steps into next scheduled async task if any is scheduled before next pause. Returns success when async task is actually scheduled, returns error if no task were scheduled or another scheduleStepIntoAsync was called.
+  # This method is deprecated - use Debugger.stepInto with breakOnAsyncCall and
+  # Debugger.pauseOnAsyncTask instead. Steps into next scheduled async task if any is scheduled
+  # before next pause. Returns success when async task is actually scheduled, returns error if no
+  # task were scheduled or another scheduleStepIntoAsync was called.
   experimental command scheduleStepIntoAsync
 
   # Resumes JavaScript execution.
@@ -635,7 +687,8 @@ domain Debugger
       Runtime.ScriptId scriptId
       # New content of the script.
       string scriptSource
-      #  If true the change will not actually be applied. Dry run may be used to get result description without actually modifying the code.
+      #  If true the change will not actually be applied. Dry run may be used to get result
+      # description without actually modifying the code.
       optional boolean dryRun
     returns
       # New stack trace in case editing has happened while VM was stopped.
@@ -667,7 +720,8 @@ domain Debugger
       # Script source.
       string scriptSource
 
-  # Defines pause on exceptions state. Can be set to stop on all exceptions, uncaught exceptions or no exceptions. Initial pause on exceptions state is <code>none</code>.
+  # Defines pause on exceptions state. Can be set to stop on all exceptions, uncaught exceptions or
+  # no exceptions. Initial pause on exceptions state is `none`.
   command setPauseOnExceptions
     parameters
       # Pause on exceptions mode.
@@ -680,11 +734,14 @@ domain Debugger
       CallFrameId callFrameId
       # Expression to evaluate.
       string expression
-      # String object group name to put result into (allows rapid releasing resulting object handles using <code>releaseObjectGroup</code>).
+      # String object group name to put result into (allows rapid releasing resulting object handles
+      # using `releaseObjectGroup`).
       optional string objectGroup
-      # Specifies whether command line API should be available to the evaluated expression, defaults to false.
+      # Specifies whether command line API should be available to the evaluated expression, defaults
+      # to false.
       optional boolean includeCommandLineAPI
-      # In silent mode exceptions thrown during evaluation are not reported and do not pause execution. Overrides <code>setPauseOnException</code> state.
+      # In silent mode exceptions thrown during evaluation are not reported and do not pause
+      # execution. Overrides `setPauseOnException` state.
       optional boolean silent
       # Whether the result is expected to be a JSON object that should be sent by value.
       optional boolean returnByValue
@@ -698,10 +755,12 @@ domain Debugger
       # Exception details.
       optional Runtime.ExceptionDetails exceptionDetails
 
-  # Changes value of variable in a callframe. Object-based scopes are not supported and must be mutated manually.
+  # Changes value of variable in a callframe. Object-based scopes are not supported and must be
+  # mutated manually.
   command setVariableValue
     parameters
-      # 0-based number of scope as was listed in scope chain. Only 'local', 'closure' and 'catch' scope types are allowed. Other scopes could be manipulated manually.
+      # 0-based number of scope as was listed in scope chain. Only 'local', 'closure' and 'catch'
+      # scope types are allowed. Other scopes could be manipulated manually.
       integer scopeNumber
       # Variable name.
       string variableName
@@ -719,23 +778,30 @@ domain Debugger
   # Enables or disables async call stacks tracking.
   command setAsyncCallStackDepth
     parameters
-      # Maximum depth of async call stacks. Setting to <code>0</code> will effectively disable collecting async call stacks (default).
+      # Maximum depth of async call stacks. Setting to `0` will effectively disable collecting async
+      # call stacks (default).
       integer maxDepth
 
-  # Replace previous blackbox patterns with passed ones. Forces backend to skip stepping/pausing in scripts with url matching one of the patterns. VM will try to leave blackboxed script by performing 'step in' several times, finally resorting to 'step out' if unsuccessful.
+  # Replace previous blackbox patterns with passed ones. Forces backend to skip stepping/pausing in
+  # scripts with url matching one of the patterns. VM will try to leave blackboxed script by
+  # performing 'step in' several times, finally resorting to 'step out' if unsuccessful.
   experimental command setBlackboxPatterns
     parameters
       # Array of regexps that will be used to check script url for blackbox state.
       array of string patterns
 
-  # Makes backend skip steps in the script in blackboxed ranges. VM will try leave blacklisted scripts by performing 'step in' several times, finally resorting to 'step out' if unsuccessful. Positions array contains positions where blackbox state is changed. First interval isn't blackboxed. Array should be sorted.
+  # Makes backend skip steps in the script in blackboxed ranges. VM will try leave blacklisted
+  # scripts by performing 'step in' several times, finally resorting to 'step out' if unsuccessful.
+  # Positions array contains positions where blackbox state is changed. First interval isn't
+  # blackboxed. Array should be sorted.
   experimental command setBlackboxedRanges
     parameters
       # Id of the script.
       Runtime.ScriptId scriptId
       array of ScriptPosition positions
 
-  # Fired when virtual machine parses script. This event is also fired for all known and uncollected scripts upon enabling debugger.
+  # Fired when virtual machine parses script. This event is also fired for all known and uncollected
+  # scripts upon enabling debugger.
   event scriptParsed
     parameters
       # Identifier of the script parsed.
@@ -847,7 +913,8 @@ domain Console
       # Column number in the resource that generated this message (1-based).
       optional integer column
 
-  # Enables console domain, sends the messages collected so far to the client by means of the <code>messageAdded</code> notification.
+  # Enables console domain, sends the messages collected so far to the client by means of the
+  # `messageAdded` notification.
   command enable
 
   # Disables console domain, prevents further console messages from being reported to the client.
@@ -875,7 +942,8 @@ domain Profiler
       experimental optional integer hitCount
       # Child node ids.
       optional array of integer children
-      # The reason of being not optimized. The function may be deoptimized or marked as don't optimize.
+      # The reason of being not optimized. The function may be deoptimized or marked as don't
+      # optimize.
       optional string deoptReason
       # An array of source position ticks.
       experimental optional array of PositionTickInfo positionTicks
@@ -891,7 +959,8 @@ domain Profiler
       number endTime
       # Ids of samples top nodes.
       optional array of integer samples
-      # Time intervals between adjacent samples in microseconds. The first delta is relative to the profile startTime.
+      # Time intervals between adjacent samples in microseconds. The first delta is relative to the
+      # profile startTime.
       optional array of integer timeDeltas
 
   # Specifies a number of samples attributed to a certain source position.
@@ -973,7 +1042,9 @@ domain Profiler
       # Recorded profile.
       Profile profile
 
-  # Enable precise code coverage. Coverage data for JavaScript executed before enabling precise code coverage may be incomplete. Enabling prevents running optimized code and resets execution counters.
+  # Enable precise code coverage. Coverage data for JavaScript executed before enabling precise code
+  # coverage may be incomplete. Enabling prevents running optimized code and resets execution
+  # counters.
   experimental command startPreciseCoverage
     parameters
       # Collect accurate call counts beyond simple 'covered' or 'not covered'.
@@ -981,16 +1052,19 @@ domain Profiler
       # Collect block-based coverage.
       optional boolean detailed
 
-  # Disable precise code coverage. Disabling releases unnecessary execution count records and allows executing optimized code.
+  # Disable precise code coverage. Disabling releases unnecessary execution count records and allows
+  # executing optimized code.
   experimental command stopPreciseCoverage
 
-  # Collect coverage data for the current isolate, and resets execution counters. Precise code coverage needs to have started.
+  # Collect coverage data for the current isolate, and resets execution counters. Precise code
+  # coverage needs to have started.
   experimental command takePreciseCoverage
     returns
       # Coverage data for the current isolate.
       array of ScriptCoverage result
 
-  # Collect coverage data for the current isolate. The coverage data may be incomplete due to garbage collection.
+  # Collect coverage data for the current isolate. The coverage data may be incomplete due to
+  # garbage collection.
   experimental command getBestEffortCoverage
     returns
       # Coverage data for the current isolate.
@@ -1056,7 +1130,8 @@ experimental domain HeapProfiler
 
   command stopTrackingHeapObjects
     parameters
-      # If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken when the tracking is stopped.
+      # If true 'reportHeapSnapshotProgress' events will be generated while snapshot is being taken
+      # when the tracking is stopped.
       optional boolean reportProgress
 
   command takeHeapSnapshot
@@ -1075,7 +1150,8 @@ experimental domain HeapProfiler
       # Evaluation result.
       Runtime.RemoteObject result
 
-  # Enables console to refer to the node with given id via $x (see Command Line API for more details $x functions).
+  # Enables console to refer to the node with given id via $x (see Command Line API for more details
+  # $x functions).
   command addInspectedHeapObject
     parameters
       # Heap snapshot object id to be accessible by means of $x command line API.
@@ -1091,7 +1167,8 @@ experimental domain HeapProfiler
 
   command startSampling
     parameters
-      # Average sample interval in bytes. Poisson distribution is used for the intervals. The default value is 32768 bytes.
+      # Average sample interval in bytes. Poisson distribution is used for the intervals. The
+      # default value is 32768 bytes.
       optional number samplingInterval
 
   command stopSampling
@@ -1116,7 +1193,9 @@ experimental domain HeapProfiler
       integer total
       optional boolean finished
 
-  # If heap objects tracking has been started then backend regularly sends a current value for last seen object id and corresponding timestamp. If the were changes in the heap since last event then one or more heapStatsUpdate events will be sent before a new lastSeenObjectId event.
+  # If heap objects tracking has been started then backend regularly sends a current value for last
+  # seen object id and corresponding timestamp. If the were changes in the heap since last event
+  # then one or more heapStatsUpdate events will be sent before a new lastSeenObjectId event.
   event lastSeenObjectId
     parameters
       integer lastSeenObjectId
@@ -1125,5 +1204,7 @@ experimental domain HeapProfiler
   # If heap objects tracking has been started then backend may send update for one or more fragments
   event heapStatsUpdate
     parameters
-      # An array of triplets. Each triplet describes a fragment. The first integer is the fragment index, the second integer is a total count of objects for the fragment, the third integer is a total size of the objects for the fragment.
+      # An array of triplets. Each triplet describes a fragment. The first integer is the fragment
+      # index, the second integer is a total count of objects for the fragment, the third integer is
+      # a total size of the objects for the fragment.
       array of integer statsUpdate

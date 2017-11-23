@@ -1,3 +1,4 @@
+# Protocol definition generated from browser_protocol.json
 
 experimental domain Inspector
 
@@ -362,7 +363,8 @@ domain Page
       # Unique id of the entry to navigate to.
       integer entryId
 
-  # Returns all browser cookies. Depending on the backend support, will return detailed cookie information in the <code>cookies</code> field.
+  # Returns all browser cookies. Depending on the backend support, will return detailed cookie
+  # information in the `cookies` field.
   experimental command getCookies
     # Use 'Network.getCookies' instead
     deprecated
@@ -430,7 +432,9 @@ domain Page
       # HTML content to set.
       string html
 
-  # Overrides the values of device screen dimensions (window.screen.width, window.screen.height, window.innerWidth, window.innerHeight, and "device-width"/"device-height"-related CSS media query results).
+  # Overrides the values of device screen dimensions (window.screen.width, window.screen.height,
+  # window.innerWidth, window.innerHeight, and "device-width"/"device-height"-related CSS media
+  # query results).
   experimental command setDeviceMetricsOverride
     # Use 'Emulation.setDeviceMetricsOverride' instead
     deprecated
@@ -441,7 +445,8 @@ domain Page
       integer height
       # Overriding device scale factor value. 0 disables the override.
       number deviceScaleFactor
-      # Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text autosizing and more.
+      # Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text
+      # autosizing and more.
       boolean mobile
       # Scale to apply to resulting view image.
       optional number scale
@@ -465,7 +470,8 @@ domain Page
     # Use 'Emulation.clearDeviceMetricsOverride' instead
     deprecated
 
-  # Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position unavailable.
+  # Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position
+  # unavailable.
   command setGeolocationOverride
     # Use 'Emulation.setGeolocationOverride' instead
     deprecated
@@ -547,15 +553,17 @@ domain Page
       optional number marginLeft
       # Right margin in inches. Defaults to 1cm (~0.4 inches).
       optional number marginRight
-      # Paper ranges to print, e.g., '1-5, 8, 11-13'. Defaults to the empty string, which means print all pages.
+      # Paper ranges to print, e.g., '1-5, 8, 11-13'. Defaults to the empty string, which means
+      # print all pages.
       optional string pageRanges
-      # Whether to silently ignore invalid but successfully parsed page ranges, such as '3-2'. Defaults to false.
+      # Whether to silently ignore invalid but successfully parsed page ranges, such as '3-2'.
+      # Defaults to false.
       optional boolean ignoreInvalidPageRanges
     returns
       # Base64-encoded pdf data.
       string data
 
-  # Starts sending each frame using the <code>screencastFrame</code> event.
+  # Starts sending each frame using the `screencastFrame` event.
   experimental command startScreencast
     parameters
       # Image compression format.
@@ -569,7 +577,7 @@ domain Page
       # Send every n-th frame.
       optional integer everyNthFrame
 
-  # Stops sending each frame in the <code>screencastFrame</code>.
+  # Stops sending each frame in the `screencastFrame`.
   experimental command stopScreencast
 
   # Acknowledges that a screencast frame has been received by the frontend.
@@ -583,7 +591,8 @@ domain Page
     parameters
       # Whether to accept or dismiss the dialog.
       boolean accept
-      # The text to enter into the dialog prompt before accepting. Used only if this is a prompt dialog.
+      # The text to enter into the dialog prompt before accepting. Used only if this is a prompt
+      # dialog.
       optional string promptText
 
   command getAppManifest
@@ -613,7 +622,8 @@ domain Page
       FrameId frameId
       # An optional name which is reported in the Execution Context.
       optional string worldName
-      # Whether or not universal access should be granted to the isolated world. This is a powerful option, use with caution.
+      # Whether or not universal access should be granted to the isolated world. This is a powerful
+      # option, use with caution.
       optional boolean grantUniveralAccess
     returns
       # Execution context of the isolated world.
@@ -625,7 +635,8 @@ domain Page
   # Set the behavior when downloading a file.
   experimental command setDownloadBehavior
     parameters
-      # Whether to allow all or deny all download requests, or use default Chrome behavior if available (otherwise deny).
+      # Whether to allow all or deny all download requests, or use default Chrome behavior if
+      # available (otherwise deny).
       string behavior
       # The default path to save downloaded files to. This is requred if behavior is set to 'allow'
       optional string downloadPath
@@ -687,7 +698,8 @@ domain Page
     parameters
       # Id of the frame that has scheduled a navigation.
       FrameId frameId
-      # Delay (in seconds) until the navigation is scheduled to begin. The navigation is not guaranteed to start.
+      # Delay (in seconds) until the navigation is scheduled to begin. The navigation is not
+      # guaranteed to start.
       number delay
       # The reason for the navigation.
       string reason
@@ -702,7 +714,8 @@ domain Page
 
   experimental event frameResized
 
-  # Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) is about to open.
+  # Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) is about to
+  # open.
   event javascriptDialogOpening
     parameters
       # Frame url.
@@ -714,7 +727,8 @@ domain Page
       # Default dialog prompt.
       optional string defaultPrompt
 
-  # Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) has been closed.
+  # Fired when a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload) has been
+  # closed.
   event javascriptDialogClosed
     parameters
       # Whether dialog was confirmed.
@@ -722,7 +736,7 @@ domain Page
       # User input in case of prompt.
       string userInput
 
-  # Compressed image data requested by the <code>startScreencast</code>.
+  # Compressed image data requested by the `startScreencast`.
   experimental event screencastFrame
     parameters
       # Base64-encoded compressed image.
@@ -732,7 +746,7 @@ domain Page
       # Frame number.
       integer sessionId
 
-  # Fired when the page with currently enabled screencast was shown or hidden </code>.
+  # Fired when the page with currently enabled screencast was shown or hidden `.
   experimental event screencastVisibilityChanged
     parameters
       # True if the page is visible.
@@ -744,7 +758,8 @@ domain Page
   # Fired when interstitial page was hidden
   event interstitialHidden
 
-  # Fired when a new window is going to be opened, via window.open(), link click, form submission, etc.
+  # Fired when a new window is going to be opened, via window.open(), link click, form submission,
+  # etc.
   event windowOpen
     parameters
       # The URL for the new window.
@@ -840,12 +855,14 @@ experimental domain Overlay
       # Whether overlay should be suspended and not consume any resources until resumed.
       boolean suspended
 
-  # Enters the 'inspect' mode. In this mode, elements that user is hovering over are highlighted. Backend then generates 'inspectNodeRequested' event upon element selection.
+  # Enters the 'inspect' mode. In this mode, elements that user is hovering over are highlighted.
+  # Backend then generates 'inspectNodeRequested' event upon element selection.
   command setInspectMode
     parameters
       # Set an inspection mode.
       InspectMode mode
-      # A descriptor for the highlight appearance of hovered-over nodes. May be omitted if <code>enabled == false</code>.
+      # A descriptor for the highlight appearance of hovered-over nodes. May be omitted if `enabled
+      # == false`.
       optional HighlightConfig highlightConfig
 
   # Highlights given rectangle. Coordinates are absolute with respect to the main frame viewport.
@@ -874,7 +891,8 @@ experimental domain Overlay
       # The highlight outline color (default: transparent).
       optional DOM.RGBA outlineColor
 
-  # Highlights DOM node with given id or with the given JavaScript object wrapper. Either nodeId or objectId must be specified.
+  # Highlights DOM node with given id or with the given JavaScript object wrapper. Either nodeId or
+  # objectId must be specified.
   command highlightNode
     parameters
       # A descriptor for the highlight appearance.
@@ -908,12 +926,13 @@ experimental domain Overlay
       # Highlight data for the node.
       object highlight
 
-  # Fired when the node should be highlighted. This happens after call to <code>setInspectMode</code>.
+  # Fired when the node should be highlighted. This happens after call to `setInspectMode`.
   event nodeHighlightRequested
     parameters
       DOM.NodeId nodeId
 
-  # Fired when the node should be inspected. This happens after call to <code>setInspectMode</code> or when user manually inspects an element.
+  # Fired when the node should be inspected. This happens after call to `setInspectMode` or when
+  # user manually inspects an element.
   event inspectNodeRequested
     parameters
       # Id of the node to inspect.
@@ -936,14 +955,19 @@ domain Emulation
       # Orientation angle.
       integer angle
 
-  # advance: If the scheduler runs out of immediate work, the virtual time base may fast forward to allow the next delayed task (if any) to run; pause: The virtual time base may not advance; pauseIfNetworkFetchesPending: The virtual time base may not advance if there are any pending resource fetches.
+  # advance: If the scheduler runs out of immediate work, the virtual time base may fast forward to
+  # allow the next delayed task (if any) to run; pause: The virtual time base may not advance;
+  # pauseIfNetworkFetchesPending: The virtual time base may not advance if there are any pending
+  # resource fetches.
   experimental type VirtualTimePolicy extends string
     enum
       advance
       pause
       pauseIfNetworkFetchesPending
 
-  # Overrides the values of device screen dimensions (window.screen.width, window.screen.height, window.innerWidth, window.innerHeight, and "device-width"/"device-height"-related CSS media query results).
+  # Overrides the values of device screen dimensions (window.screen.width, window.screen.height,
+  # window.innerWidth, window.innerHeight, and "device-width"/"device-height"-related CSS media
+  # query results).
   command setDeviceMetricsOverride
     parameters
       # Overriding width value in pixels (minimum 0, maximum 10000000). 0 disables the override.
@@ -952,7 +976,8 @@ domain Emulation
       integer height
       # Overriding device scale factor value. 0 disables the override.
       number deviceScaleFactor
-      # Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text autosizing and more.
+      # Whether to emulate mobile device. This includes viewport meta tag, overlay scrollbars, text
+      # autosizing and more.
       boolean mobile
       # Scale to apply to resulting view image.
       experimental optional number scale
@@ -968,7 +993,8 @@ domain Emulation
       experimental optional boolean dontSetVisibleSize
       # Screen orientation override.
       optional ScreenOrientation screenOrientation
-      # If set, the visible area of the page will be overridden to this viewport. This viewport change is not observed by the page, e.g. viewport-relative elements do not change positions.
+      # If set, the visible area of the page will be overridden to this viewport. This viewport
+      # change is not observed by the page, e.g. viewport-relative elements do not change positions.
       experimental optional Page.Viewport viewport
 
   # Clears the overriden device metrics.
@@ -983,7 +1009,9 @@ domain Emulation
       # Page scale factor.
       number pageScaleFactor
 
-  # Resizes the frame/viewport of the page. Note that this does not affect the frame's container (e.g. browser window). Can be used to produce screenshots of the specified size. Not supported on Android.
+  # Resizes the frame/viewport of the page. Note that this does not affect the frame's container
+  # (e.g. browser window). Can be used to produce screenshots of the specified size. Not supported
+  # on Android.
   experimental command setVisibleSize
     deprecated
     parameters
@@ -998,7 +1026,8 @@ domain Emulation
       # Whether script execution should be disabled in the page.
       boolean value
 
-  # Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position unavailable.
+  # Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position
+  # unavailable.
   command setGeolocationOverride
     parameters
       # Mock latitude
@@ -1044,13 +1073,16 @@ domain Emulation
       # True if emulation is supported.
       boolean result
 
-  # Turns on virtual time for all frames (replacing real-time with a synthetic time source) and sets the current virtual time policy.  Note this supersedes any previous time budget.
+  # Turns on virtual time for all frames (replacing real-time with a synthetic time source) and sets
+  # the current virtual time policy.  Note this supersedes any previous time budget.
   experimental command setVirtualTimePolicy
     parameters
       VirtualTimePolicy policy
-      # If set, after this many virtual milliseconds have elapsed virtual time will be paused and a virtualTimeBudgetExpired event is sent.
+      # If set, after this many virtual milliseconds have elapsed virtual time will be paused and a
+      # virtualTimeBudgetExpired event is sent.
       optional number budget
-      # If set this specifies the maximum number of tasks that can be run before virtual is forced forwards to prevent deadlock.
+      # If set this specifies the maximum number of tasks that can be run before virtual is forced
+      # forwards to prevent deadlock.
       optional integer maxVirtualTimeTaskStarvationCount
     returns
       # Absolute timestamp at which virtual time was first enabled (milliseconds since epoch).
@@ -1062,10 +1094,12 @@ domain Emulation
       # The platform navigator.platform should return.
       string platform
 
-  # Sets or clears an override of the default background color of the frame. This override is used if the content does not specify one.
+  # Sets or clears an override of the default background color of the frame. This override is used
+  # if the content does not specify one.
   command setDefaultBackgroundColorOverride
     parameters
-      # RGBA of the default background color. If not specified, any existing override will be cleared.
+      # RGBA of the default background color. If not specified, any existing override will be
+      # cleared.
       optional DOM.RGBA color
 
   # Notification sent after the virtual time budget for the current VirtualTimePolicy has run out.
@@ -1074,13 +1108,15 @@ domain Emulation
   # Notification sent after the virtual time has advanced.
   experimental event virtualTimeAdvanced
     parameters
-      # The amount of virtual time that has elapsed in milliseconds since virtual time was first enabled.
+      # The amount of virtual time that has elapsed in milliseconds since virtual time was first
+      # enabled.
       number virtualTimeElapsed
 
   # Notification sent after the virtual time has paused.
   experimental event virtualTimePaused
     parameters
-      # The amount of virtual time that has elapsed in milliseconds since virtual time was first enabled.
+      # The amount of virtual time that has elapsed in milliseconds since virtual time was first
+      # enabled.
       number virtualTimeElapsed
 
 # Security
@@ -1089,7 +1125,8 @@ domain Security
   # An internal certificate ID value.
   type CertificateId extends integer
 
-  # A description of mixed content (HTTP resources on HTTPS pages), as defined by https://www.w3.org/TR/mixed-content/#categories
+  # A description of mixed content (HTTP resources on HTTPS pages), as defined by
+  # https://www.w3.org/TR/mixed-content/#categories
   type MixedContentType extends string
     enum
       blockable
@@ -1128,16 +1165,19 @@ domain Security
       boolean displayedMixedContent
       # True if the page was loaded over HTTPS and contained a form targeting an insecure url.
       boolean containedMixedForm
-      # True if the page was loaded over HTTPS without certificate errors, and ran content such as scripts that were loaded with certificate errors.
+      # True if the page was loaded over HTTPS without certificate errors, and ran content such as
+      # scripts that were loaded with certificate errors.
       boolean ranContentWithCertErrors
-      # True if the page was loaded over HTTPS without certificate errors, and displayed content such as images that were loaded with certificate errors.
+      # True if the page was loaded over HTTPS without certificate errors, and displayed content
+      # such as images that were loaded with certificate errors.
       boolean displayedContentWithCertErrors
       # Security state representing a page that ran insecure content.
       SecurityState ranInsecureContentStyle
       # Security state representing a page that displayed insecure content.
       SecurityState displayedInsecureContentStyle
 
-  # The action to take when a certificate error occurs. continue will continue processing the request and cancel will cancel the request.
+  # The action to take when a certificate error occurs. continue will continue processing the
+  # request and cancel will cancel the request.
   type CertificateErrorAction extends string
     enum
       continue
@@ -1157,7 +1197,8 @@ domain Security
       # The action to take on the certificate error.
       CertificateErrorAction action
 
-  # Enable/disable overriding certificate errors. If enabled, all certificate error events need to be handled by the DevTools client and should be answered with handleCertificateError commands.
+  # Enable/disable overriding certificate errors. If enabled, all certificate error events need to
+  # be handled by the DevTools client and should be answered with handleCertificateError commands.
   command setOverrideCertificateErrors
     parameters
       # If true, certificate errors will be overridden.
@@ -1170,14 +1211,17 @@ domain Security
       SecurityState securityState
       # True if the page was loaded over cryptographic transport such as HTTPS.
       boolean schemeIsCryptographic
-      # List of explanations for the security state. If the overall security state is `insecure` or `warning`, at least one corresponding explanation should be included.
+      # List of explanations for the security state. If the overall security state is `insecure` or
+      # `warning`, at least one corresponding explanation should be included.
       array of SecurityStateExplanation explanations
       # Information about insecure content on the page.
       InsecureContentStatus insecureContentStatus
       # Overrides user-visible description of the state.
       optional string summary
 
-  # There is a certificate error. If overriding certificate errors is enabled, then it should be handled with the handleCertificateError command. Note: this event does not fire if the certificate error has been allowed internally.
+  # There is a certificate error. If overriding certificate errors is enabled, then it should be
+  # handled with the handleCertificateError command. Note: this event does not fire if the
+  # certificate error has been allowed internally.
   event certificateError
     parameters
       # The ID of the event.
@@ -1190,7 +1234,8 @@ domain Security
 # Audits domain allows investigation of page violations and possible improvements.
 experimental domain Audits
 
-  # Returns the response body and size if it were re-encoded with the specified settings. Only applies to images.
+  # Returns the response body and size if it were re-encoded with the specified settings. Only
+  # applies to images.
   command getEncodedResponse
     parameters
       # Identifier of the network request to get content for.
@@ -1209,7 +1254,8 @@ experimental domain Audits
       # Size after re-encoding.
       integer encodedSize
 
-# Network domain allows tracking network activities of the page. It exposes information about http, file, data and other requests and responses, their headers, bodies, timing, etc.
+# Network domain allows tracking network activities of the page. It exposes information about http,
+# file, data and other requests and responses, their headers, bodies, timing, etc.
 domain Network
 
   # Unique loader identifier.
@@ -1259,7 +1305,8 @@ domain Network
       wimax
       other
 
-  # Represents the cookie's 'SameSite' status: https://tools.ietf.org/html/draft-west-first-party-cookies
+  # Represents the cookie's 'SameSite' status:
+  # https://tools.ietf.org/html/draft-west-first-party-cookies
   type CookieSameSite extends string
     enum
       Strict
@@ -1268,7 +1315,8 @@ domain Network
   # Timing information for the request.
   type ResourceTiming extends object
     properties
-      # Timing's requestTime is a baseline in seconds, while the other numbers are ticks in milliseconds relatively to this requestTime.
+      # Timing's requestTime is a baseline in seconds, while the other numbers are ticks in
+      # milliseconds relatively to this requestTime.
       number requestTime
       # Started resolving proxy.
       number proxyStart
@@ -1483,7 +1531,8 @@ domain Network
       optional Runtime.StackTrace stack
       # Initiator URL, set for Parser type or for Script type (when script is importing module).
       optional string url
-      # Initiator line number, set for Parser type or for Script type (when script is importing module) (0-based).
+      # Initiator line number, set for Parser type or for Script type (when script is importing
+      # module) (0-based).
       optional number lineNumber
 
   # Cookie object
@@ -1517,7 +1566,8 @@ domain Network
       string name
       # Cookie value.
       string value
-      # The request-URI to associate with the setting of the cookie. This value can affect the default domain and path values of the created cookie.
+      # The request-URI to associate with the setting of the cookie. This value can affect the
+      # default domain and path values of the created cookie.
       optional string url
       # Cookie domain.
       optional string domain
@@ -1547,14 +1597,19 @@ domain Network
   # Response to an AuthChallenge.
   experimental type AuthChallengeResponse extends object
     properties
-      # The decision on what to do in response to the authorization challenge.  Default means deferring to the default behavior of the net stack, which will likely either the Cancel authentication or display a popup dialog box.
+      # The decision on what to do in response to the authorization challenge.  Default means
+      # deferring to the default behavior of the net stack, which will likely either the Cancel
+      # authentication or display a popup dialog box.
       string response
-      # The username to provide, possibly empty. Should only be set if response is ProvideCredentials.
+      # The username to provide, possibly empty. Should only be set if response is
+      # ProvideCredentials.
       optional string username
-      # The password to provide, possibly empty. Should only be set if response is ProvideCredentials.
+      # The password to provide, possibly empty. Should only be set if response is
+      # ProvideCredentials.
       optional string password
 
-  # Stages of the interception to begin intercepting. Request will intercept before the request is sent. Response will intercept after the response is received.
+  # Stages of the interception to begin intercepting. Request will intercept before the request is
+  # sent. Response will intercept after the response is received.
   experimental type InterceptionStage extends string
     enum
       Request
@@ -1563,7 +1618,8 @@ domain Network
   # Request pattern for interception.
   experimental type RequestPattern extends object
     properties
-      # Wildcards ('*' -> zero or more, '?' -> exactly one) are allowed. Escape character is backslash. Omitting is equivalent to "*".
+      # Wildcards ('*' -> zero or more, '?' -> exactly one) are allowed. Escape character is
+      # backslash. Omitting is equivalent to "*".
       optional string urlPattern
       # If set, only requests for matching resource types will be intercepted.
       optional Page.ResourceType resourceType
@@ -1625,7 +1681,9 @@ domain Network
       # URL patterns to block. Wildcards ('*') are allowed.
       array of string urls
 
-  # This method sends a new XMLHttpRequest which is identical to the original one. The following parameters should be identical: method, url, async, request body, extra headers, withCredentials attribute, user, password.
+  # This method sends a new XMLHttpRequest which is identical to the original one. The following
+  # parameters should be identical: method, url, async, request body, extra headers, withCredentials
+  # attribute, user, password.
   experimental command replayXHR
     parameters
       # Identifier of XHR to replay.
@@ -1651,7 +1709,8 @@ domain Network
   # Clears browser cookies.
   command clearBrowserCookies
 
-  # Returns all browser cookies for the current URL. Depending on the backend support, will return detailed cookie information in the <code>cookies</code> field.
+  # Returns all browser cookies for the current URL. Depending on the backend support, will return
+  # detailed cookie information in the `cookies` field.
   command getCookies
     parameters
       # The list of URLs for which applicable cookies will be fetched
@@ -1660,7 +1719,8 @@ domain Network
       # Array of cookie objects.
       array of Cookie cookies
 
-  # Returns all browser cookies. Depending on the backend support, will return detailed cookie information in the <code>cookies</code> field.
+  # Returns all browser cookies. Depending on the backend support, will return detailed cookie
+  # information in the `cookies` field.
   command getAllCookies
     returns
       # Array of cookie objects.
@@ -1671,7 +1731,8 @@ domain Network
     parameters
       # Name of the cookies to remove.
       string name
-      # If specified, deletes all the cookies with the given name where domain and path match provided URL.
+      # If specified, deletes all the cookies with the given name where domain and path match
+      # provided URL.
       optional string url
       # If specified, deletes only cookies with the exact domain.
       optional string domain
@@ -1685,7 +1746,8 @@ domain Network
       string name
       # Cookie value.
       string value
-      # The request-URI to associate with the setting of the cookie. This value can affect the default domain and path values of the created cookie.
+      # The request-URI to associate with the setting of the cookie. This value can affect the
+      # default domain and path values of the created cookie.
       optional string url
       # Cookie domain.
       optional string domain
@@ -1730,7 +1792,7 @@ domain Network
       # Connection type if known.
       optional ConnectionType connectionType
 
-  # Toggles ignoring cache for each request. If <code>true</code>, cache will not be used.
+  # Toggles ignoring cache for each request. If `true`, cache will not be used.
   command setCacheDisabled
     parameters
       # Cache disabled state.
@@ -1761,24 +1823,34 @@ domain Network
   # Sets the requests to intercept that match a the provided patterns and optionally resource types.
   experimental command setRequestInterception
     parameters
-      # Requests matching any of these patterns will be forwarded and wait for the corresponding continueInterceptedRequest call.
+      # Requests matching any of these patterns will be forwarded and wait for the corresponding
+      # continueInterceptedRequest call.
       array of RequestPattern patterns
 
-  # Response to Network.requestIntercepted which either modifies the request to continue with any modifications, or blocks it, or completes it with the provided response bytes. If a network fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted event will be sent with the same InterceptionId.
+  # Response to Network.requestIntercepted which either modifies the request to continue with any
+  # modifications, or blocks it, or completes it with the provided response bytes. If a network
+  # fetch occurs as a result which encounters a redirect an additional Network.requestIntercepted
+  # event will be sent with the same InterceptionId.
   experimental command continueInterceptedRequest
     parameters
       InterceptionId interceptionId
-      # If set this causes the request to fail with the given reason. Passing <code>Aborted</code> for requests marked with <code>isNavigationRequest</code> also cancels the navigation. Must not be set in response to an authChallenge.
+      # If set this causes the request to fail with the given reason. Passing `Aborted` for requests
+      # marked with `isNavigationRequest` also cancels the navigation. Must not be set in response
+      # to an authChallenge.
       optional ErrorReason errorReason
-      # If set the requests completes using with the provided base64 encoded raw response, including HTTP status line and headers etc... Must not be set in response to an authChallenge.
+      # If set the requests completes using with the provided base64 encoded raw response, including
+      # HTTP status line and headers etc... Must not be set in response to an authChallenge.
       optional string rawResponse
-      # If set the request url will be modified in a way that's not observable by page. Must not be set in response to an authChallenge.
+      # If set the request url will be modified in a way that's not observable by page. Must not be
+      # set in response to an authChallenge.
       optional string url
-      # If set this allows the request method to be overridden. Must not be set in response to an authChallenge.
+      # If set this allows the request method to be overridden. Must not be set in response to an
+      # authChallenge.
       optional string method
       # If set this allows postData to be set. Must not be set in response to an authChallenge.
       optional string postData
-      # If set this allows the request headers to be changed. Must not be set in response to an authChallenge.
+      # If set this allows the request headers to be changed. Must not be set in response to an
+      # authChallenge.
       optional Headers headers
       # Response to a requestIntercepted with an authChallenge. Must not be set otherwise.
       optional AuthChallengeResponse authChallengeResponse
@@ -1972,10 +2044,13 @@ domain Network
       # Message content.
       string data
 
-  # Details of an intercepted HTTP request, which must be either allowed, blocked, modified or mocked.
+  # Details of an intercepted HTTP request, which must be either allowed, blocked, modified or
+  # mocked.
   experimental event requestIntercepted
     parameters
-      # Each request the page makes will have a unique id, however if any redirects are encountered while processing that fetch, they will be reported with the same id as the original fetch. Likewise if HTTP authentication is needed then the same fetch id will be used.
+      # Each request the page makes will have a unique id, however if any redirects are encountered
+      # while processing that fetch, they will be reported with the same id as the original fetch.
+      # Likewise if HTTP authentication is needed then the same fetch id will be used.
       InterceptionId interceptionId
       Request request
       # The id of the frame that initiated the request.
@@ -1986,13 +2061,17 @@ domain Network
       boolean isNavigationRequest
       # Redirect location, only sent if a redirect was intercepted.
       optional string redirectUrl
-      # Details of the Authorization Challenge encountered. If this is set then continueInterceptedRequest must contain an authChallengeResponse.
+      # Details of the Authorization Challenge encountered. If this is set then
+      # continueInterceptedRequest must contain an authChallengeResponse.
       optional AuthChallenge authChallenge
-      # Response error if intercepted at response stage or if redirect occurred while intercepting request.
+      # Response error if intercepted at response stage or if redirect occurred while intercepting
+      # request.
       optional ErrorReason responseErrorReason
-      # Response code if intercepted at response stage or if redirect occurred while intercepting request or auth retry occurred.
+      # Response code if intercepted at response stage or if redirect occurred while intercepting
+      # request or auth retry occurred.
       optional integer responseStatusCode
-      # Response headers if intercepted at the response stage or if redirect occurred while intercepting request or auth retry occurred.
+      # Response headers if intercepted at the response stage or if redirect occurred while
+      # intercepting request or auth retry occurred.
       optional Headers responseHeaders
 
 experimental domain Database
@@ -2386,10 +2465,12 @@ experimental domain ApplicationCache
       # Application cache status.
       integer status
 
-  # Returns array of frame identifiers with manifest urls for each frame containing a document associated with some application cache.
+  # Returns array of frame identifiers with manifest urls for each frame containing a document
+  # associated with some application cache.
   command getFramesWithManifests
     returns
-      # Array of frame identifiers with manifest urls for each frame containing a document associated with some application cache.
+      # Array of frame identifiers with manifest urls for each frame containing a document
+      # associated with some application cache.
       array of FrameWithManifest frameIds
 
   # Enables application cache domain notifications.
@@ -2426,21 +2507,28 @@ experimental domain ApplicationCache
     parameters
       boolean isNowOnline
 
-# This domain exposes DOM read/write operations. Each DOM Node is represented with its mirror object that has an <code>id</code>. This <code>id</code> can be used to get additional information on the Node, resolve it into the JavaScript object wrapper, etc. It is important that client receives DOM events only for the nodes that are known to the client. Backend keeps track of the nodes that were sent to the client and never sends the same node twice. It is client's responsibility to collect information about the nodes that were sent to the client.<p>Note that <code>iframe</code> owner elements will return corresponding document elements as their child nodes.</p>
+# This domain exposes DOM read/write operations. Each DOM Node is represented with its mirror object
+# that has an `id`. This `id` can be used to get additional information on the Node, resolve it into
+# the JavaScript object wrapper, etc. It is important that client receives DOM events only for the
+# nodes that are known to the client. Backend keeps track of the nodes that were sent to the client
+# and never sends the same node twice. It is client's responsibility to collect information about
+# the nodes that were sent to the client.<p>Note that `iframe` owner elements will return
+# corresponding document elements as their child nodes.</p>
 domain DOM
 
   # Unique DOM node identifier.
   type NodeId extends integer
 
-  # Unique DOM node identifier used to reference a node that may not have been pushed to the front-end.
+  # Unique DOM node identifier used to reference a node that may not have been pushed to the
+  # front-end.
   type BackendNodeId extends integer
 
   # Backend node with a friendly name.
   type BackendNode extends object
     properties
-      # <code>Node</code>'s nodeType.
+      # `Node`'s nodeType.
       integer nodeType
-      # <code>Node</code>'s nodeName.
+      # `Node`'s nodeName.
       string nodeName
       BackendNodeId backendNodeId
 
@@ -2470,44 +2558,47 @@ domain DOM
       open
       closed
 
-  # DOM interaction is implemented in terms of mirror objects that represent the actual DOM nodes. DOMNode is a base node mirror type.
+  # DOM interaction is implemented in terms of mirror objects that represent the actual DOM nodes.
+  # DOMNode is a base node mirror type.
   type Node extends object
     properties
-      # Node identifier that is passed into the rest of the DOM messages as the <code>nodeId</code>. Backend will only push node with given <code>id</code> once. It is aware of all requested nodes and will only fire DOM events for nodes known to the client.
+      # Node identifier that is passed into the rest of the DOM messages as the `nodeId`. Backend
+      # will only push node with given `id` once. It is aware of all requested nodes and will only
+      # fire DOM events for nodes known to the client.
       NodeId nodeId
       # The id of the parent node if any.
       optional NodeId parentId
       # The BackendNodeId for this node.
       BackendNodeId backendNodeId
-      # <code>Node</code>'s nodeType.
+      # `Node`'s nodeType.
       integer nodeType
-      # <code>Node</code>'s nodeName.
+      # `Node`'s nodeName.
       string nodeName
-      # <code>Node</code>'s localName.
+      # `Node`'s localName.
       string localName
-      # <code>Node</code>'s nodeValue.
+      # `Node`'s nodeValue.
       string nodeValue
-      # Child count for <code>Container</code> nodes.
+      # Child count for `Container` nodes.
       optional integer childNodeCount
       # Child nodes of this node when requested with children.
       optional array of Node children
-      # Attributes of the <code>Element</code> node in the form of flat array <code>[name1, value1, name2, value2]</code>.
+      # Attributes of the `Element` node in the form of flat array `[name1, value1, name2, value2]`.
       optional array of string attributes
-      # Document URL that <code>Document</code> or <code>FrameOwner</code> node points to.
+      # Document URL that `Document` or `FrameOwner` node points to.
       optional string documentURL
-      # Base URL that <code>Document</code> or <code>FrameOwner</code> node uses for URL completion.
+      # Base URL that `Document` or `FrameOwner` node uses for URL completion.
       optional string baseURL
-      # <code>DocumentType</code>'s publicId.
+      # `DocumentType`'s publicId.
       optional string publicId
-      # <code>DocumentType</code>'s systemId.
+      # `DocumentType`'s systemId.
       optional string systemId
-      # <code>DocumentType</code>'s internalSubset.
+      # `DocumentType`'s internalSubset.
       optional string internalSubset
-      # <code>Document</code>'s XML version in case of XML documents.
+      # `Document`'s XML version in case of XML documents.
       optional string xmlVersion
-      # <code>Attr</code>'s name.
+      # `Attr`'s name.
       optional string name
-      # <code>Attr</code>'s value.
+      # `Attr`'s value.
       optional string value
       # Pseudo element type for this node.
       optional PseudoType pseudoType
@@ -2594,9 +2685,11 @@ domain DOM
   # Returns the root DOM node (and optionally the subtree) to the caller.
   command getDocument
     parameters
-      # The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
+      # The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
+      # entire subtree or provide an integer larger than 0.
       optional integer depth
-      # Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false).
+      # Whether or not iframes and shadow roots should be traversed when returning the subtree
+      # (default is false).
       optional boolean pierce
     returns
       # Resulting node.
@@ -2605,9 +2698,11 @@ domain DOM
   # Returns the root DOM node (and optionally the subtree) to the caller.
   command getFlattenedDocument
     parameters
-      # The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
+      # The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
+      # entire subtree or provide an integer larger than 0.
       optional integer depth
-      # Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false).
+      # Whether or not iframes and shadow roots should be traversed when returning the subtree
+      # (default is false).
       optional boolean pierce
     returns
       # Resulting node.
@@ -2622,17 +2717,21 @@ domain DOM
       # Class name list.
       array of string classNames
 
-  # Requests that children of the node with given id are returned to the caller in form of <code>setChildNodes</code> events where not only immediate children are retrieved, but all children down to the specified depth.
+  # Requests that children of the node with given id are returned to the caller in form of
+  # `setChildNodes` events where not only immediate children are retrieved, but all children down to
+  # the specified depth.
   command requestChildNodes
     parameters
       # Id of the node to get children for.
       NodeId nodeId
-      # The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
+      # The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
+      # entire subtree or provide an integer larger than 0.
       optional integer depth
-      # Whether or not iframes and shadow roots should be traversed when returning the sub-tree (default is false).
+      # Whether or not iframes and shadow roots should be traversed when returning the sub-tree
+      # (default is false).
       optional boolean pierce
 
-  # Executes <code>querySelector</code> on a given node.
+  # Executes `querySelector` on a given node.
   command querySelector
     parameters
       # Id of the node to query upon.
@@ -2643,7 +2742,7 @@ domain DOM
       # Query selector result.
       NodeId nodeId
 
-  # Executes <code>querySelectorAll</code> on a given node.
+  # Executes `querySelectorAll` on a given node.
   command querySelectorAll
     parameters
       # Id of the node to query upon.
@@ -2689,14 +2788,16 @@ domain DOM
       # Attribute value.
       string value
 
-  # Sets attributes on element with given id. This method is useful when user edits some existing attribute value and types in several attribute name/value pairs.
+  # Sets attributes on element with given id. This method is useful when user edits some existing
+  # attribute value and types in several attribute name/value pairs.
   command setAttributesAsText
     parameters
       # Id of the element to set attributes for.
       NodeId nodeId
       # Text with a number of attributes. Will parse this text using HTML parser.
       string text
-      # Attribute name to replace with new attributes derived from text in case text parsed successfully.
+      # Attribute name to replace with new attributes derived from text in case text parsed
+      # successfully.
       optional string name
 
   # Removes attribute with given name from an element with given id.
@@ -2728,7 +2829,8 @@ domain DOM
       # Outer HTML markup to set.
       string outerHTML
 
-  # Searches for a given string in the DOM tree. Use <code>getSearchResults</code> to access search results or <code>cancelSearch</code> to end this search session.
+  # Searches for a given string in the DOM tree. Use `getSearchResults` to access search results or
+  # `cancelSearch` to end this search session.
   experimental command performSearch
     parameters
       # Plain text or query selector or XPath search query.
@@ -2741,7 +2843,8 @@ domain DOM
       # Number of search results.
       integer resultCount
 
-  # Returns search results from given <code>fromIndex</code> to given <code>toIndex</code> from the search with the given identifier.
+  # Returns search results from given `fromIndex` to given `toIndex` from the search with the given
+  # identifier.
   experimental command getSearchResults
     parameters
       # Unique search session identifier.
@@ -2754,13 +2857,16 @@ domain DOM
       # Ids of the search result nodes.
       array of NodeId nodeIds
 
-  # Discards search results from the session with the given id. <code>getSearchResults</code> should no longer be called for that search.
+  # Discards search results from the session with the given id. `getSearchResults` should no longer
+  # be called for that search.
   experimental command discardSearchResults
     parameters
       # Unique search session identifier.
       string searchId
 
-  # Requests that the node is sent to the caller given the JavaScript node object reference. All nodes that form the path from the node to the root are also sent to the client as a series of <code>setChildNodes</code> notifications.
+  # Requests that the node is sent to the caller given the JavaScript node object reference. All
+  # nodes that form the path from the node to the root are also sent to the client as a series of
+  # `setChildNodes` notifications.
   command requestNode
     parameters
       # JavaScript object id to convert into node.
@@ -2796,10 +2902,12 @@ domain DOM
       # The array of backend node ids.
       array of BackendNodeId backendNodeIds
     returns
-      # The array of ids of pushed nodes that correspond to the backend ids specified in backendNodeIds.
+      # The array of ids of pushed nodes that correspond to the backend ids specified in
+      # backendNodeIds.
       array of NodeId nodeIds
 
-  # Enables console to refer to the node with given id via $x (see Command Line API for more details $x functions).
+  # Enables console to refer to the node with given id via $x (see Command Line API for more details
+  # $x functions).
   experimental command setInspectedNode
     parameters
       # DOM node id to be accessible by means of $x command line API.
@@ -2827,14 +2935,16 @@ domain DOM
       # An interleaved array of node attribute names and values.
       array of string attributes
 
-  # Creates a deep copy of the specified node and places it into the target container before the given anchor.
+  # Creates a deep copy of the specified node and places it into the target container before the
+  # given anchor.
   experimental command copyTo
     parameters
       # Id of the node to copy.
       NodeId nodeId
       # Id of the element to drop the copy into.
       NodeId targetNodeId
-      # Drop the copy before this node (if absent, the copy becomes the last child of <code>targetNodeId</code>).
+      # Drop the copy before this node (if absent, the copy becomes the last child of
+      # `targetNodeId`).
       optional NodeId insertBeforeNodeId
     returns
       # Id of the node clone.
@@ -2847,7 +2957,8 @@ domain DOM
       NodeId nodeId
       # Id of the element to drop the moved node into.
       NodeId targetNodeId
-      # Drop node before this one (if absent, the moved node becomes the last child of <code>targetNodeId</code>).
+      # Drop node before this one (if absent, the moved node becomes the last child of
+      # `targetNodeId`).
       optional NodeId insertBeforeNodeId
     returns
       # New id of the moved node.
@@ -2919,7 +3030,8 @@ domain DOM
       # Relayout boundary node id for the given node.
       NodeId nodeId
 
-  # Describes node given its id, does not require domain to be enabled. Does not start tracking any objects, can be used for automation.
+  # Describes node given its id, does not require domain to be enabled. Does not start tracking any
+  # objects, can be used for automation.
   command describeNode
     parameters
       # Identifier of the node.
@@ -2928,18 +3040,21 @@ domain DOM
       optional BackendNodeId backendNodeId
       # JavaScript object id of the node wrapper.
       optional Runtime.RemoteObjectId objectId
-      # The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
+      # The maximum depth at which children should be retrieved, defaults to 1. Use -1 for the
+      # entire subtree or provide an integer larger than 0.
       optional integer depth
-      # Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false).
+      # Whether or not iframes and shadow roots should be traversed when returning the subtree
+      # (default is false).
       optional boolean pierce
     returns
       # Node description.
       Node node
 
-  # Fired when <code>Document</code> has been totally updated. Node ids are no longer valid.
+  # Fired when `Document` has been totally updated. Node ids are no longer valid.
   event documentUpdated
 
-  # Fired when backend wants to provide client with the missing DOM structure. This happens upon most of the calls requesting node ids.
+  # Fired when backend wants to provide client with the missing DOM structure. This happens upon
+  # most of the calls requesting node ids.
   event setChildNodes
     parameters
       # Parent node id to populate with children.
@@ -2947,7 +3062,7 @@ domain DOM
       # Child nodes array.
       array of Node nodes
 
-  # Fired when <code>Element</code>'s attribute is modified.
+  # Fired when `Element`'s attribute is modified.
   event attributeModified
     parameters
       # Id of the node that has changed.
@@ -2957,7 +3072,7 @@ domain DOM
       # Attribute value.
       string value
 
-  # Fired when <code>Element</code>'s attribute is removed.
+  # Fired when `Element`'s attribute is removed.
   event attributeRemoved
     parameters
       # Id of the node that has changed.
@@ -2965,13 +3080,13 @@ domain DOM
       # A ttribute name.
       string name
 
-  # Fired when <code>Element</code>'s inline style is modified via a CSS property modification.
+  # Fired when `Element`'s inline style is modified via a CSS property modification.
   experimental event inlineStyleInvalidated
     parameters
       # Ids of the nodes for which the inline styles have been invalidated.
       array of NodeId nodeIds
 
-  # Mirrors <code>DOMCharacterDataModified</code> event.
+  # Mirrors `DOMCharacterDataModified` event.
   event characterDataModified
     parameters
       # Id of the node that has changed.
@@ -2979,7 +3094,7 @@ domain DOM
       # New text value.
       string characterData
 
-  # Fired when <code>Container</code>'s child node count has changed.
+  # Fired when `Container`'s child node count has changed.
   event childNodeCountUpdated
     parameters
       # Id of the node that has changed.
@@ -2987,7 +3102,7 @@ domain DOM
       # New node count.
       integer childNodeCount
 
-  # Mirrors <code>DOMNodeInserted</code> event.
+  # Mirrors `DOMNodeInserted` event.
   event childNodeInserted
     parameters
       # Id of the node that has changed.
@@ -2997,7 +3112,7 @@ domain DOM
       # Inserted node data.
       Node node
 
-  # Mirrors <code>DOMNodeRemoved</code> event.
+  # Mirrors `DOMNodeRemoved` event.
   event childNodeRemoved
     parameters
       # Parent id.
@@ -3045,12 +3160,19 @@ domain DOM
       # Distributed nodes for given insertion point.
       array of BackendNode distributedNodes
 
-# This domain exposes CSS read/write operations. All CSS objects (stylesheets, rules, and styles) have an associated <code>id</code> used in subsequent operations on the related object. Each object type has a specific <code>id</code> structure, and those are not interchangeable between objects of different kinds. CSS objects can be loaded using the <code>get*ForNode()</code> calls (which accept a DOM node id). A client can also keep track of stylesheets via the <code>styleSheetAdded</code>/<code>styleSheetRemoved</code> events and subsequently load the required stylesheet contents using the <code>getStyleSheet[Text]()</code> methods.
+# This domain exposes CSS read/write operations. All CSS objects (stylesheets, rules, and styles)
+# have an associated `id` used in subsequent operations on the related object. Each object type has
+# a specific `id` structure, and those are not interchangeable between objects of different kinds.
+# CSS objects can be loaded using the `get*ForNode()` calls (which accept a DOM node id). A client
+# can also keep track of stylesheets via the `styleSheetAdded`/`styleSheetRemoved` events and
+# subsequently load the required stylesheet contents using the `getStyleSheet[Text]()` methods.
 experimental domain CSS
 
   type StyleSheetId extends string
 
-  # Stylesheet type: "injected" for stylesheets injected via extension, "user-agent" for user-agent stylesheets, "inspector" for stylesheets created by the inspector (i.e. those holding the "via inspector" rules), "regular" for regular stylesheets.
+  # Stylesheet type: "injected" for stylesheets injected via extension, "user-agent" for user-agent
+  # stylesheets, "inspector" for stylesheets created by the inspector (i.e. those holding the "via
+  # inspector" rules), "regular" for regular stylesheets.
   type StyleSheetOrigin extends string
     enum
       injected
@@ -3119,7 +3241,8 @@ experimental domain CSS
       boolean disabled
       # Whether the sourceURL field value comes from the sourceURL comment.
       optional boolean hasSourceURL
-      # Whether this stylesheet is created for STYLE tag by parser. This flag is not set for document.written STYLE tags.
+      # Whether this stylesheet is created for STYLE tag by parser. This flag is not set for
+      # document.written STYLE tags.
       boolean isInline
       # Line offset of the stylesheet within the resource (zero based).
       number startLine
@@ -3131,7 +3254,8 @@ experimental domain CSS
   # CSS rule representation.
   type CSSRule extends object
     properties
-      # The css style sheet identifier (absent for user agent stylesheet and user-specified stylesheet rules) this rule came from.
+      # The css style sheet identifier (absent for user agent stylesheet and user-specified
+      # stylesheet rules) this rule came from.
       optional StyleSheetId styleSheetId
       # Rule selector data.
       SelectorList selectorList
@@ -3139,13 +3263,15 @@ experimental domain CSS
       StyleSheetOrigin origin
       # Associated style declaration.
       CSSStyle style
-      # Media list array (for rules involving media queries). The array enumerates media queries starting with the innermost one, going outwards.
+      # Media list array (for rules involving media queries). The array enumerates media queries
+      # starting with the innermost one, going outwards.
       optional array of CSSMedia media
 
   # CSS coverage information.
   type RuleUsage extends object
     properties
-      # The css style sheet identifier (absent for user agent stylesheet and user-specified stylesheet rules) this rule came from.
+      # The css style sheet identifier (absent for user agent stylesheet and user-specified
+      # stylesheet rules) this rule came from.
       StyleSheetId styleSheetId
       # Offset of the start of the rule (including selector) from the beginning of the stylesheet.
       number startOffset
@@ -3172,7 +3298,7 @@ experimental domain CSS
       string name
       # Shorthand value.
       string value
-      # Whether the property has "!important" annotation (implies <code>false</code> if absent).
+      # Whether the property has "!important" annotation (implies `false` if absent).
       optional boolean important
 
   type CSSComputedStyleProperty extends object
@@ -3185,7 +3311,8 @@ experimental domain CSS
   # CSS style representation.
   type CSSStyle extends object
     properties
-      # The css style sheet identifier (absent for user agent stylesheet and user-specified stylesheet rules) this rule came from.
+      # The css style sheet identifier (absent for user agent stylesheet and user-specified
+      # stylesheet rules) this rule came from.
       optional StyleSheetId styleSheetId
       # CSS properties in the style.
       array of CSSProperty cssProperties
@@ -3203,13 +3330,13 @@ experimental domain CSS
       string name
       # The property value.
       string value
-      # Whether the property has "!important" annotation (implies <code>false</code> if absent).
+      # Whether the property has "!important" annotation (implies `false` if absent).
       optional boolean important
-      # Whether the property is implicit (implies <code>false</code> if absent).
+      # Whether the property is implicit (implies `false` if absent).
       optional boolean implicit
       # The full property text as specified in the style.
       optional string text
-      # Whether the property is understood by the browser (implies <code>true</code> if absent).
+      # Whether the property is understood by the browser (implies `true` if absent).
       optional boolean parsedOk
       # Whether the property is disabled by the user (present for source-based properties only).
       optional boolean disabled
@@ -3221,11 +3348,15 @@ experimental domain CSS
     properties
       # Media query text.
       string text
-      # Source of the media query: "mediaRule" if specified by a @media rule, "importRule" if specified by an @import rule, "linkedSheet" if specified by a "media" attribute in a linked stylesheet's LINK tag, "inlineSheet" if specified by a "media" attribute in an inline stylesheet's STYLE tag.
+      # Source of the media query: "mediaRule" if specified by a @media rule, "importRule" if
+      # specified by an @import rule, "linkedSheet" if specified by a "media" attribute in a linked
+      # stylesheet's LINK tag, "inlineSheet" if specified by a "media" attribute in an inline
+      # stylesheet's STYLE tag.
       string source
       # URL of the document containing the media query description.
       optional string sourceURL
-      # The associated rule (@media or @import) header range in the enclosing stylesheet (if available).
+      # The associated rule (@media or @import) header range in the enclosing stylesheet (if
+      # available).
       optional SourceRange range
       # Identifier of the stylesheet containing this object (if exists).
       optional StyleSheetId styleSheetId
@@ -3275,7 +3406,8 @@ experimental domain CSS
   # CSS keyframe rule representation.
   type CSSKeyframeRule extends object
     properties
-      # The css style sheet identifier (absent for user agent stylesheet and user-specified stylesheet rules) this rule came from.
+      # The css style sheet identifier (absent for user agent stylesheet and user-specified
+      # stylesheet rules) this rule came from.
       optional StyleSheetId styleSheetId
       # Parent stylesheet's origin.
       StyleSheetOrigin origin
@@ -3294,13 +3426,14 @@ experimental domain CSS
       # New style text.
       string text
 
-  # Enables the CSS agent for the given page. Clients should not assume that the CSS agent has been enabled until the result of this command is received.
+  # Enables the CSS agent for the given page. Clients should not assume that the CSS agent has been
+  # enabled until the result of this command is received.
   command enable
 
   # Disables the CSS agent for the given page.
   command disable
 
-  # Returns requested styles for a DOM node identified by <code>nodeId</code>.
+  # Returns requested styles for a DOM node identified by `nodeId`.
   command getMatchedStylesForNode
     parameters
       DOM.NodeId nodeId
@@ -3318,7 +3451,8 @@ experimental domain CSS
       # A list of CSS keyframed animations matching this node.
       optional array of CSSKeyframesRule cssKeyframesRules
 
-  # Returns the styles defined inline (explicitly in the "style" attribute and implicitly, using DOM attributes) for a DOM node identified by <code>nodeId</code>.
+  # Returns the styles defined inline (explicitly in the "style" attribute and implicitly, using DOM
+  # attributes) for a DOM node identified by `nodeId`.
   command getInlineStylesForNode
     parameters
       DOM.NodeId nodeId
@@ -3328,7 +3462,7 @@ experimental domain CSS
       # Attribute-defined element style (e.g. resulting from "width=20 height=100%").
       optional CSSStyle attributesStyle
 
-  # Returns the computed style for a DOM node identified by <code>nodeId</code>.
+  # Returns the computed style for a DOM node identified by `nodeId`.
   command getComputedStyleForNode
     parameters
       DOM.NodeId nodeId
@@ -3336,7 +3470,8 @@ experimental domain CSS
       # Computed style for the specified DOM node.
       array of CSSComputedStyleProperty computedStyle
 
-  # Requests information about platform fonts which we used to render child TextNodes in the given node.
+  # Requests information about platform fonts which we used to render child TextNodes in the given
+  # node.
   command getPlatformFontsForNode
     parameters
       DOM.NodeId nodeId
@@ -3407,7 +3542,7 @@ experimental domain CSS
       # The resulting CSS media rule after modification.
       CSSMedia media
 
-  # Creates a new special "via-inspector" stylesheet in the frame with given <code>frameId</code>.
+  # Creates a new special "via-inspector" stylesheet in the frame with given `frameId`.
   command createStyleSheet
     parameters
       # Identifier of the frame where "via-inspector" stylesheet should be created.
@@ -3416,7 +3551,8 @@ experimental domain CSS
       # Identifier of the created "via-inspector" stylesheet.
       StyleSheetId styleSheetId
 
-  # Inserts a new rule with the given <code>ruleText</code> in a stylesheet with given <code>styleSheetId</code>, at the position specified by <code>location</code>.
+  # Inserts a new rule with the given `ruleText` in a stylesheet with given `styleSheetId`, at the
+  # position specified by `location`.
   command addRule
     parameters
       # The css style sheet identifier where a new rule should be inserted.
@@ -3429,7 +3565,8 @@ experimental domain CSS
       # The newly created rule.
       CSSRule rule
 
-  # Ensures that the given node will have specified pseudo-classes whenever its style is computed by the browser.
+  # Ensures that the given node will have specified pseudo-classes whenever its style is computed by
+  # the browser.
   command forcePseudoState
     parameters
       # The element id for which to force the pseudo state.
@@ -3442,7 +3579,8 @@ experimental domain CSS
     returns
       array of CSSMedia medias
 
-  # Find a rule with the given active property for the given node and set the new value for this property
+  # Find a rule with the given active property for the given node and set the new value for this
+  # property
   command setEffectivePropertyValueForNode
     parameters
       # The element id for which to set property.
@@ -3455,11 +3593,16 @@ experimental domain CSS
       # Id of the node to get background colors for.
       DOM.NodeId nodeId
     returns
-      # The range of background colors behind this element, if it contains any visible text. If no visible text is present, this will be undefined. In the case of a flat background color, this will consist of simply that color. In the case of a gradient, this will consist of each of the color stops. For anything more complicated, this will be an empty array. Images will be ignored (as if the image had failed to load).
+      # The range of background colors behind this element, if it contains any visible text. If no
+      # visible text is present, this will be undefined. In the case of a flat background color,
+      # this will consist of simply that color. In the case of a gradient, this will consist of each
+      # of the color stops. For anything more complicated, this will be an empty array. Images will
+      # be ignored (as if the image had failed to load).
       optional array of string backgroundColors
       # The computed font size for this node, as a CSS computed value string (e.g. '12px').
       optional string computedFontSize
-      # The computed font weight for this node, as a CSS computed value string (e.g. 'normal' or '100').
+      # The computed font weight for this node, as a CSS computed value string (e.g. 'normal' or
+      # '100').
       optional string computedFontWeight
       # The computed font size for the document body, as a computed CSS value string (e.g. '16px').
       optional string computedBodyFontSize
@@ -3467,7 +3610,8 @@ experimental domain CSS
   # Enables the selector recording.
   command startRuleUsageTracking
 
-  # Obtain list of rules that became used since last call to this method (or since start of coverage instrumentation)
+  # Obtain list of rules that became used since last call to this method (or since start of coverage
+  # instrumentation)
   command takeCoverageDelta
     returns
       array of RuleUsage coverage
@@ -3477,7 +3621,8 @@ experimental domain CSS
     returns
       array of RuleUsage ruleUsage
 
-  # Fires whenever a MediaQuery result changes (for example, after a browser window has been resized.) The current implementation considers only viewport-dependent media features.
+  # Fires whenever a MediaQuery result changes (for example, after a browser window has been
+  # resized.) The current implementation considers only viewport-dependent media features.
   event mediaQueryResultChanged
 
   # Fires whenever a web font gets loaded.
@@ -3506,11 +3651,11 @@ experimental domain DOMSnapshot
   # A Node in the DOM tree.
   type DOMNode extends object
     properties
-      # <code>Node</code>'s nodeType.
+      # `Node`'s nodeType.
       integer nodeType
-      # <code>Node</code>'s nodeName.
+      # `Node`'s nodeName.
       string nodeName
-      # <code>Node</code>'s nodeValue.
+      # `Node`'s nodeValue.
       string nodeValue
       # Only set for textarea elements, contains the text value.
       optional string textValue
@@ -3520,42 +3665,51 @@ experimental domain DOMSnapshot
       optional boolean inputChecked
       # Only set for option elements, indicates if the element has been selected
       optional boolean optionSelected
-      # <code>Node</code>'s id, corresponds to DOM.Node.backendNodeId.
+      # `Node`'s id, corresponds to DOM.Node.backendNodeId.
       DOM.BackendNodeId backendNodeId
-      # The indexes of the node's child nodes in the <code>domNodes</code> array returned by <code>getSnapshot</code>, if any.
+      # The indexes of the node's child nodes in the `domNodes` array returned by `getSnapshot`, if
+      # any.
       optional array of integer childNodeIndexes
-      # Attributes of an <code>Element</code> node.
+      # Attributes of an `Element` node.
       optional array of NameValue attributes
-      # Indexes of pseudo elements associated with this node in the <code>domNodes</code> array returned by <code>getSnapshot</code>, if any.
+      # Indexes of pseudo elements associated with this node in the `domNodes` array returned by
+      # `getSnapshot`, if any.
       optional array of integer pseudoElementIndexes
-      # The index of the node's related layout tree node in the <code>layoutTreeNodes</code> array returned by <code>getSnapshot</code>, if any.
+      # The index of the node's related layout tree node in the `layoutTreeNodes` array returned by
+      # `getSnapshot`, if any.
       optional integer layoutNodeIndex
-      # Document URL that <code>Document</code> or <code>FrameOwner</code> node points to.
+      # Document URL that `Document` or `FrameOwner` node points to.
       optional string documentURL
-      # Base URL that <code>Document</code> or <code>FrameOwner</code> node uses for URL completion.
+      # Base URL that `Document` or `FrameOwner` node uses for URL completion.
       optional string baseURL
       # Only set for documents, contains the document's content language.
       optional string contentLanguage
       # Only set for documents, contains the document's character set encoding.
       optional string documentEncoding
-      # <code>DocumentType</code> node's publicId.
+      # `DocumentType` node's publicId.
       optional string publicId
-      # <code>DocumentType</code> node's systemId.
+      # `DocumentType` node's systemId.
       optional string systemId
       # Frame ID for frame owner elements and also for the document node.
       optional Page.FrameId frameId
-      # The index of a frame owner element's content document in the <code>domNodes</code> array returned by <code>getSnapshot</code>, if any.
+      # The index of a frame owner element's content document in the `domNodes` array returned by
+      # `getSnapshot`, if any.
       optional integer contentDocumentIndex
-      # Index of the imported document's node of a link element in the <code>domNodes</code> array returned by <code>getSnapshot</code>, if any.
+      # Index of the imported document's node of a link element in the `domNodes` array returned by
+      # `getSnapshot`, if any.
       optional integer importedDocumentIndex
-      # Index of the content node of a template element in the <code>domNodes</code> array returned by <code>getSnapshot</code>.
+      # Index of the content node of a template element in the `domNodes` array returned by
+      # `getSnapshot`.
       optional integer templateContentIndex
       # Type of a pseudo element node.
       optional DOM.PseudoType pseudoType
-      # Whether this DOM node responds to mouse clicks. This includes nodes that have had click event listeners attached via JavaScript as well as anchor tags that naturally navigate when clicked.
+      # Whether this DOM node responds to mouse clicks. This includes nodes that have had click
+      # event listeners attached via JavaScript as well as anchor tags that naturally navigate when
+      # clicked.
       optional boolean isClickable
 
-  # Details of post layout rendered text positions. The exact layout should not be regarded as stable and may change between versions.
+  # Details of post layout rendered text positions. The exact layout should not be regarded as
+  # stable and may change between versions.
   type InlineTextBox extends object
     properties
       # The absolute position bounding box.
@@ -3568,7 +3722,7 @@ experimental domain DOMSnapshot
   # Details of an element in the DOM tree with a LayoutObject.
   type LayoutTreeNode extends object
     properties
-      # The index of the related DOM node in the <code>domNodes</code> array returned by <code>getSnapshot</code>.
+      # The index of the related DOM node in the `domNodes` array returned by `getSnapshot`.
       integer domNodeIndex
       # The absolute position bounding box.
       DOM.Rect boundingBox
@@ -3576,7 +3730,7 @@ experimental domain DOMSnapshot
       optional string layoutText
       # The post-layout inline text nodes, if any.
       optional array of InlineTextBox inlineTextNodes
-      # Index into the <code>computedStyles</code> array returned by <code>getSnapshot</code>.
+      # Index into the `computedStyles` array returned by `getSnapshot`.
       optional integer styleIndex
 
   # A subset of the full ComputedStyle as defined by the request whitelist.
@@ -3593,7 +3747,10 @@ experimental domain DOMSnapshot
       # Attribute/property value.
       string value
 
-  # Returns a document snapshot, including the full DOM tree of the root node (including iframes, template contents, and imported documents) in a flattened array, as well as layout and white-listed computed style information for the nodes. Shadow DOM in the returned DOM tree is flattened. 
+  # Returns a document snapshot, including the full DOM tree of the root node (including iframes,
+  # template contents, and imported documents) in a flattened array, as well as layout and
+  # white-listed computed style information for the nodes. Shadow DOM in the returned DOM tree is
+  # flattened. 
   command getSnapshot
     parameters
       # Whitelist of computed styles to return.
@@ -3609,7 +3766,8 @@ experimental domain DOMSnapshot
 # Input/Output operations for streams produced by DevTools.
 domain IO
 
-  # This is either obtained from another method or specifed as <code>blob:&lt;uuid&gt;</code> where <code>&lt;uuid&gt</code> is an UUID of a Blob.
+  # This is either obtained from another method or specifed as `blob:&lt;uuid&gt;` where
+  # `&lt;uuid&gt` is an UUID of a Blob.
   type StreamHandle extends string
 
   # Read a chunk of the stream
@@ -3617,7 +3775,8 @@ domain IO
     parameters
       # Handle of the stream to read.
       StreamHandle handle
-      # Seek to the specified offset before reading (if not specificed, proceed with offset following the last read).
+      # Seek to the specified offset before reading (if not specificed, proceed with offset
+      # following the last read).
       optional integer offset
       # Maximum number of bytes to read (left upon the agent discretion if not specified).
       optional integer size
@@ -3644,7 +3803,8 @@ domain IO
       # UUID of the specified Blob.
       string uuid
 
-# DOM debugging allows setting breakpoints on particular DOM operations and events. JavaScript execution will stop on these operations as if there was a regular breakpoint set.
+# DOM debugging allows setting breakpoints on particular DOM operations and events. JavaScript
+# execution will stop on these operations as if there was a regular breakpoint set.
 domain DOMDebugger
 
   # DOM breakpoint type.
@@ -3657,13 +3817,13 @@ domain DOMDebugger
   # Object event listener.
   type EventListener extends object
     properties
-      # <code>EventListener</code>'s type.
+      # `EventListener`'s type.
       string type
-      # <code>EventListener</code>'s useCapture.
+      # `EventListener`'s useCapture.
       boolean useCapture
-      # <code>EventListener</code>'s passive flag.
+      # `EventListener`'s passive flag.
       boolean passive
-      # <code>EventListener</code>'s once flag.
+      # `EventListener`'s once flag.
       boolean once
       # Script id of the handler code.
       Runtime.ScriptId scriptId
@@ -3686,7 +3846,7 @@ domain DOMDebugger
       # Type of the operation to stop upon.
       DOMBreakpointType type
 
-  # Removes DOM breakpoint that was set using <code>setDOMBreakpoint</code>.
+  # Removes DOM breakpoint that was set using `setDOMBreakpoint`.
   command removeDOMBreakpoint
     parameters
       # Identifier of the node to remove breakpoint from.
@@ -3699,7 +3859,8 @@ domain DOMDebugger
     parameters
       # DOM Event name to stop on (any DOM event will do).
       string eventName
-      # EventTarget interface name to stop on. If equal to <code>"*"</code> or not provided, will stop on any EventTarget.
+      # EventTarget interface name to stop on. If equal to `"*"` or not provided, will stop on any
+      # EventTarget.
       experimental optional string targetName
 
   # Removes breakpoint on particular DOM event.
@@ -3739,9 +3900,11 @@ domain DOMDebugger
     parameters
       # Identifier of the object to return listeners for.
       Runtime.RemoteObjectId objectId
-      # The maximum depth at which Node children should be retrieved, defaults to 1. Use -1 for the entire subtree or provide an integer larger than 0.
+      # The maximum depth at which Node children should be retrieved, defaults to 1. Use -1 for the
+      # entire subtree or provide an integer larger than 0.
       optional integer depth
-      # Whether or not iframes and shadow roots should be traversed when returning the subtree (default is false). Reports listeners for all contexts if pierce is enabled.
+      # Whether or not iframes and shadow roots should be traversed when returning the subtree
+      # (default is false). Reports listeners for all contexts if pierce is enabled.
       optional boolean pierce
     returns
       # Array of relevant listeners.
@@ -3773,18 +3936,22 @@ domain Target
       string host
       integer port
 
-  # Controls whether to discover available targets and notify via <code>targetCreated/targetInfoChanged/targetDestroyed</code> events.
+  # Controls whether to discover available targets and notify via
+  # `targetCreated/targetInfoChanged/targetDestroyed` events.
   command setDiscoverTargets
     parameters
       # Whether to discover available targets.
       boolean discover
 
-  # Controls whether to automatically attach to new targets which are considered to be related to this one. When turned on, attaches to all existing related targets as well. When turned off, automatically detaches from all currently attached targets.
+  # Controls whether to automatically attach to new targets which are considered to be related to
+  # this one. When turned on, attaches to all existing related targets as well. When turned off,
+  # automatically detaches from all currently attached targets.
   experimental command setAutoAttach
     parameters
       # Whether to auto-attach to related targets.
       boolean autoAttach
-      # Whether to pause new targets when attaching to them. Use <code>Runtime.runIfWaitingForDebugger</code> to run paused targets.
+      # Whether to pause new targets when attaching to them. Use `Runtime.runIfWaitingForDebugger`
+      # to run paused targets.
       boolean waitForDebuggerOnStart
 
   experimental command setAttachToFrames
@@ -3792,7 +3959,8 @@ domain Target
       # Whether to attach to frames.
       boolean value
 
-  # Enables target discovery for the specified locations, when <code>setDiscoverTargets</code> was set to <code>true</code>.
+  # Enables target discovery for the specified locations, when `setDiscoverTargets` was set to
+  # `true`.
   experimental command setRemoteLocations
     parameters
       # List of remote locations.
@@ -3842,7 +4010,8 @@ domain Target
       # Deprecated.
       optional TargetID targetId
 
-  # Creates a new empty BrowserContext. Similar to an incognito profile but you can have more than one.
+  # Creates a new empty BrowserContext. Similar to an incognito profile but you can have more than
+  # one.
   experimental command createBrowserContext
     returns
       # The id of the context created.
@@ -3866,7 +4035,8 @@ domain Target
       optional integer height
       # The browser context to create the page in (headless chrome only).
       optional BrowserContextID browserContextId
-      # Whether BeginFrames for this target will be controlled via DevTools (headless chrome only, not supported on MacOS yet, false by default).
+      # Whether BeginFrames for this target will be controlled via DevTools (headless chrome only,
+      # not supported on MacOS yet, false by default).
       experimental optional boolean enableBeginFrameControl
     returns
       # The id of the page opened.
@@ -3883,7 +4053,8 @@ domain Target
     parameters
       TargetInfo targetInfo
 
-  # Issued when some information about a target has changed. This only happens between <code>targetCreated</code> and <code>targetDestroyed</code>.
+  # Issued when some information about a target has changed. This only happens between
+  # `targetCreated` and `targetDestroyed`.
   event targetInfoChanged
     parameters
       TargetInfo targetInfo
@@ -3893,7 +4064,7 @@ domain Target
     parameters
       TargetID targetId
 
-  # Issued when attached to target because of auto-attach or <code>attachToTarget</code> command.
+  # Issued when attached to target because of auto-attach or `attachToTarget` command.
   experimental event attachedToTarget
     parameters
       # Identifier assigned to the session used to send/receive messages.
@@ -3901,7 +4072,8 @@ domain Target
       TargetInfo targetInfo
       boolean waitingForDebugger
 
-  # Issued when detached from target for any reason (including <code>detachFromTarget</code> command). Can be issued multiple times per target if multiple sessions have been attached to it.
+  # Issued when detached from target for any reason (including `detachFromTarget` command). Can be
+  # issued multiple times per target if multiple sessions have been attached to it.
   experimental event detachedFromTarget
     parameters
       # Detached session identifier.
@@ -3909,7 +4081,8 @@ domain Target
       # Deprecated.
       optional TargetID targetId
 
-  # Notifies about a new protocol message received from the session (as reported in <code>attachedToTarget</code> event).
+  # Notifies about a new protocol message received from the session (as reported in
+  # `attachedToTarget` event).
   event receivedMessageFromTarget
     parameters
       # Identifier of a session which sends a message.
@@ -3935,19 +4108,26 @@ experimental domain HeadlessExperimental
   # Disables headless events for the target.
   command disable
 
-  # Sends a BeginFrame to the target and returns when the frame was completed. Optionally captures a screenshot from the resulting frame. Requires that the target was created with enabled BeginFrameControl.
+  # Sends a BeginFrame to the target and returns when the frame was completed. Optionally captures a
+  # screenshot from the resulting frame. Requires that the target was created with enabled
+  # BeginFrameControl.
   command beginFrame
     parameters
-      # Timestamp of this BeginFrame (milliseconds since epoch). If not set, the current time will be used.
+      # Timestamp of this BeginFrame (milliseconds since epoch). If not set, the current time will
+      # be used.
       optional Runtime.Timestamp frameTime
-      # Deadline of this BeginFrame (milliseconds since epoch). If not set, the deadline will be calculated from the frameTime and interval.
+      # Deadline of this BeginFrame (milliseconds since epoch). If not set, the deadline will be
+      # calculated from the frameTime and interval.
       optional Runtime.Timestamp deadline
-      # The interval between BeginFrames that is reported to the compositor, in milliseconds. Defaults to a 60 frames/second interval, i.e. about 16.666 milliseconds.
+      # The interval between BeginFrames that is reported to the compositor, in milliseconds.
+      # Defaults to a 60 frames/second interval, i.e. about 16.666 milliseconds.
       optional number interval
-      # If set, a screenshot of the frame will be captured and returned in the response. Otherwise, no screenshot will be captured.
+      # If set, a screenshot of the frame will be captured and returned in the response. Otherwise,
+      # no screenshot will be captured.
       optional ScreenshotParams screenshot
     returns
-      # Whether the BeginFrame resulted in damage and, thus, a new frame was committed to the display.
+      # Whether the BeginFrame resulted in damage and, thus, a new frame was committed to the
+      # display.
       boolean hasDamage
       # Whether the main frame submitted a new display frame in response to this BeginFrame.
       boolean mainFrameContentUpdated
@@ -3960,7 +4140,8 @@ experimental domain HeadlessExperimental
       # True if BeginFrames are needed, false otherwise.
       boolean needsBeginFrames
 
-  # Issued when the main frame has first submitted a frame to the browser. May only be fired while a BeginFrame is in flight. Before this event, screenshotting requests may fail.
+  # Issued when the main frame has first submitted a frame to the browser. May only be fired while a
+  # BeginFrame is in flight. Before this event, screenshotting requests may fail.
   event mainFrameReadyForScreenshots
 
 experimental domain ServiceWorker
@@ -3998,7 +4179,8 @@ experimental domain ServiceWorker
       ServiceWorkerVersionStatus status
       # The Last-Modified header value of the main script.
       optional number scriptLastModified
-      # The time at which the response headers of the main script were received from the server.  For cached script it is the last time the cache entry was validated.
+      # The time at which the response headers of the main script were received from the server. 
+      # For cached script it is the last time the cache entry was validated.
       optional number scriptResponseTime
       optional array of Target.TargetID controlledClients
       optional Target.TargetID targetId
@@ -4078,7 +4260,8 @@ domain Input
     properties
       # X coordinate of the event relative to the main frame's viewport in CSS pixels.
       number x
-      # Y coordinate of the event relative to the main frame's viewport in CSS pixels. 0 refers to the top of the viewport and Y increases as it proceeds towards the bottom of the viewport.
+      # Y coordinate of the event relative to the main frame's viewport in CSS pixels. 0 refers to
+      # the top of the viewport and Y increases as it proceeds towards the bottom of the viewport.
       number y
       # X radius of the touch area (default: 1.0).
       optional number radiusX
@@ -4111,19 +4294,23 @@ domain Input
     parameters
       # Type of the key event.
       string type
-      # Bit field representing pressed modifier keys. Alt=1, Ctrl=2, Meta/Command=4, Shift=8 (default: 0).
+      # Bit field representing pressed modifier keys. Alt=1, Ctrl=2, Meta/Command=4, Shift=8
+      # (default: 0).
       optional integer modifiers
       # Time at which the event occurred.
       optional TimeSinceEpoch timestamp
-      # Text as generated by processing a virtual key code with a keyboard layout. Not needed for for <code>keyUp</code> and <code>rawKeyDown</code> events (default: "")
+      # Text as generated by processing a virtual key code with a keyboard layout. Not needed for
+      # for `keyUp` and `rawKeyDown` events (default: "")
       optional string text
-      # Text that would have been generated by the keyboard if no modifiers were pressed (except for shift). Useful for shortcut (accelerator) key handling (default: "").
+      # Text that would have been generated by the keyboard if no modifiers were pressed (except for
+      # shift). Useful for shortcut (accelerator) key handling (default: "").
       optional string unmodifiedText
       # Unique key identifier (e.g., 'U+0041') (default: "").
       optional string keyIdentifier
       # Unique DOM defined string value for each physical key (e.g., 'KeyA') (default: "").
       optional string code
-      # Unique DOM defined string value describing the meaning of the key in the context of active modifiers, keyboard layout, etc (e.g., 'AltGr') (default: "").
+      # Unique DOM defined string value describing the meaning of the key in the context of active
+      # modifiers, keyboard layout, etc (e.g., 'AltGr') (default: "").
       optional string key
       # Windows virtual key code (default: 0).
       optional integer windowsVirtualKeyCode
@@ -4135,7 +4322,8 @@ domain Input
       optional boolean isKeypad
       # Whether the event was a system key event (default: false).
       optional boolean isSystemKey
-      # Whether the event was from the left or right side of the keyboard. 1=Left, 2=Right (default: 0).
+      # Whether the event was from the left or right side of the keyboard. 1=Left, 2=Right (default:
+      # 0).
       optional integer location
 
   # Dispatches a mouse event to the page.
@@ -4145,9 +4333,11 @@ domain Input
       string type
       # X coordinate of the event relative to the main frame's viewport in CSS pixels.
       number x
-      # Y coordinate of the event relative to the main frame's viewport in CSS pixels. 0 refers to the top of the viewport and Y increases as it proceeds towards the bottom of the viewport.
+      # Y coordinate of the event relative to the main frame's viewport in CSS pixels. 0 refers to
+      # the top of the viewport and Y increases as it proceeds towards the bottom of the viewport.
       number y
-      # Bit field representing pressed modifier keys. Alt=1, Ctrl=2, Meta/Command=4, Shift=8 (default: 0).
+      # Bit field representing pressed modifier keys. Alt=1, Ctrl=2, Meta/Command=4, Shift=8
+      # (default: 0).
       optional integer modifiers
       # Time at which the event occurred.
       optional TimeSinceEpoch timestamp
@@ -4163,11 +4353,15 @@ domain Input
   # Dispatches a touch event to the page.
   command dispatchTouchEvent
     parameters
-      # Type of the touch event. TouchEnd and TouchCancel must not contain any touch points, while TouchStart and TouchMove must contains at least one.
+      # Type of the touch event. TouchEnd and TouchCancel must not contain any touch points, while
+      # TouchStart and TouchMove must contains at least one.
       string type
-      # Active touch points on the touch device. One event per any changed point (compared to previous touch event in a sequence) is generated, emulating pressing/moving/releasing points one by one.
+      # Active touch points on the touch device. One event per any changed point (compared to
+      # previous touch event in a sequence) is generated, emulating pressing/moving/releasing points
+      # one by one.
       array of TouchPoint touchPoints
-      # Bit field representing pressed modifier keys. Alt=1, Ctrl=2, Meta/Command=4, Shift=8 (default: 0).
+      # Bit field representing pressed modifier keys. Alt=1, Ctrl=2, Meta/Command=4, Shift=8
+      # (default: 0).
       optional integer modifiers
       # Time at which the event occurred.
       optional TimeSinceEpoch timestamp
@@ -4189,7 +4383,8 @@ domain Input
       optional number deltaX
       # Y delta in DIP for mouse wheel event (default: 0).
       optional number deltaY
-      # Bit field representing pressed modifier keys. Alt=1, Ctrl=2, Meta/Command=4, Shift=8 (default: 0).
+      # Bit field representing pressed modifier keys. Alt=1, Ctrl=2, Meta/Command=4, Shift=8
+      # (default: 0).
       optional integer modifiers
       # Number of times the mouse button was clicked (default: 0).
       optional integer clickCount
@@ -4205,7 +4400,8 @@ domain Input
       number scaleFactor
       # Relative pointer speed in pixels per second (default: 800).
       optional integer relativeSpeed
-      # Which type of input events to be generated (default: 'default', which queries the platform for the preferred input type).
+      # Which type of input events to be generated (default: 'default', which queries the platform
+      # for the preferred input type).
       optional GestureSourceType gestureSourceType
 
   # Synthesizes a scroll gesture over a time period by issuing appropriate touch events.
@@ -4219,15 +4415,18 @@ domain Input
       optional number xDistance
       # The distance to scroll along the Y axis (positive to scroll up).
       optional number yDistance
-      # The number of additional pixels to scroll back along the X axis, in addition to the given distance.
+      # The number of additional pixels to scroll back along the X axis, in addition to the given
+      # distance.
       optional number xOverscroll
-      # The number of additional pixels to scroll back along the Y axis, in addition to the given distance.
+      # The number of additional pixels to scroll back along the Y axis, in addition to the given
+      # distance.
       optional number yOverscroll
       # Prevent fling (default: true).
       optional boolean preventFling
       # Swipe speed in pixels per second (default: 800).
       optional integer speed
-      # Which type of input events to be generated (default: 'default', which queries the platform for the preferred input type).
+      # Which type of input events to be generated (default: 'default', which queries the platform
+      # for the preferred input type).
       optional GestureSourceType gestureSourceType
       # The number of times to repeat the gesture (default: 0).
       optional integer repeatCount
@@ -4247,7 +4446,8 @@ domain Input
       optional integer duration
       # Number of times to perform the tap (e.g. 2 for double tap, default: 1).
       optional integer tapCount
-      # Which type of input events to be generated (default: 'default', which queries the platform for the preferred input type).
+      # Which type of input events to be generated (default: 'default', which queries the platform
+      # for the preferred input type).
       optional GestureSourceType gestureSourceType
 
 experimental domain LayerTree
@@ -4315,7 +4515,8 @@ experimental domain LayerTree
       optional number anchorZ
       # Indicates how many time this layer has painted.
       integer paintCount
-      # Indicates whether this layer hosts any content, rather than being used for transform/scrolling purposes only.
+      # Indicates whether this layer hosts any content, rather than being used for
+      # transform/scrolling purposes only.
       boolean drawsContent
       # Set if layer is not visible.
       optional boolean invisible
@@ -4464,7 +4665,8 @@ experimental domain Tracing
       optional string options
       # If set, the agent will issue bufferUsage events at this interval, specified in milliseconds
       optional number bufferUsageReportingInterval
-      # Whether to report trace events as series of dataCollected events or to save trace to a stream (defaults to <code>ReportEvents</code>).
+      # Whether to report trace events as series of dataCollected events or to save trace to a
+      # stream (defaults to `ReportEvents`).
       optional string transferMode
       optional TraceConfig traceConfig
 
@@ -4491,12 +4693,14 @@ experimental domain Tracing
       # The ID of this clock sync marker
       string syncId
 
-  # Contains an bucket of collected trace events. When tracing is stopped collected events will be send as a sequence of dataCollected events followed by tracingComplete event.
+  # Contains an bucket of collected trace events. When tracing is stopped collected events will be
+  # send as a sequence of dataCollected events followed by tracingComplete event.
   event dataCollected
     parameters
       array of object value
 
-  # Signals that tracing is stopped and there is no trace buffers pending flush, all data were delivered via dataCollected events.
+  # Signals that tracing is stopped and there is no trace buffers pending flush, all data were
+  # delivered via dataCollected events.
   event tracingComplete
     parameters
       # A handle of the stream that holds resulting trace data.
@@ -4504,11 +4708,13 @@ experimental domain Tracing
 
   event bufferUsage
     parameters
-      # A number in range [0..1] that indicates the used size of event buffer as a fraction of its total size.
+      # A number in range [0..1] that indicates the used size of event buffer as a fraction of its
+      # total size.
       optional number percentFull
       # An approximate number of events in the trace log.
       optional number eventCount
-      # A number in range [0..1] that indicates the used size of event buffer as a fraction of its total size.
+      # A number in range [0..1] that indicates the used size of event buffer as a fraction of its
+      # total size.
       optional number value
 
 experimental domain Animation
@@ -4516,49 +4722,50 @@ experimental domain Animation
   # Animation instance.
   type Animation extends object
     properties
-      # <code>Animation</code>'s id.
+      # `Animation`'s id.
       string id
-      # <code>Animation</code>'s name.
+      # `Animation`'s name.
       string name
-      # <code>Animation</code>'s internal paused state.
+      # `Animation`'s internal paused state.
       boolean pausedState
-      # <code>Animation</code>'s play state.
+      # `Animation`'s play state.
       string playState
-      # <code>Animation</code>'s playback rate.
+      # `Animation`'s playback rate.
       number playbackRate
-      # <code>Animation</code>'s start time.
+      # `Animation`'s start time.
       number startTime
-      # <code>Animation</code>'s current time.
+      # `Animation`'s current time.
       number currentTime
-      # Animation type of <code>Animation</code>.
+      # Animation type of `Animation`.
       string type
-      # <code>Animation</code>'s source animation node.
+      # `Animation`'s source animation node.
       optional AnimationEffect source
-      # A unique ID for <code>Animation</code> representing the sources that triggered this CSS animation/transition.
+      # A unique ID for `Animation` representing the sources that triggered this CSS
+      # animation/transition.
       optional string cssId
 
   # AnimationEffect instance
   type AnimationEffect extends object
     properties
-      # <code>AnimationEffect</code>'s delay.
+      # `AnimationEffect`'s delay.
       number delay
-      # <code>AnimationEffect</code>'s end delay.
+      # `AnimationEffect`'s end delay.
       number endDelay
-      # <code>AnimationEffect</code>'s iteration start.
+      # `AnimationEffect`'s iteration start.
       number iterationStart
-      # <code>AnimationEffect</code>'s iterations.
+      # `AnimationEffect`'s iterations.
       number iterations
-      # <code>AnimationEffect</code>'s iteration duration.
+      # `AnimationEffect`'s iteration duration.
       number duration
-      # <code>AnimationEffect</code>'s playback direction.
+      # `AnimationEffect`'s playback direction.
       string direction
-      # <code>AnimationEffect</code>'s fill mode.
+      # `AnimationEffect`'s fill mode.
       string fill
-      # <code>AnimationEffect</code>'s target node.
+      # `AnimationEffect`'s target node.
       optional DOM.BackendNodeId backendNodeId
-      # <code>AnimationEffect</code>'s keyframes.
+      # `AnimationEffect`'s keyframes.
       optional KeyframesRule keyframesRule
-      # <code>AnimationEffect</code>'s timing function.
+      # `AnimationEffect`'s timing function.
       string easing
 
   # Keyframes Rule
@@ -4574,7 +4781,7 @@ experimental domain Animation
     properties
       # Keyframe's time offset.
       string offset
-      # <code>AnimationEffect</code>'s timing function.
+      # `AnimationEffect`'s timing function.
       string easing
 
   # Enables animation domain notifications.
@@ -4761,7 +4968,11 @@ experimental domain Accessibility
       # The sources which contributed to the computation of this property.
       optional array of AXValueSource sources
 
-  # Values of AXProperty name: from 'busy' to 'roledescription' - states which apply to every AX node, from 'live' to 'root' - attributes which apply to nodes in live regions, from 'autocomplete' to 'valuetext' - attributes which apply to widgets, from 'checked' to 'selected' - states which apply to widgets, from 'activedescendant' to 'owns' - relationships between elements other than parent/child/sibling.
+  # Values of AXProperty name: from 'busy' to 'roledescription' - states which apply to every AX
+  # node, from 'live' to 'root' - attributes which apply to nodes in live regions, from
+  # 'autocomplete' to 'valuetext' - attributes which apply to widgets, from 'checked' to 'selected'
+  # - states which apply to widgets, from 'activedescendant' to 'owns' - relationships between
+  # elements other than parent/child/sibling.
   type AXPropertyName extends string
     enum
       busy
@@ -4809,13 +5020,13 @@ experimental domain Accessibility
       boolean ignored
       # Collection of reasons why this node is hidden.
       optional array of AXProperty ignoredReasons
-      # This <code>Node</code>'s role, whether explicit or implicit.
+      # This `Node`'s role, whether explicit or implicit.
       optional AXValue role
-      # The accessible name for this <code>Node</code>.
+      # The accessible name for this `Node`.
       optional AXValue name
-      # The accessible description for this <code>Node</code>.
+      # The accessible description for this `Node`.
       optional AXValue description
-      # The value for this <code>Node</code>.
+      # The value for this `Node`.
       optional AXValue value
       # All other properties
       optional array of AXProperty properties
@@ -4832,7 +5043,8 @@ experimental domain Accessibility
       # Whether to fetch this nodes ancestors, siblings and children. Defaults to true.
       optional boolean fetchRelatives
     returns
-      # The <code>Accessibility.AXNode</code> for this DOM node, if it exists, plus its ancestors, siblings and children, if requested.
+      # The `Accessibility.AXNode` for this DOM node, if it exists, plus its ancestors, siblings and
+      # children, if requested.
       array of AXNode nodes
 
 experimental domain Storage
@@ -4970,7 +5182,8 @@ domain Log
       # Time threshold to trigger upon.
       number threshold
 
-  # Enables log domain, sends the entries collected so far to the client by means of the <code>entryAdded</code> notification.
+  # Enables log domain, sends the entries collected so far to the client by means of the
+  # `entryAdded` notification.
   command enable
 
   # Disables log domain, prevents further log entries from being reported to the client.
@@ -5026,11 +5239,14 @@ experimental domain SystemInfo
     returns
       # Information about the GPUs on the system.
       GPUInfo gpu
-      # A platform-dependent description of the model of the machine. On Mac OS, this is, for example, 'MacBookPro'. Will be the empty string if not supported.
+      # A platform-dependent description of the model of the machine. On Mac OS, this is, for
+      # example, 'MacBookPro'. Will be the empty string if not supported.
       string modelName
-      # A platform-dependent description of the version of the machine. On Mac OS, this is, for example, '10.1'. Will be the empty string if not supported.
+      # A platform-dependent description of the version of the machine. On Mac OS, this is, for
+      # example, '10.1'. Will be the empty string if not supported.
       string modelVersion
-      # The command line string used to launch the browser. Will be the empty string if not supported.
+      # The command line string used to launch the browser. Will be the empty string if not
+      # supported.
       string commandLine
 
 # The Tethering domain defines methods and events for browser port binding.
@@ -5094,7 +5310,8 @@ domain Browser
     returns
       # Browser window id.
       WindowID windowId
-      # Bounds information of the window. When window state is 'minimized', the restored window position and size are returned.
+      # Bounds information of the window. When window state is 'minimized', the restored window
+      # position and size are returned.
       Bounds bounds
 
   # Returns version information.
@@ -5116,7 +5333,8 @@ domain Browser
     parameters
       # Browser window id.
       WindowID windowId
-      # New window bounds. The 'minimized', 'maximized' and 'fullscreen' states cannot be combined with 'left', 'top', 'width' or 'height'. Leaves unspecified fields unchanged.
+      # New window bounds. The 'minimized', 'maximized' and 'fullscreen' states cannot be combined
+      # with 'left', 'top', 'width' or 'height'. Leaves unspecified fields unchanged.
       Bounds bounds
 
   # Get position and size of the browser window.
@@ -5125,5 +5343,6 @@ domain Browser
       # Browser window id.
       WindowID windowId
     returns
-      # Bounds information of the window. When window state is 'minimized', the restored window position and size are returned.
+      # Bounds information of the window. When window state is 'minimized', the restored window
+      # position and size are returned.
       Bounds bounds
