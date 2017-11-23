@@ -24,7 +24,7 @@ contexts:
     # strings in YAML. When using single quoted strings, only single quotes
     # need to be escaped: this is done by using two single quotes next to each
     # other.
-    - match: '\b(domain|type|command|event|parameters|returns|optional|experimental|enum|extends|properties)\b'
+    - match: '\b(domain|type|command|event|parameters|returns|optional|experimental|enum|extends|properties|deprecated)\b'
       scope: keyword.control.example-c
     - match: '\b(string|number|integer|boolean|array of)\b'
       scope: constant.numeric.example-c

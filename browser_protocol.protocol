@@ -1,7 +1,4 @@
-# This is a file
 
-
-# This is the domain DOC
 experimental domain Inspector
 
   # Enables inspector domain notifications.
@@ -279,6 +276,7 @@ domain Page
 
   # Deprecated, please use addScriptToEvaluateOnNewDocument instead.
   experimental command addScriptToEvaluateOnLoad
+    deprecated
     parameters
       string scriptSource
     returns
@@ -287,6 +285,7 @@ domain Page
 
   # Deprecated, please use removeScriptToEvaluateOnNewDocument instead.
   experimental command removeScriptToEvaluateOnLoad
+    deprecated
     parameters
       ScriptIdentifier identifier
 
@@ -365,12 +364,16 @@ domain Page
 
   # Returns all browser cookies. Depending on the backend support, will return detailed cookie information in the <code>cookies</code> field.
   experimental command getCookies
+    # Use 'Network.getCookies' instead
+    deprecated
     returns
       # Array of cookie objects.
       array of Network.Cookie cookies
 
   # Deletes browser cookie with given name, domain and path.
   experimental command deleteCookie
+    # Use 'Network.deleteCookie' instead
+    deprecated
     parameters
       # Name of the cookie to remove.
       string cookieName
@@ -429,6 +432,8 @@ domain Page
 
   # Overrides the values of device screen dimensions (window.screen.width, window.screen.height, window.innerWidth, window.innerHeight, and "device-width"/"device-height"-related CSS media query results).
   experimental command setDeviceMetricsOverride
+    # Use 'Emulation.setDeviceMetricsOverride' instead
+    deprecated
     parameters
       # Overriding width value in pixels (minimum 0, maximum 10000000). 0 disables the override.
       integer width
@@ -457,9 +462,13 @@ domain Page
 
   # Clears the overriden device metrics.
   experimental command clearDeviceMetricsOverride
+    # Use 'Emulation.clearDeviceMetricsOverride' instead
+    deprecated
 
   # Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position unavailable.
   command setGeolocationOverride
+    # Use 'Emulation.setGeolocationOverride' instead
+    deprecated
     parameters
       # Mock latitude
       optional number latitude
@@ -470,9 +479,13 @@ domain Page
 
   # Clears the overriden Geolocation Position and Error.
   command clearGeolocationOverride
+    # Use 'Emulation.clearGeolocationOverride' instead
+    deprecated
 
   # Overrides the Device Orientation.
   experimental command setDeviceOrientationOverride
+    # Use 'DeviceOrientation.setDeviceOrientationOverride' instead
+    deprecated
     parameters
       # Mock alpha
       number alpha
@@ -483,9 +496,13 @@ domain Page
 
   # Clears the overridden Device Orientation.
   experimental command clearDeviceOrientationOverride
+    # Use 'DeviceOrientation.clearDeviceOrientationOverride' instead
+    deprecated
 
   # Toggles mouse event-based touch event emulation.
   experimental command setTouchEmulationEnabled
+    # Use 'Emulation.setTouchEmulationEnabled' instead
+    deprecated
     parameters
       # Whether the touch event emulation should be enabled.
       boolean enabled
@@ -968,6 +985,7 @@ domain Emulation
 
   # Resizes the frame/viewport of the page. Note that this does not affect the frame's container (e.g. browser window). Can be used to produce screenshots of the specified size. Not supported on Android.
   experimental command setVisibleSize
+    deprecated
     parameters
       # Frame width (DIP).
       integer width
@@ -1615,6 +1633,7 @@ domain Network
 
   # Tells whether clearing browser cache is supported.
   command canClearBrowserCache
+    deprecated
     returns
       # True if browser cache can be cleared.
       boolean result
@@ -1624,6 +1643,7 @@ domain Network
 
   # Tells whether clearing browser cookies is supported.
   command canClearBrowserCookies
+    deprecated
     returns
       # True if browser cookies can be cleared.
       boolean result
@@ -1691,6 +1711,7 @@ domain Network
 
   # Tells whether emulation of network conditions is supported.
   command canEmulateNetworkConditions
+    deprecated
     returns
       # True if emulation of network conditions is supported.
       boolean result
@@ -2750,12 +2771,15 @@ domain DOM
 
   # Highlights given rectangle.
   command highlightRect
+    # Use 'Overlay.highlightRect' instead
 
   # Highlights DOM node.
   command highlightNode
+    # Use 'Overlay.highlightNode' instead
 
   # Hides any highlight.
   command hideHighlight
+    # Use 'Overlay.hideHighlight' instead
 
   # Requests that the node is sent to the caller given its path. // FIXME, use XPath
   experimental command pushNodeByPathToFrontend

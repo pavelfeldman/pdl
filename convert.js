@@ -37,6 +37,10 @@ function printCommand(result, command) {
   if (command.description)
     result.push(`  # ${command.description}`);
   result.push(`  ${command.experimental ? 'experimental ' : ''}command ${command.name}`);
+  if (command.redirect)
+    result.push(`    # Use '${command.redirect}.${command.name}' instead`);
+  if (command.deprecated)
+    result.push(`    deprecated`);
   if (command.parameters && command.parameters.length) {
     result.push(`    parameters`);
     command.parameters.forEach(param => printParam(result, param));
@@ -52,6 +56,8 @@ function printEvent(result, event) {
   if (event.description)
     result.push(`  # ${event.description}`);
   result.push(`  ${event.experimental ? 'experimental ' : ''}event ${event.name}`);
+  if (event.deprecated)
+    result.push(`    deprecated`);
   if (event.parameters && event.parameters.length) {
     result.push(`    parameters`);
     event.parameters.forEach(param => printParam(result, param));
