@@ -20,7 +20,7 @@ function convert(name) {
       (domain.events || []).forEach(event => printEvent(result, event));
     }
     result.push('');
-    fs.writeFile(name + '_protocol.protocol', result.join('\n'), () => {});
+    fs.writeFile(name + '_protocol.pdl', result.join('\n'), () => {});
   });
 }
 
