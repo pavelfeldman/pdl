@@ -42,9 +42,31 @@ domain Runtime
   type RemoteObject extends object
     properties
       # Object type.
-      string type
+      enum type
+        object
+        function
+        undefined
+        string
+        number
+        boolean
+        symbol
       # Object subtype hint. Specified for `object` type values only.
-      optional string subtype
+      optional enum subtype
+        array
+        null
+        node
+        regexp
+        date
+        map
+        set
+        weakmap
+        weakset
+        iterator
+        generator
+        error
+        proxy
+        promise
+        typedarray
       # Object class (constructor) name. Specified for `object` type values only.
       optional string className
       # Remote object value in case of primitive values or JSON values (if it was requested).
@@ -72,9 +94,28 @@ domain Runtime
   experimental type ObjectPreview extends object
     properties
       # Object type.
-      string type
+      enum type
+        object
+        function
+        undefined
+        string
+        number
+        boolean
+        symbol
       # Object subtype hint. Specified for `object` type values only.
-      optional string subtype
+      optional enum subtype
+        array
+        null
+        node
+        regexp
+        date
+        map
+        set
+        weakmap
+        weakset
+        iterator
+        generator
+        error
       # String representation of the object.
       optional string description
       # True iff some of the properties or entries of the original object did not fit.
@@ -89,13 +130,33 @@ domain Runtime
       # Property name.
       string name
       # Object type. Accessor means that the property itself is an accessor property.
-      string type
+      enum type
+        object
+        function
+        undefined
+        string
+        number
+        boolean
+        symbol
+        accessor
       # User-friendly property value string.
       optional string value
       # Nested value preview.
       optional ObjectPreview valuePreview
       # Object subtype hint. Specified for `object` type values only.
-      optional string subtype
+      optional enum subtype
+        array
+        null
+        node
+        regexp
+        date
+        map
+        set
+        weakmap
+        weakset
+        iterator
+        generator
+        error
 
   experimental type EntryPreview extends object
     properties
@@ -449,7 +510,25 @@ domain Runtime
   event consoleAPICalled
     parameters
       # Type of the call.
-      string type
+      enum type
+        log
+        debug
+        info
+        error
+        warning
+        dir
+        dirxml
+        table
+        trace
+        clear
+        startGroup
+        startGroupCollapsed
+        endGroup
+        assert
+        profile
+        profileEnd
+        count
+        timeEnd
       # Call arguments.
       array of RemoteObject args
       # Identifier of the context where the call was made.
@@ -520,7 +599,16 @@ domain Debugger
   type Scope extends object
     properties
       # Scope type.
-      string type
+      enum type
+        global
+        local
+        with
+        closure
+        catch
+        block
+        script
+        eval
+        module
       # Object representing the scope. For `global` and `with` scopes it represents the actual
       # object; for the rest of the scopes, it is artificial transient object enumerating scope
       # variables as its properties.
@@ -547,7 +635,10 @@ domain Debugger
       integer lineNumber
       # Column number in the script (0-based).
       optional integer columnNumber
-      optional string type
+      optional enum type
+        debuggerStatement
+        call
+        return
 
   # Enables debugger for the given page. Clients should not assume that the debugging has been
   # enabled until the result for this command is received.
@@ -633,7 +724,9 @@ domain Debugger
     parameters
       # Location to continue to.
       Location location
-      experimental optional string targetCallFrames
+      experimental optional enum targetCallFrames
+        any
+        current
 
   experimental command pauseOnAsyncTask
     parameters
@@ -725,7 +818,10 @@ domain Debugger
   command setPauseOnExceptions
     parameters
       # Pause on exceptions mode.
-      string state
+      enum state
+        none
+        uncaught
+        all
 
   # Evaluates expression on a given call frame.
   command evaluateOnCallFrame
@@ -881,7 +977,17 @@ domain Debugger
       # Call stack the virtual machine stopped on.
       array of CallFrame callFrames
       # Pause reason.
-      string reason
+      enum reason
+        XHR
+        DOM
+        EventListener
+        exception
+        assert
+        debugCommand
+        promiseRejection
+        OOM
+        other
+        ambiguous
       # Object containing break-specific auxiliary properties.
       optional object data
       # Hit breakpoints IDs
@@ -901,9 +1007,25 @@ domain Console
   type ConsoleMessage extends object
     properties
       # Message source.
-      string source
+      enum source
+        xml
+        javascript
+        network
+        console-api
+        storage
+        appcache
+        rendering
+        security
+        other
+        deprecation
+        worker
       # Message severity.
-      string level
+      enum level
+        log
+        warning
+        error
+        debug
+        info
       # Message text.
       string text
       # URL of the message origin.

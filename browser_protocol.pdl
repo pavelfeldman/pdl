@@ -513,13 +513,17 @@ domain Page
       # Whether the touch event emulation should be enabled.
       boolean enabled
       # Touch/gesture events configuration. Default: current platform.
-      optional string configuration
+      optional enum configuration
+        mobile
+        desktop
 
   # Capture page screenshot.
   command captureScreenshot
     parameters
       # Image compression format (defaults to png).
-      optional string format
+      optional enum format
+        jpeg
+        png
       # Compression quality from range [0..100] (jpeg only).
       optional integer quality
       # Capture the screenshot of a given region only.
@@ -567,7 +571,9 @@ domain Page
   experimental command startScreencast
     parameters
       # Image compression format.
-      optional string format
+      optional enum format
+        jpeg
+        png
       # Compression quality from range [0..100].
       optional integer quality
       # Maximum screenshot width.
@@ -637,7 +643,10 @@ domain Page
     parameters
       # Whether to allow all or deny all download requests, or use default Chrome behavior if
       # available (otherwise deny).
-      string behavior
+      enum behavior
+        deny
+        allow
+        default
       # The default path to save downloaded files to. This is requred if behavior is set to 'allow'
       optional string downloadPath
 
@@ -702,7 +711,14 @@ domain Page
       # guaranteed to start.
       number delay
       # The reason for the navigation.
-      string reason
+      enum reason
+        formSubmissionGet
+        formSubmissionPost
+        httpHeaderRefresh
+        scriptInitiated
+        metaTagRefresh
+        pageBlockInterstitial
+        reload
       # The destination URL for the scheduled navigation.
       string url
 
@@ -951,7 +967,11 @@ domain Emulation
   type ScreenOrientation extends object
     properties
       # Orientation type.
-      string type
+      enum type
+        portraitPrimary
+        portraitSecondary
+        landscapePrimary
+        landscapeSecondary
       # Orientation angle.
       integer angle
 
@@ -1053,7 +1073,9 @@ domain Emulation
       # Whether touch emulation based on mouse input should be enabled.
       boolean enabled
       # Touch/gesture events configuration. Default: current platform.
-      optional string configuration
+      optional enum configuration
+        mobile
+        desktop
 
   # Emulates the given media for CSS media queries.
   command setEmulatedMedia
@@ -1241,7 +1263,10 @@ experimental domain Audits
       # Identifier of the network request to get content for.
       Network.RequestId requestId
       # The encoding to use.
-      string encoding
+      enum encoding
+        webp
+        jpeg
+        png
       # The quality of the encoding (0-1). (defaults to 1)
       optional number quality
       # Whether to only return the size information (defaults to false).
@@ -1374,7 +1399,15 @@ domain Network
       # Priority of the resource request at the time request is sent.
       ResourcePriority initialPriority
       # The referrer policy of the request, as defined in https://www.w3.org/TR/referrer-policy/
-      string referrerPolicy
+      enum referrerPolicy
+        unsafe-url
+        no-referrer-when-downgrade
+        no-referrer
+        origin
+        origin-when-cross-origin
+        same-origin
+        strict-origin
+        strict-origin-when-cross-origin
       # Whether is loaded via link preload.
       optional boolean isLinkPreload
 
@@ -1526,7 +1559,11 @@ domain Network
   type Initiator extends object
     properties
       # Type of this initiator.
-      string type
+      enum type
+        parser
+        script
+        preload
+        other
       # Initiator JavaScript stack trace, set for Script only.
       optional Runtime.StackTrace stack
       # Initiator URL, set for Parser type or for Script type (when script is importing module).
@@ -1586,7 +1623,9 @@ domain Network
   experimental type AuthChallenge extends object
     properties
       # Source of the authentication challenge.
-      optional string source
+      optional enum source
+        Server
+        Proxy
       # Origin of the challenger.
       string origin
       # The authentication scheme used, such as basic or digest
@@ -1600,7 +1639,10 @@ domain Network
       # The decision on what to do in response to the authorization challenge.  Default means
       # deferring to the default behavior of the net stack, which will likely either the Cancel
       # authentication or display a popup dialog box.
-      string response
+      enum response
+        Default
+        CancelAuth
+        ProvideCredentials
       # The username to provide, possibly empty. Should only be set if response is
       # ProvideCredentials.
       optional string username
@@ -2164,7 +2206,11 @@ experimental domain IndexedDB
   type Key extends object
     properties
       # Key type.
-      string type
+      enum type
+        number
+        string
+        date
+        array
       # Number value.
       optional number number
       # String value.
@@ -2200,7 +2246,10 @@ experimental domain IndexedDB
   type KeyPath extends object
     properties
       # Key path type.
-      string type
+      enum type
+        null
+        string
+        array
       # String value.
       optional string string
       # Array value.
@@ -3352,7 +3401,11 @@ experimental domain CSS
       # specified by an @import rule, "linkedSheet" if specified by a "media" attribute in a linked
       # stylesheet's LINK tag, "inlineSheet" if specified by a "media" attribute in an inline
       # stylesheet's STYLE tag.
-      string source
+      enum source
+        mediaRule
+        importRule
+        linkedSheet
+        inlineSheet
       # URL of the document containing the media query description.
       optional string sourceURL
       # The associated rule (@media or @import) header range in the enclosing stylesheet (if
@@ -4098,7 +4151,9 @@ experimental domain HeadlessExperimental
   type ScreenshotParams extends object
     properties
       # Image compression format (defaults to png).
-      optional string format
+      optional enum format
+        jpeg
+        png
       # Compression quality from range [0..100] (jpeg only).
       optional integer quality
 
@@ -4293,7 +4348,11 @@ domain Input
   command dispatchKeyEvent
     parameters
       # Type of the key event.
-      string type
+      enum type
+        keyDown
+        keyUp
+        rawKeyDown
+        char
       # Bit field representing pressed modifier keys. Alt=1, Ctrl=2, Meta/Command=4, Shift=8
       # (default: 0).
       optional integer modifiers
@@ -4330,7 +4389,11 @@ domain Input
   command dispatchMouseEvent
     parameters
       # Type of the mouse event.
-      string type
+      enum type
+        mousePressed
+        mouseReleased
+        mouseMoved
+        mouseWheel
       # X coordinate of the event relative to the main frame's viewport in CSS pixels.
       number x
       # Y coordinate of the event relative to the main frame's viewport in CSS pixels. 0 refers to
@@ -4342,7 +4405,11 @@ domain Input
       # Time at which the event occurred.
       optional TimeSinceEpoch timestamp
       # Mouse button (default: "none").
-      optional string button
+      optional enum button
+        none
+        left
+        middle
+        right
       # Number of times the mouse button was clicked (default: 0).
       optional integer clickCount
       # X delta in CSS pixels for mouse wheel event (default: 0).
@@ -4355,7 +4422,11 @@ domain Input
     parameters
       # Type of the touch event. TouchEnd and TouchCancel must not contain any touch points, while
       # TouchStart and TouchMove must contains at least one.
-      string type
+      enum type
+        touchStart
+        touchEnd
+        touchMove
+        touchCancel
       # Active touch points on the touch device. One event per any changed point (compared to
       # previous touch event in a sequence) is generated, emulating pressing/moving/releasing points
       # one by one.
@@ -4370,7 +4441,11 @@ domain Input
   experimental command emulateTouchFromMouseEvent
     parameters
       # Type of the mouse event.
-      string type
+      enum type
+        mousePressed
+        mouseReleased
+        mouseMoved
+        mouseWheel
       # X coordinate of the mouse pointer in DIP.
       integer x
       # Y coordinate of the mouse pointer in DIP.
@@ -4378,7 +4453,11 @@ domain Input
       # Time at which the event occurred.
       TimeSinceEpoch timestamp
       # Mouse button.
-      string button
+      enum button
+        none
+        left
+        middle
+        right
       # X delta in DIP for mouse wheel event (default: 0).
       optional number deltaX
       # Y delta in DIP for mouse wheel event (default: 0).
@@ -4464,7 +4543,10 @@ experimental domain LayerTree
       # Rectangle itself.
       DOM.Rect rect
       # Reason for rectangle to force scrolling on the main thread
-      string type
+      enum type
+        RepaintsOnScroll
+        TouchEventHandler
+        WheelEventHandler
 
   # Sticky position constraints.
   type StickyPositionConstraint extends object
@@ -4640,7 +4722,11 @@ experimental domain Tracing
   type TraceConfig extends object
     properties
       # Controls how the trace buffer stores data.
-      optional string recordMode
+      optional enum recordMode
+        recordUntilFull
+        recordContinuously
+        recordAsMuchAsPossible
+        echoToConsole
       # Turns on JavaScript stack sampling.
       optional boolean enableSampling
       # Turns on system tracing.
@@ -4667,7 +4753,9 @@ experimental domain Tracing
       optional number bufferUsageReportingInterval
       # Whether to report trace events as series of dataCollected events or to save trace to a
       # stream (defaults to `ReportEvents`).
-      optional string transferMode
+      optional enum transferMode
+        ReportEvents
+        ReturnAsStream
       optional TraceConfig traceConfig
 
   # Stop trace events collection.
@@ -4737,7 +4825,10 @@ experimental domain Animation
       # `Animation`'s current time.
       number currentTime
       # Animation type of `Animation`.
-      string type
+      enum type
+        CSSTransition
+        CSSAnimation
+        WebAnimation
       # `Animation`'s source animation node.
       optional AnimationEffect source
       # A unique ID for `Animation` representing the sources that triggered this CSS
@@ -5154,9 +5245,26 @@ domain Log
   type LogEntry extends object
     properties
       # Log entry source.
-      string source
+      enum source
+        xml
+        javascript
+        network
+        storage
+        appcache
+        rendering
+        security
+        deprecation
+        worker
+        violation
+        intervention
+        recommendation
+        other
       # Log entry severity.
-      string level
+      enum level
+        verbose
+        info
+        warning
+        error
       # Logged text.
       string text
       # Timestamp when this entry was added.
@@ -5178,7 +5286,14 @@ domain Log
   type ViolationSetting extends object
     properties
       # Violation type.
-      string name
+      enum name
+        longTask
+        longLayout
+        blockedEvent
+        blockedParser
+        discouragedAPIUse
+        handler
+        recurringHandler
       # Time threshold to trigger upon.
       number threshold
 

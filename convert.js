@@ -71,9 +71,15 @@ function printEvent(result, event) {
 function printParam(result, param) {
   printDescription(result, param.description, `      `);
   let type = param['$ref'] || param.type;
+  if (type === 'string' && param.enum)
+    type = 'enum';
   if (param.type === 'array')
     type = `array of ${param.items['$ref'] || param.items.type}`;
   result.push(`      ${param.experimental ? 'experimental ' : ''}${param.optional ? 'optional ' : ''}${type} ${param.name}`);
+  if (type === 'enum') {
+    for (let literal of param.enum)
+      result.push(`        ${literal}`);
+  }
 }
 
 function printEnumLiteral(result, literal) {
