@@ -1,6 +1,6 @@
 # Protocol definition generated from js_protocol.json
 
-# Provides information about the protocol schema.
+# This domain is deprecated.
 domain Schema
 
   # Description of the protocol domain.
@@ -278,8 +278,18 @@ domain Runtime
       array of CallFrame callFrames
       # Asynchronous JavaScript stack trace that preceded this stack, if available.
       optional StackTrace parent
+      # Asynchronous JavaScript stack trace that preceded this stack, if available.
+      experimental optional StackTraceId parentId
 
-  experimental type AsyncTaskId extends string
+  # Unique identifier of current debugger.
+  experimental type UniqueDebuggerId extends string
+
+  # If `debuggerId` is set stack trace comes from another debugger and can be resolved there. This
+  # allows to track cross-debugger calls. See `Runtime.StackTrace` and `Debugger.paused` for usages.
+  experimental type StackTraceId extends object
+    properties
+      string id
+      optional UniqueDebuggerId debuggerId
 
   # Evaluates expression on global object.
   command evaluate
@@ -301,7 +311,7 @@ domain Runtime
       # Whether preview should be generated for the result.
       experimental optional boolean generatePreview
       # Whether execution should be treated as initiated by user in the UI.
-      experimental optional boolean userGesture
+      optional boolean userGesture
       # Whether execution should `await` for resulting value and return once awaited promise is
       # resolved.
       optional boolean awaitPromise
@@ -346,7 +356,7 @@ domain Runtime
       # Whether preview should be generated for the result.
       experimental optional boolean generatePreview
       # Whether execution should be treated as initiated by user in the UI.
-      experimental optional boolean userGesture
+      optional boolean userGesture
       # Whether execution should `await` for resulting value and return once awaited promise is
       # resolved.
       optional boolean awaitPromise
@@ -460,7 +470,7 @@ domain Runtime
       # Exception details.
       optional ExceptionDetails exceptionDetails
 
-  experimental command queryObjects
+  command queryObjects
     parameters
       # Identifier of the prototype to return objects for.
       RemoteObjectId prototypeObjectId
@@ -469,7 +479,7 @@ domain Runtime
       RemoteObject objects
 
   # Returns all let, const and class variables from global scope.
-  experimental command globalLexicalScopeNames
+  command globalLexicalScopeNames
     parameters
       # Specifies in which execution context to lookup global scope variables.
       optional ExecutionContextId executionContextId
@@ -583,7 +593,7 @@ domain Debugger
       # Name of the JavaScript function called on this call frame.
       string functionName
       # Location in the source code.
-      experimental optional Location functionLocation
+      optional Location functionLocation
       # Location in the source code.
       Location location
       # JavaScript script name or url.
@@ -620,14 +630,14 @@ domain Debugger
       optional Location endLocation
 
   # Search match for resource.
-  experimental type SearchMatch extends object
+  type SearchMatch extends object
     properties
       # Line number in resource content.
       number lineNumber
       # Line with match content.
       string lineContent
 
-  experimental type BreakLocation extends object
+  type BreakLocation extends object
     properties
       # Script identifier as reported in the `Debugger.scriptParsed`.
       Runtime.ScriptId scriptId
@@ -643,6 +653,9 @@ domain Debugger
   # Enables debugger for the given page. Clients should not assume that the debugging has been
   # enabled until the result for this command is received.
   command enable
+    returns
+      # Unique identifier of the debugger.
+      experimental Runtime.UniqueDebuggerId debuggerId
 
   # Disables debugger for given page.
   command disable
@@ -673,7 +686,7 @@ domain Debugger
       # `urlRegex` must be specified.
       optional string urlRegex
       # Script hash of the resources to set breakpoint on.
-      experimental optional string scriptHash
+      optional string scriptHash
       # Offset in the line to set breakpoint at.
       optional integer columnNumber
       # Expression to use as a breakpoint condition. When specified, debugger will only stop on the
@@ -706,7 +719,7 @@ domain Debugger
 
   # Returns possible locations for breakpoint. scriptId in start and end range locations should be
   # the same.
-  experimental command getPossibleBreakpoints
+  command getPossibleBreakpoints
     parameters
       # Start of range to search possible breakpoint locations in.
       Location start
@@ -724,14 +737,14 @@ domain Debugger
     parameters
       # Location to continue to.
       Location location
-      experimental optional enum targetCallFrames
+      optional enum targetCallFrames
         any
         current
 
-  experimental command pauseOnAsyncTask
+  experimental command pauseOnAsyncCall
     parameters
-      # Debugger will pause when given async task is started.
-      Runtime.AsyncTaskId asyncTaskId
+      # Debugger will pause when async call with given stack trace is started.
+      Runtime.StackTraceId parentStackTraceId
 
   # Steps over the statement.
   command stepOver
@@ -758,8 +771,15 @@ domain Debugger
   # Resumes JavaScript execution.
   command resume
 
+  # Returns stack trace with given `stackTraceId`.
+  experimental command getStackTrace
+    parameters
+      Runtime.StackTraceId stackTraceId
+    returns
+      Runtime.StackTrace stackTrace
+
   # Searches for given string in script content.
-  experimental command searchInContent
+  command searchInContent
     parameters
       # Id of the script to search in.
       Runtime.ScriptId scriptId
@@ -790,6 +810,8 @@ domain Debugger
       optional boolean stackChanged
       # Async stack trace, if any.
       optional Runtime.StackTrace asyncStackTrace
+      # Async stack trace, if any.
+      experimental optional Runtime.StackTraceId asyncStackTraceId
       # Exception details if any.
       optional Runtime.ExceptionDetails exceptionDetails
 
@@ -803,6 +825,8 @@ domain Debugger
       array of CallFrame callFrames
       # Async stack trace, if any.
       optional Runtime.StackTrace asyncStackTrace
+      # Async stack trace, if any.
+      experimental optional Runtime.StackTraceId asyncStackTraceId
 
   # Returns source for the script with given id.
   command getScriptSource
@@ -844,7 +868,7 @@ domain Debugger
       # Whether preview should be generated for the result.
       experimental optional boolean generatePreview
       # Whether to throw an exception if side effect cannot be ruled out during evaluation.
-      experimental optional boolean throwOnSideEffect
+      optional boolean throwOnSideEffect
     returns
       # Object wrapper for the evaluation result.
       Runtime.RemoteObject result
@@ -923,11 +947,11 @@ domain Debugger
       # URL of source map associated with script (if any).
       optional string sourceMapURL
       # True, if this script has sourceURL.
-      experimental optional boolean hasSourceURL
+      optional boolean hasSourceURL
       # True, if this script is ES6 module.
-      experimental optional boolean isModule
+      optional boolean isModule
       # This script length.
-      experimental optional integer length
+      optional integer length
       # JavaScript top stack frame of where the script parsed event was triggered if available.
       experimental optional Runtime.StackTrace stackTrace
 
@@ -955,11 +979,11 @@ domain Debugger
       # URL of source map associated with script (if any).
       optional string sourceMapURL
       # True, if this script has sourceURL.
-      experimental optional boolean hasSourceURL
+      optional boolean hasSourceURL
       # True, if this script is ES6 module.
-      experimental optional boolean isModule
+      optional boolean isModule
       # This script length.
-      experimental optional integer length
+      optional integer length
       # JavaScript top stack frame of where the script parsed event was triggered if available.
       experimental optional Runtime.StackTrace stackTrace
 
@@ -994,8 +1018,11 @@ domain Debugger
       optional array of string hitBreakpoints
       # Async stack trace, if any.
       optional Runtime.StackTrace asyncStackTrace
-      # Scheduled async task id.
-      experimental optional Runtime.AsyncTaskId scheduledAsyncTaskId
+      # Async stack trace, if any.
+      experimental optional Runtime.StackTraceId asyncStackTraceId
+      # Just scheduled async call will have this stack trace as parent stack during async execution.
+      # This field is available only after `Debugger.stepInto` call with `breakOnAsynCall` flag.
+      experimental optional Runtime.StackTraceId asyncCallStackTraceId
 
   # Fired when the virtual machine resumed execution.
   event resumed
@@ -1061,14 +1088,14 @@ domain Profiler
       # Function location.
       Runtime.CallFrame callFrame
       # Number of samples where this node was on top of the call stack.
-      experimental optional integer hitCount
+      optional integer hitCount
       # Child node ids.
       optional array of integer children
       # The reason of being not optimized. The function may be deoptimized or marked as don't
       # optimize.
       optional string deoptReason
       # An array of source position ticks.
-      experimental optional array of PositionTickInfo positionTicks
+      optional array of PositionTickInfo positionTicks
 
   # Profile.
   type Profile extends object
@@ -1086,7 +1113,7 @@ domain Profiler
       optional array of integer timeDeltas
 
   # Specifies a number of samples attributed to a certain source position.
-  experimental type PositionTickInfo extends object
+  type PositionTickInfo extends object
     properties
       # Source line number (1-based).
       integer line
@@ -1094,7 +1121,7 @@ domain Profiler
       integer ticks
 
   # Coverage data for a source range.
-  experimental type CoverageRange extends object
+  type CoverageRange extends object
     properties
       # JavaScript script source offset for the range start.
       integer startOffset
@@ -1104,7 +1131,7 @@ domain Profiler
       integer count
 
   # Coverage data for a JavaScript function.
-  experimental type FunctionCoverage extends object
+  type FunctionCoverage extends object
     properties
       # JavaScript function name.
       string functionName
@@ -1114,7 +1141,7 @@ domain Profiler
       boolean isBlockCoverage
 
   # Coverage data for a JavaScript script.
-  experimental type ScriptCoverage extends object
+  type ScriptCoverage extends object
     properties
       # JavaScript script id.
       Runtime.ScriptId scriptId
@@ -1167,7 +1194,7 @@ domain Profiler
   # Enable precise code coverage. Coverage data for JavaScript executed before enabling precise code
   # coverage may be incomplete. Enabling prevents running optimized code and resets execution
   # counters.
-  experimental command startPreciseCoverage
+  command startPreciseCoverage
     parameters
       # Collect accurate call counts beyond simple 'covered' or 'not covered'.
       optional boolean callCount
@@ -1176,18 +1203,18 @@ domain Profiler
 
   # Disable precise code coverage. Disabling releases unnecessary execution count records and allows
   # executing optimized code.
-  experimental command stopPreciseCoverage
+  command stopPreciseCoverage
 
   # Collect coverage data for the current isolate, and resets execution counters. Precise code
   # coverage needs to have started.
-  experimental command takePreciseCoverage
+  command takePreciseCoverage
     returns
       # Coverage data for the current isolate.
       array of ScriptCoverage result
 
   # Collect coverage data for the current isolate. The coverage data may be incomplete due to
   # garbage collection.
-  experimental command getBestEffortCoverage
+  command getBestEffortCoverage
     returns
       # Coverage data for the current isolate.
       array of ScriptCoverage result
