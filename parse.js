@@ -130,6 +130,12 @@ function parse(data) {
       continue;
     }
 
+    match = line.match(/^    redirect ([^\s]+)/);
+    if (match) {
+      item.redirect = match[1];
+      continue;
+    }
+
     match = line.match(/^      (  )?[^\s]+$/);
     if (match) {
       // enum literal

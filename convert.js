@@ -62,8 +62,10 @@ function printCommand(result, command) {
   result.push(``);
   printDescription(result, command.description, `  `);
   result.push(`  ${command.experimental ? 'experimental ' : ''}${command.deprecated ? 'deprecated ' : ''}command ${command.name}`);
-  if (command.redirect)
+  if (command.redirect) {
     result.push(`    # Use '${command.redirect}.${command.name}' instead`);
+    result.push(`    redirect ${command.redirect}`);
+  }
   if (command.parameters && command.parameters.length) {
     result.push(`    parameters`);
     command.parameters.forEach(param => printParam(result, param));

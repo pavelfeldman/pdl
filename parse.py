@@ -1,9 +1,7 @@
-import os
+import os.path
 import json
-import os
 import re
-
-pdl_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'js_protocol.pdl')
+import sys
 
 protocol = { 'domains': [], 'version': {} }
 domain = None
@@ -43,6 +41,9 @@ def createItem(experimental, deprecated, name=''):
 
 
 def parse(data):
+  global domain
+  global item
+  global subitems
   global description
   lines = data.split('\n')
   for line in lines:
@@ -129,6 +130,11 @@ def parse(data):
       protocol['version']['minor'] = match.group(1)
       continue
 
+    match = re.compile('^    redirect ([^\s]+)').match(line)
+    if match:
+      item['redirect'] = match.group(1)
+      continue
+
     match = re.compile('^      (  )?[^\s]+$').match(line)
     if match:
       # enum literal
@@ -137,8 +143,19 @@ def parse(data):
 
     print('Error in line: %s' % line)
 
-  print(json.dumps(protocol, indent=4, sort_keys=True))
+
+def main(argv):
+    if len(argv) < 2:
+        sys.stderr.write("Usage: %s <protocol.pdl> <out_protocol.json>\n" % sys.argv[0])
+        return 1
+
+    input_file = open(os.path.normpath(argv[0]), "r")
+    pdl_string = input_file.read()
+    parse(pdl_string)
+    output_file = open(argv[-1], "w")
+    json.dump(protocol, output_file, indent=4, sort_keys=False, separators=(',', ': '))
+    output_file.close()
 
 
-if __name__ == "__main__":
-    main()
+if __name__ == '__main__':
+    sys.exit(main(sys.argv[1:]))

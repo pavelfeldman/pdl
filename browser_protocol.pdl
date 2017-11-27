@@ -1436,14 +1436,17 @@ domain DOM
   # Hides any highlight.
   command hideHighlight
     # Use 'Overlay.hideHighlight' instead
+    redirect Overlay
 
   # Highlights DOM node.
   command highlightNode
     # Use 'Overlay.highlightNode' instead
+    redirect Overlay
 
   # Highlights given rectangle.
   command highlightRect
     # Use 'Overlay.highlightRect' instead
+    redirect Overlay
 
   # Marks last undoable state.
   experimental command markUndoableState
@@ -4296,14 +4299,17 @@ domain Page
   # Clears the overriden device metrics.
   experimental deprecated command clearDeviceMetricsOverride
     # Use 'Emulation.clearDeviceMetricsOverride' instead
+    redirect Emulation
 
   # Clears the overridden Device Orientation.
   experimental deprecated command clearDeviceOrientationOverride
     # Use 'DeviceOrientation.clearDeviceOrientationOverride' instead
+    redirect DeviceOrientation
 
   # Clears the overriden Geolocation Position and Error.
   deprecated command clearGeolocationOverride
     # Use 'Emulation.clearGeolocationOverride' instead
+    redirect Emulation
 
   # Creates an isolated world for the given frame.
   command createIsolatedWorld
@@ -4322,6 +4328,7 @@ domain Page
   # Deletes browser cookie with given name, domain and path.
   experimental deprecated command deleteCookie
     # Use 'Network.deleteCookie' instead
+    redirect Network
     parameters
       # Name of the cookie to remove.
       string cookieName
@@ -4346,6 +4353,7 @@ domain Page
   # information in the `cookies` field.
   experimental deprecated command getCookies
     # Use 'Network.getCookies' instead
+    redirect Network
     returns
       # Array of cookie objects.
       array of Network.Cookie cookies
@@ -4518,6 +4526,7 @@ domain Page
   # query results).
   experimental deprecated command setDeviceMetricsOverride
     # Use 'Emulation.setDeviceMetricsOverride' instead
+    redirect Emulation
     parameters
       # Overriding width value in pixels (minimum 0, maximum 10000000). 0 disables the override.
       integer width
@@ -4548,6 +4557,7 @@ domain Page
   # Overrides the Device Orientation.
   experimental deprecated command setDeviceOrientationOverride
     # Use 'DeviceOrientation.setDeviceOrientationOverride' instead
+    redirect DeviceOrientation
     parameters
       # Mock alpha
       number alpha
@@ -4580,6 +4590,7 @@ domain Page
   # unavailable.
   deprecated command setGeolocationOverride
     # Use 'Emulation.setGeolocationOverride' instead
+    redirect Emulation
     parameters
       # Mock latitude
       optional number latitude
@@ -4597,6 +4608,7 @@ domain Page
   # Toggles mouse event-based touch event emulation.
   experimental deprecated command setTouchEmulationEnabled
     # Use 'Emulation.setTouchEmulationEnabled' instead
+    redirect Emulation
     parameters
       # Whether the touch event emulation should be enabled.
       boolean enabled
