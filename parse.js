@@ -80,23 +80,6 @@ function parse(data) {
       continue;
     }
 
-    match = line.match(/^  (experimental )?(command|event) (.*)/);
-    if (match) {
-      let list;
-      if (match[2] === 'command') {
-        list = domain.commands;
-        if (!list)
-        list = domain.commands = [];
-      } else {
-        list = domain.events;
-        if (!list)
-        list = domain.events = [];
-      }
-      item = createItem(match[1], match[3]);
-      list.push(item);
-      continue;
-    }
-
     match = line.match(/^      (experimental )?(optional )?(array of )?([^\s]+) ([^\s]+)/);
     if (match) {
       let param = createItem(match[1], match[5]);
