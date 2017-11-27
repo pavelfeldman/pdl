@@ -19,10 +19,12 @@ function assignType(item, type) {
     item['$ref'] = type;
 }
 
-function createItem(experimental, name) {
+function createItem(experimental, deprecated, name) {
   const result = {};
   if (experimental)
     result.experimental = true;
+  if (deprecated)
+    result.deprecated = true;
   if (name)
     result.name = name;
   if (description) {
@@ -47,28 +49,28 @@ function parse(data) {
       continue;
     }
 
-    let match = line.match(/^(experimental )?domain (.*)/);
+    let match = line.match(/^(experimental )?(deprecated )?domain (.*)/);
     if (match) {
-      domain = createItem(match[1]);
-      domain.domain = match[2];
+      domain = createItem(match[1], match[2]);
+      domain.domain = match[3];
       protocol.domains.push(domain);
       continue;
     }
 
-    match = line.match(/^  (experimental )?type (.*) extends (.*)/);  
+    match = line.match(/^  (experimental )?(deprecated )?type (.*) extends (.*)/);
     if (match) {
       if (!domain.types)
         domain.types = [];
-      item = createItem(match[1], match[2]);
-      assignType(item, match[3]);
+      item = createItem(match[1], match[2], match[3]);
+      assignType(item, match[4]);
       domain.types.push(item);
       continue;
     }
 
-    match = line.match(/^  (experimental )?(command|event) (.*)/);
+    match = line.match(/^  (experimental )?(deprecated )?(command|event) (.*)/);
     if (match) {
       let list;
-      if (match[2] === 'command') {
+      if (match[3] === 'command') {
         list = domain.commands;
         if (!list)
         list = domain.commands = [];
@@ -77,24 +79,24 @@ function parse(data) {
         if (!list)
         list = domain.events = [];
       }
-      item = createItem(match[1], match[3]);
+      item = createItem(match[1], match[2], match[4]);
       list.push(item);
       continue;
     }
 
-    match = line.match(/^      (experimental )?(optional )?(array of )?([^\s]+) ([^\s]+)/);
+    match = line.match(/^      (experimental )?(deprecated )?(optional )?(array of )?([^\s]+) ([^\s]+)/);
     if (match) {
-      let param = createItem(match[1], match[5]);
-      if (match[2])
+      let param = createItem(match[1], match[6]);
+      if (match[3])
         param.optional = true;
-      if (match[3]) {
+      if (match[4]) {
         param.type = 'array';
         param.items = {};
-        assignType(param.items, match[4]);
+        assignType(param.items, match[5]);
       } else {
-        assignType(param, match[4]);
+        assignType(param, match[5]);
       }
-      if (match[4] === 'enum')
+      if (match[5] === 'enum')
         enumliterals = param.enum = [];
       subitems.push(param);
       continue;

@@ -22,13 +22,13 @@ function convert(name) {
 # found in the LICENSE file.
 
 version
-  major 1
-  minor 3`];
+  major ${protocol.version.major}
+  minor ${protocol.version.minor}`];
     protocol.domains.sort((a, b) => stringCompare(a.domain, b.domain));
     for (let domain of protocol.domains) {
       result.push(``);
       printDescription(result, domain.description, ``);
-      result.push(`${domain.experimental ? 'experimental ' : ''}domain ${domain.domain}`);
+      result.push(`${domain.experimental ? 'experimental ' : ''}${domain.deprecated ? 'deprecated ' : ''}domain ${domain.domain}`);
       (domain.types || []).forEach(type => printType(result, type));
 
       if (domain.commands)
@@ -47,7 +47,7 @@ version
 function printType(result, type) {
   result.push(``);
   printDescription(result, type.description, `  `);
-  result.push(`  ${type.experimental ? 'experimental ' : ''}type ${type.id} extends ${type.type}`);
+  result.push(`  ${type.experimental ? 'experimental ' : ''}${type.deprecated ? 'deprecated ' : ''}type ${type.id} extends ${type.type}`);
   if (type.properties && type.properties.length) {
     result.push(`    properties`);
     type.properties.forEach(param => printParam(result, param));
@@ -61,11 +61,9 @@ function printType(result, type) {
 function printCommand(result, command) {
   result.push(``);
   printDescription(result, command.description, `  `);
-  result.push(`  ${command.experimental ? 'experimental ' : ''}command ${command.name}`);
+  result.push(`  ${command.experimental ? 'experimental ' : ''}${command.deprecated ? 'deprecated ' : ''}command ${command.name}`);
   if (command.redirect)
     result.push(`    # Use '${command.redirect}.${command.name}' instead`);
-  if (command.deprecated)
-    result.push(`    deprecated`);
   if (command.parameters && command.parameters.length) {
     result.push(`    parameters`);
     command.parameters.forEach(param => printParam(result, param));
@@ -79,9 +77,7 @@ function printCommand(result, command) {
 function printEvent(result, event) {
   result.push(``);
   printDescription(result, event.description, `  `);
-  result.push(`  ${event.experimental ? 'experimental ' : ''}event ${event.name}`);
-  if (event.deprecated)
-    result.push(`    deprecated`);
+  result.push(`  ${event.experimental ? 'experimental ' : ''}${event.deprecated ? 'deprecated ' : ''}event ${event.name}`);
   if (event.parameters && event.parameters.length) {
     result.push(`    parameters`);
     event.parameters.forEach(param => printParam(result, param));
@@ -95,7 +91,7 @@ function printParam(result, param) {
     type = 'enum';
   if (param.type === 'array')
     type = `array of ${param.items['$ref'] || param.items.type}`;
-  result.push(`      ${param.experimental ? 'experimental ' : ''}${param.optional ? 'optional ' : ''}${type} ${param.name}`);
+  result.push(`      ${param.experimental ? 'experimental ' : ''}${param.deprecated ? 'deprecated ' : ''}${param.optional ? 'optional ' : ''}${type} ${param.name}`);
   if (type === 'enum') {
     for (let literal of param.enum)
       result.push(`        ${literal}`);

@@ -2262,8 +2262,7 @@ domain Emulation
   # Resizes the frame/viewport of the page. Note that this does not affect the frame's container
   # (e.g. browser window). Can be used to produce screenshots of the specified size. Not supported
   # on Android.
-  experimental command setVisibleSize
-    deprecated
+  experimental deprecated command setVisibleSize
     parameters
       # Frame width (DIP).
       integer width
@@ -3447,22 +3446,19 @@ domain Network
       optional InterceptionStage interceptionStage
 
   # Tells whether clearing browser cache is supported.
-  command canClearBrowserCache
-    deprecated
+  deprecated command canClearBrowserCache
     returns
       # True if browser cache can be cleared.
       boolean result
 
   # Tells whether clearing browser cookies is supported.
-  command canClearBrowserCookies
-    deprecated
+  deprecated command canClearBrowserCookies
     returns
       # True if browser cookies can be cleared.
       boolean result
 
   # Tells whether emulation of network conditions is supported.
-  command canEmulateNetworkConditions
-    deprecated
+  deprecated command canEmulateNetworkConditions
     returns
       # True if emulation of network conditions is supported.
       boolean result
@@ -4262,8 +4258,7 @@ domain Page
       number scale
 
   # Deprecated, please use addScriptToEvaluateOnNewDocument instead.
-  experimental command addScriptToEvaluateOnLoad
-    deprecated
+  experimental deprecated command addScriptToEvaluateOnLoad
     parameters
       string scriptSource
     returns
@@ -4299,19 +4294,16 @@ domain Page
       string data
 
   # Clears the overriden device metrics.
-  experimental command clearDeviceMetricsOverride
+  experimental deprecated command clearDeviceMetricsOverride
     # Use 'Emulation.clearDeviceMetricsOverride' instead
-    deprecated
 
   # Clears the overridden Device Orientation.
-  experimental command clearDeviceOrientationOverride
+  experimental deprecated command clearDeviceOrientationOverride
     # Use 'DeviceOrientation.clearDeviceOrientationOverride' instead
-    deprecated
 
   # Clears the overriden Geolocation Position and Error.
-  command clearGeolocationOverride
+  deprecated command clearGeolocationOverride
     # Use 'Emulation.clearGeolocationOverride' instead
-    deprecated
 
   # Creates an isolated world for the given frame.
   command createIsolatedWorld
@@ -4328,9 +4320,8 @@ domain Page
       Runtime.ExecutionContextId executionContextId
 
   # Deletes browser cookie with given name, domain and path.
-  experimental command deleteCookie
+  experimental deprecated command deleteCookie
     # Use 'Network.deleteCookie' instead
-    deprecated
     parameters
       # Name of the cookie to remove.
       string cookieName
@@ -4353,9 +4344,8 @@ domain Page
 
   # Returns all browser cookies. Depending on the backend support, will return detailed cookie
   # information in the `cookies` field.
-  experimental command getCookies
+  experimental deprecated command getCookies
     # Use 'Network.getCookies' instead
-    deprecated
     returns
       # Array of cookie objects.
       array of Network.Cookie cookies
@@ -4477,8 +4467,7 @@ domain Page
       optional string scriptToEvaluateOnLoad
 
   # Deprecated, please use removeScriptToEvaluateOnNewDocument instead.
-  experimental command removeScriptToEvaluateOnLoad
-    deprecated
+  experimental deprecated command removeScriptToEvaluateOnLoad
     parameters
       ScriptIdentifier identifier
 
@@ -4527,9 +4516,8 @@ domain Page
   # Overrides the values of device screen dimensions (window.screen.width, window.screen.height,
   # window.innerWidth, window.innerHeight, and "device-width"/"device-height"-related CSS media
   # query results).
-  experimental command setDeviceMetricsOverride
+  experimental deprecated command setDeviceMetricsOverride
     # Use 'Emulation.setDeviceMetricsOverride' instead
-    deprecated
     parameters
       # Overriding width value in pixels (minimum 0, maximum 10000000). 0 disables the override.
       integer width
@@ -4558,9 +4546,8 @@ domain Page
       optional Viewport viewport
 
   # Overrides the Device Orientation.
-  experimental command setDeviceOrientationOverride
+  experimental deprecated command setDeviceOrientationOverride
     # Use 'DeviceOrientation.setDeviceOrientationOverride' instead
-    deprecated
     parameters
       # Mock alpha
       number alpha
@@ -4591,9 +4578,8 @@ domain Page
 
   # Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position
   # unavailable.
-  command setGeolocationOverride
+  deprecated command setGeolocationOverride
     # Use 'Emulation.setGeolocationOverride' instead
-    deprecated
     parameters
       # Mock latitude
       optional number latitude
@@ -4609,9 +4595,8 @@ domain Page
       boolean enabled
 
   # Toggles mouse event-based touch event emulation.
-  experimental command setTouchEmulationEnabled
+  experimental deprecated command setTouchEmulationEnabled
     # Use 'Emulation.setTouchEmulationEnabled' instead
-    deprecated
     parameters
       # Whether the touch event emulation should be enabled.
       boolean enabled
@@ -5250,7 +5235,7 @@ domain Target
       # Session to detach.
       optional SessionID sessionId
       # Deprecated.
-      optional TargetID targetId
+      deprecated optional TargetID targetId
 
   # Deletes a BrowserContext, will fail of any open page uses it.
   experimental command disposeBrowserContext
@@ -5279,7 +5264,7 @@ domain Target
       # Identifier of the session.
       optional SessionID sessionId
       # Deprecated.
-      optional TargetID targetId
+      deprecated optional TargetID targetId
 
   experimental command setAttachToFrames
     parameters
@@ -5326,7 +5311,7 @@ domain Target
       # Detached session identifier.
       SessionID sessionId
       # Deprecated.
-      optional TargetID targetId
+      deprecated optional TargetID targetId
 
   # Notifies about a new protocol message received from the session (as reported in
   # `attachedToTarget` event).
@@ -5336,7 +5321,7 @@ domain Target
       SessionID sessionId
       string message
       # Deprecated.
-      optional TargetID targetId
+      deprecated optional TargetID targetId
 
   # Issued when a possible inspection target is created.
   event targetCreated
@@ -5432,9 +5417,9 @@ experimental domain Tracing
   command start
     parameters
       # Category/tag filter
-      optional string categories
+      deprecated optional string categories
       # Tracing options
-      optional string options
+      deprecated optional string options
       # If set, the agent will issue bufferUsage events at this interval, specified in milliseconds
       optional number bufferUsageReportingInterval
       # Whether to report trace events as series of dataCollected events or to save trace to a

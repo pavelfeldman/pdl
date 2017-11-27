@@ -7,7 +7,7 @@ version
   minor 3
 
 # This domain is deprecated - use Runtime or Log instead.
-domain Console
+deprecated domain Console
 
   # Console message.
   type ConsoleMessage extends object
@@ -1348,7 +1348,7 @@ domain Runtime
       object hints
 
 # This domain is deprecated.
-domain Schema
+deprecated domain Schema
 
   # Description of the protocol domain.
   type Domain extends object

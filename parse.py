@@ -27,10 +27,12 @@ def assignType(item, type):
     item['$ref'] = type
 
 
-def createItem(experimental, name=''):
+def createItem(experimental, deprecated, name=''):
   result = {}
   if experimental:
     result['experimental'] = True
+  if deprecated:
+    result['deprecated'] = True
   if name:
     result['name'] = name
   global description
@@ -53,26 +55,26 @@ def parse(data):
       description += trimLine[1:]
       continue
 
-    match = re.compile('^(experimental )?domain (.*)').match(line)
+    match = re.compile('^(experimental )?(deprecated )?domain (.*)').match(line)
     if match:
-      domain = createItem(match.group(1))
-      domain['domain'] = match.group(2)
+      domain = createItem(match.group(1), match.group(2))
+      domain['domain'] = match.group(3)
       protocol['domains'].append(domain)
       continue
 
-    match = re.compile('^  (experimental )?type (.*) extends (.*)').match(line)
+    match = re.compile('^  (experimental )?(deprecated )?type (.*) extends (.*)').match(line)
     if match:
       if not 'types' in domain:
         domain['types'] = []
-      item = createItem(match.group(1), match.group(2))
-      assignType(item, match.group(3))
+      item = createItem(match.group(1), match.group(2), match.group(3))
+      assignType(item, match.group(4))
       domain['types'].append(item)
       continue
 
-    match = re.compile('^  (experimental )?(command|event) (.*)').match(line)
+    match = re.compile('^  (experimental )?(deprecated )?(command|event) (.*)').match(line)
     if match:
       list = []
-      if match.group(2) == 'command':
+      if match.group(3) == 'command':
         if 'commands' in domain:
           list = domain['commands']
         else:
@@ -83,22 +85,22 @@ def parse(data):
         else:
           list = domain['events'] = []
     
-      item = createItem(match.group(1), match.group(3))
+      item = createItem(match.group(1), match.group(2), match.group(4))
       list.append(item)
       continue
 
-    match = re.compile('^      (experimental )?(optional )?(array of )?([^\s]+) ([^\s]+)').match(line)
+    match = re.compile('^      (experimental )?(deprecated )?(optional )?(array of )?([^\s]+) ([^\s]+)').match(line)
     if match:
-      param = createItem(match.group(1), match.group(5))
-      if match.group(2):
-        param['optional'] = True
+      param = createItem(match.group(1), match.group(2), match.group(6))
       if match.group(3):
+        param['optional'] = True
+      if match.group(4):
         param['type'] = 'array'
         param['items'] = {}
-        assignType(param['items'], match.group(4))
+        assignType(param['items'], match.group(5))
       else:
-        assignType(param, match.group(4))
-      if match.group(4) == 'enum':
+        assignType(param, match.group(5))
+      if match.group(5) == 'enum':
         enumliterals = param['enum'] = []
       subitems.append(param)
       continue
