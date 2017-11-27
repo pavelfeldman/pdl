@@ -17,8 +17,13 @@ function convert(name) {
       return console.log(err);
     }
     const protocol = JSON.parse(data);
-    const result = [];
-    result.push('# Protocol definition generated from ' + name + '_protocol.json');
+    const result = [`# Copyright 2017 The Chromium Authors. All rights reserved.
+# Use of this source code is governed by a BSD-style license that can be
+# found in the LICENSE file.
+
+version
+  major 1
+  minor 3`];
     protocol.domains.sort((a, b) => stringCompare(a.domain, b.domain));
     for (let domain of protocol.domains) {
       result.push(``);

@@ -2,7 +2,7 @@ const fs = require('fs')
 
 fs.readFile('js_protocol.pdl', 'utf8', (err, data) => parse(data));
 
-let protocol = { domains: [] };
+let protocol = { domains: [], version: {} };
 let domain;
 let item;
 let subitems;
@@ -109,6 +109,22 @@ function parse(data) {
     match = line.match(/^    enum/);
     if (match) {
       enumliterals = item.enum = [];
+      continue;
+    }
+
+    match = line.match(/^  version/);
+    if (match)
+      continue;
+
+    match = line.match(/^  major (\d+)/);
+    if (match) {
+      protocol.version.major = match[1];
+      continue;
+    }
+
+    match = line.match(/^  minor (\d+)/);
+    if (match) {
+      protocol.version.minor = match[1];
       continue;
     }
 

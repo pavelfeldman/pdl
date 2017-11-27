@@ -5,7 +5,7 @@ import re
 
 pdl_file = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'js_protocol.pdl')
 
-protocol = { 'domains': [] }
+protocol = { 'domains': [], 'version': {} }
 domain = None
 item = None
 subitems = None
@@ -41,6 +41,7 @@ def createItem(experimental, name=''):
 
 
 def parse(data):
+  global description
   lines = data.split('\n')
   for line in lines:
     trimLine = line.strip()
@@ -49,7 +50,6 @@ def parse(data):
       continue
 
     if trimLine.startswith('#'):
-      global description
       description += trimLine[1:]
       continue
 
@@ -113,13 +113,27 @@ def parse(data):
       enumliterals = item['enum'] = []
       continue
 
+    match = re.compile('^version').match(line)
+    if match:
+      continue
+
+    match = re.compile('^  major (\d+)').match(line)
+    if match:
+      protocol['version']['major'] = match.group(1)
+      continue
+
+    match = re.compile('^  minor (\d+)').match(line)
+    if match:
+      protocol['version']['minor'] = match.group(1)
+      continue
+
     match = re.compile('^      (  )?[^\s]+$').match(line)
     if match:
       # enum literal
       enumliterals.append(trimLine)
       continue
 
-    print('Error in line:' % line)
+    print('Error in line: %s' % line)
 
   print(json.dumps(protocol, indent=4, sort_keys=True))
 
