@@ -26,6 +26,7 @@ def assignType(item, type):
   else:
     item['$ref'] = type
 
+
 def createItem(experimental, name=''):
   result = {}
   if experimental:
@@ -38,11 +39,13 @@ def createItem(experimental, name=''):
     description = ''
   return result
 
+
 def parse(data):
   lines = data.split('\n')
   for line in lines:
     trimLine = line.strip()
     if len(trimLine) == 0:
+      description = ''
       continue
 
     if trimLine.startswith('#'):
@@ -119,6 +122,7 @@ def parse(data):
     print('Error in line:' % line)
 
   print(json.dumps(protocol, indent=4, sort_keys=True))
+
 
 if __name__ == "__main__":
     main()

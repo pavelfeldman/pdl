@@ -3,6 +3,14 @@ const fs = require('fs')
 convert('browser');
 convert('js');
 
+function stringCompare(nameA, nameB) {
+  if (nameA < nameB)
+    return -1;
+  if (nameA > nameB)
+    return 1;
+  return 0;
+}
+
 function convert(name) {
   fs.readFile(name + '_protocol.json', 'utf8', (err, data) => {
     if (err) {
@@ -11,12 +19,19 @@ function convert(name) {
     const protocol = JSON.parse(data);
     const result = [];
     result.push('# Protocol definition generated from ' + name + '_protocol.json');
+    protocol.domains.sort((a, b) => stringCompare(a.domain, b.domain));
     for (let domain of protocol.domains) {
       result.push(``);
       printDescription(result, domain.description, ``);
       result.push(`${domain.experimental ? 'experimental ' : ''}domain ${domain.domain}`);
       (domain.types || []).forEach(type => printType(result, type));
+
+      if (domain.commands)
+        domain.commands.sort((a, b) => stringCompare(a.name, b.name));
       (domain.commands || []).forEach(command => printCommand(result, command));
+
+      if (domain.events)
+        domain.events.sort((a, b) => stringCompare(a.name, b.name));
       (domain.events || []).forEach(event => printEvent(result, event));
     }
     result.push('');

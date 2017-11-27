@@ -37,8 +37,10 @@ function parse(data) {
   for (let i = 0; i < lines.length; ++i) {
     const line = lines[i];
     const trimLine = line.trim();
-    if (!trimLine)
+    if (!trimLine) {
+      description = '';
       continue;
+    }
 
     if (trimLine.startsWith('#')) {
       description += trimLine.substring(1);
