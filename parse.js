@@ -3,7 +3,7 @@ const fs = require('fs')
 fs.readFile(process.argv[2], 'utf8', (err, data) => {
   const schema = parse(data);
   // console.log(JSON.stringify(schema, '', 2));
-  console.log(markdown(schema));
+  markdown(schema);
 });
 
 let description;
@@ -182,8 +182,8 @@ function formatDescription(item) {
 }
 
 function markdown(schema) {
-  const result = [];
   for (let domain of schema.domains) {
+    const result = [];
     result.push(`\n### domain: ${domain.domain}`);
     if (domain.description)
       result.push(`\n${domain.description}`);
@@ -211,8 +211,6 @@ function markdown(schema) {
       if (event.description)
         result.push(`\n${event.description}`);
     }
-    if (domain !== schema.domains[schema.domains.length - 1])
-      result.push(`\n---`);
+    fs.writeFileSync(`docs/${domain.domain.toLowerCase()}.md`, result.join('\n'));
   }
-  return result.join('\n');
 }
