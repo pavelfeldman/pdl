@@ -1,9 +1,11 @@
 const fs = require('fs')
 
-fs.readFile(process.argv[2], 'utf8', (err, data) => {
-  const schema = parse(data);
-  // console.log(JSON.stringify(schema, '', 2));
-  markdown(schema);
+fs.readFile('js_protocol.pdl', 'utf8', (err, data) => {
+  const js_schema = parse(data);
+  fs.readFile('browser_protocol.pdl', 'utf8', (err, data) => {
+    const browser_schema = parse(data);
+    markdown({domains: js_schema.domains.concat(browser_schema.domains)});
+  });
 });
 
 let description;
@@ -174,9 +176,9 @@ function fqType(type, domain, usedTypes) {
 function mdType(parameter, domain, usedTypes) {
   if (parameter.type === 'array') {
     const items = parameter.items;
-    return `<array of ${items.type ? items.type : '[' + fqType(items['$ref'], domain, usedTypes) + ']'}>`;
+    return `<array of [${items.type ? items.type : fqType(items['$ref'], domain, usedTypes)}]>`;
   }
-  return `<${parameter.type ? parameter.type  : '[' + fqType(parameter['$ref'], domain, usedTypes) + ']'}]>`;
+  return `<[${parameter.type ? parameter.type  : fqType(parameter['$ref'], domain, usedTypes)}]>`;
 }
 
 function formatDescription(item) {
@@ -187,56 +189,84 @@ function formatDescription(item) {
   return item.description;
 }
 
+function supertype(domains, domainName, typeName) {
+  for (let domain of domains) {
+    if (domain.domain !== domainName)
+      continue;
+    for (let type of domain.types || []) {
+      if (type.id !== typeName)
+        continue;
+      return type.type;
+    }
+  }
+  return '';
+}
+
+function experimental(item) {
+  return (item.experimental ? ' 🌱' : '') + (item.deprecated ? ' 🍂' : '');
+}
+
+function formatParameter(parameter, domain, usedTypes) {
+  return `- ${parameter.optional ? '*optional* ' : ' '}\`${parameter.name}\` ${mdType(parameter, domain, usedTypes)}${experimental(parameter)} ${formatDescription(parameter)}`;
+}
+
 function markdown(schema) {
   for (let domain of schema.domains) {
     const result = [];
     const usedTypes = new Set();
-    result.push(`\n### domain: ${domain.domain}`);
+    result.push(`\n### domain: ${domain.domain}${experimental(domain)}`);
     if (domain.description)
       result.push(`\n${domain.description}`);
 
     for (let type of (domain.types || [])) {
-      result.push(`\n#### type: ${domain.domain}.${type.id} = ${type.type}`);
+      result.push(`\n\n#### type: ${domain.domain}.${type.id} = ${type.type}`);
       if (type.description)
         result.push(`\n${type.description}`);
       if (type.properties && type.properties.length) {
         result.push(`\n*properties*`);
         for (let property of type.properties)
-          result.push(`  - \`${property.name}\` ${mdType(property, domain, usedTypes)} ${formatDescription(property)}`);
+          result.push(formatParameter(property, domain, usedTypes));
       }
     }
 
     for (let command of (domain.commands || [])) {
-      result.push(`\n#### command: ${domain.domain}.${command.name}()`);
+      result.push(`\n\n#### command: ${domain.domain}.${command.name}()${experimental(command)}`);
       if (command.description)
         result.push(`\n${command.description}`);
       if (command.parameters && command.parameters.length) {
         result.push(`\n*parameters*`);
         for (let parameter of command.parameters)
-          result.push(`- \`${parameter.name}\` ${mdType(parameter, domain, usedTypes)} ${formatDescription(parameter)}`);
+          result.push(formatParameter(parameter, domain, usedTypes));
       }
       if (command.returns && command.returns.length) {
         result.push(`\n*returns*`);
         for (let parameter of command.returns)
-          result.push(`- \`${parameter.name}\` ${mdType(parameter, domain, usedTypes)} ${formatDescription(parameter)}`);
+          result.push(formatParameter(parameter, domain, usedTypes));
       }
     }
 
     for (let event of (domain.events || [])) {
-      result.push(`\n#### event: ${domain.domain}.${event.name}`);
+      result.push(`\n\n#### event: ${domain.domain}.${event.name}${experimental(event)}`);
       if (event.description)
         result.push(`\n${event.description}`);
       if (event.parameters && event.parameters.length) {
-        result.push(`\n*returns*`);
+        result.push(`\n*parameters*`);
         for (let parameter of event.parameters)
-          result.push(`- \`${parameter.name}\` ${mdType(parameter, domain, usedTypes)} ${formatDescription(parameter)}`);
+          result.push(formatParameter(parameter, domain, usedTypes));
       }
     }
 
     result.push(``);
     for (let type of usedTypes) {
-      result.push(`[${type}]: ${domain.domain.toLowerCase()}.md#${type.replace('.', '').toLowerCase()}`);
+      const [domain, name] = type.split('.');
+      result.push(`[${type}]: ${domain.toLowerCase()}.md#type-${type.replace('.', '').toLowerCase()}--${supertype(schema.domains, domain, name)} "${type}"`);
     }
+    result.push(`[boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON boolean"`);
+    result.push(`[string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON string"`);
+    result.push(`[number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON number"`);
+    result.push(`[integer]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON integer"`);
+    result.push(`[object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON object"`);
+    result.push(`[any]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON any"`);
 
     fs.writeFileSync(`docs/${domain.domain.toLowerCase()}.md`, result.join('\n'));
   }
