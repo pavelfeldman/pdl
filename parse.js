@@ -165,19 +165,54 @@ function parse(data) {
   return protocol;
 }
 
+function mdType(parameter) {
+  if (parameter.type === 'array')
+    return `array of ${mdType(parameter.items)}`;
+  if (parameter.type)
+    return `<[${parameter.type}]>`;
+  return `<${parameter['$ref']}>`;
+}
+
+function formatDescription(item) {
+  if (!item.description)
+    return '';
+  if (item.description.endsWith('.'))
+    return item.description.substring(0, item.description.length -1);
+  return item.description;
+}
+
 function markdown(schema) {
   const result = [];
   for (let domain of schema.domains) {
-    result.push(`\n### ${domain.domain}`);
+    result.push(`\n### domain: ${domain.domain}`);
     if (domain.description)
       result.push(`\n${domain.description}`);
+
     for (let command of (domain.commands || [])) {
-      const params = (command.parameters || []).map(p => p.name);
-      result.push(`\n#### \`${command.name}(${params.join(', ')})\``);
+      result.push(`\n#### ${domain.domain}.${command.name}()`);
+      if (command.parameters && command.parameters.length) {
+        result.push(`- parameters`);
+        for (let parameter of command.parameters)
+          result.push(`  - \`${parameter.name}\` ${mdType(parameter)} ${formatDescription(parameter)}`);
+      }
+      if (command.returns && command.returns.length) {
+        result.push(`- returns`);
+        for (let parameter of command.returns)
+          result.push(`  - \`${parameter.name}\` ${mdType(parameter)} ${formatDescription(parameter)}`);
+      }
       if (command.description)
         result.push(`\n${command.description}`);
     }
-    result.push(`\n---`);
+
+    for (let event of (domain.events || [])) {
+      result.push(`\n#### event: ${domain.domain}.${event.name}`);
+      for (let parameter of (event.parameters || []))
+        result.push(`- \`${parameter.name}\` ${mdType(parameter)} ${formatDescription(parameter)}`);
+      if (event.description)
+        result.push(`\n${event.description}`);
+    }
+    if (domain !== schema.domains[schema.domains.length - 1])
+      result.push(`\n---`);
   }
   return result.join('\n');
 }
