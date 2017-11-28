@@ -29,17 +29,17 @@ def assignType(item, type, isArray=False):
         item['$ref'] = type
 
 
-def createItem(experimental, deprecated, name=None):
-    result = collections.OrderedDict()
-    if experimental:
-        result['experimental'] = True
-    if deprecated:
-        result['deprecated'] = True
+def createItem(d, experimental, deprecated, name=None):
+    result = collections.OrderedDict(d)
     if name:
         result['name'] = name
     global description
     if description:
         result['description'] = description.strip()
+    if experimental:
+        result['experimental'] = True
+    if deprecated:
+        result['deprecated'] = True
     return result
 
 
@@ -61,7 +61,7 @@ def parse(data):
         trimLine = line.strip()
 
         if trimLine.startswith('#'):
-            description += '\n' + trimLine[2:]
+            description += trimLine[1:]
             continue
         else:
             nukeDescription = True
@@ -71,8 +71,7 @@ def parse(data):
 
         match = re.compile('^(experimental )?(deprecated )?domain (.*)').match(line)
         if match:
-            domain = createItem(match.group(1), match.group(2))
-            domain['domain'] = match.group(3)
+            domain = createItem({'domain' : match.group(3)}, match.group(1), match.group(2))
             protocol['domains'].append(domain)
             continue
 
@@ -87,8 +86,7 @@ def parse(data):
         if match:
             if 'types' not in domain:
                 domain['types'] = []
-            item = createItem(match.group(1), match.group(2))
-            item['id'] = match.group(3)
+            item = createItem({'id': match.group(3)}, match.group(1), match.group(2))
             assignType(item, match.group(5), match.group(4))
             domain['types'].append(item)
             continue
@@ -107,13 +105,13 @@ def parse(data):
                 else:
                     list = domain['events'] = []
 
-            item = createItem(match.group(1), match.group(2), match.group(4))
+            item = createItem({}, match.group(1), match.group(2), match.group(4))
             list.append(item)
             continue
 
         match = re.compile('^      (experimental )?(deprecated )?(optional )?(array of )?([^\s]+) ([^\s]+)').match(line)
         if match:
-            param = createItem(match.group(1), match.group(2), match.group(6))
+            param = createItem({}, match.group(1), match.group(2), match.group(6))
             if match.group(3):
                 param['optional'] = True
             assignType(param, match.group(5), match.group(4))
@@ -171,7 +169,7 @@ def main(argv):
     pdl_string = input_file.read()
     protocol = parse(pdl_string)
     output_file = open(argv[1].replace('.pdl', '.json'), "w")
-    json.dump(protocol, output_file, indent=4)
+    json.dump(protocol, output_file, indent=4, separators=(',', ': '))
     output_file.close()
     with open(os.path.normpath(argv[0]), 'a') as _:
         pass
