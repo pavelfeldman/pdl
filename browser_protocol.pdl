@@ -7,6 +7,7 @@ version
   minor 3
 
 experimental domain Accessibility
+  depends on DOM
 
   # Unique accessibility node identifier.
   type AXNodeId extends string
@@ -184,6 +185,8 @@ experimental domain Accessibility
       array of AXNode nodes
 
 experimental domain Animation
+  depends on Runtime
+  depends on DOM
 
   # Animation instance.
   type Animation extends object
@@ -419,6 +422,7 @@ experimental domain ApplicationCache
 
 # Audits domain allows investigation of page violations and possible improvements.
 experimental domain Audits
+  depends on Network
 
   # Returns the response body and size if it were re-encoded with the specified settings. Only
   # applies to images.
@@ -525,6 +529,7 @@ domain Browser
 # can also keep track of stylesheets via the `styleSheetAdded`/`styleSheetRemoved` events and
 # subsequently load the required stylesheet contents using the `getStyleSheet[Text]()` methods.
 experimental domain CSS
+  depends on DOM
 
   type StyleSheetId extends string
 
@@ -1108,6 +1113,7 @@ experimental domain CacheStorage
 # the nodes that were sent to the client.<p>Note that `iframe` owner elements will return
 # corresponding document elements as their child nodes.</p>
 domain DOM
+  depends on Runtime
 
   # Unique DOM node identifier.
   type NodeId extends integer
@@ -1227,7 +1233,7 @@ domain DOM
       optional number a
 
   # An array of quad vertices, x immediately followed by y for each point, points clock-wise.
-  type Quad extends array
+  type Quad extends array of number
 
   # Box model.
   type BoxModel extends object
@@ -1759,6 +1765,8 @@ domain DOM
 # DOM debugging allows setting breakpoints on particular DOM operations and events. JavaScript
 # execution will stop on these operations as if there was a regular breakpoint set.
 domain DOMDebugger
+  depends on DOM
+  depends on Debugger
 
   # DOM breakpoint type.
   type DOMBreakpointType extends string
@@ -1865,6 +1873,9 @@ domain DOMDebugger
 
 # This domain facilitates obtaining document snapshots with DOM, layout, and style information.
 experimental domain DOMSnapshot
+  depends on CSS
+  depends on DOM
+  depends on Page
 
   # A Node in the DOM tree.
   type DOMNode extends object
@@ -1993,7 +2004,7 @@ experimental domain DOMStorage
       boolean isLocalStorage
 
   # DOM Storage item.
-  type Item extends array
+  type Item extends array of string
 
   command clear
     parameters
@@ -2111,6 +2122,9 @@ experimental domain DeviceOrientation
 
 # This domain emulates different environments for the page.
 domain Emulation
+  depends on DOM
+  depends on Page
+  depends on Runtime
 
   # Screen orientation.
   type ScreenOrientation extends object
@@ -2291,6 +2305,8 @@ domain Emulation
 
 # This domain provides experimental commands only supported in headless mode.
 experimental domain HeadlessExperimental
+  depends on Page
+  depends on Runtime
 
   # Encoding options for a screenshot.
   type ScreenshotParams extends object
@@ -2385,6 +2401,7 @@ domain IO
       string uuid
 
 experimental domain IndexedDB
+  depends on Runtime
 
   # Database with an array of object stores.
   type DatabaseWithObjectStores extends object
@@ -2778,6 +2795,7 @@ experimental domain Inspector
   event targetCrashed
 
 experimental domain LayerTree
+  depends on DOM
 
   # Unique Layer identifier.
   type LayerId extends string
@@ -2856,7 +2874,7 @@ experimental domain LayerTree
       optional StickyPositionConstraint stickyPositionConstraint
 
   # Array of timings, one per paint step.
-  type PaintProfile extends array
+  type PaintProfile extends array of number
 
   # Provides the reasons why the given layer was composited.
   command compositingReasons
@@ -2949,6 +2967,8 @@ experimental domain LayerTree
 
 # Provides access to log entries.
 domain Log
+  depends on Runtime
+  depends on Network
 
   # Log entry.
   type LogEntry extends object
@@ -3062,6 +3082,9 @@ experimental domain Memory
 # Network domain allows tracking network activities of the page. It exposes information about http,
 # file, data and other requests and responses, their headers, bodies, timing, etc.
 domain Network
+  depends on Debugger
+  depends on Runtime
+  depends on Security
 
   # Unique loader identifier.
   type LoaderId extends string
@@ -3895,6 +3918,9 @@ domain Network
 
 # This domain provides various functionality related to drawing atop the inspected page.
 experimental domain Overlay
+  depends on DOM
+  depends on Page
+  depends on Runtime
 
   # Configuration data for the highlighting of page elements.
   type HighlightConfig extends object
@@ -4068,6 +4094,9 @@ experimental domain Overlay
 
 # Actions and events related to the inspected page belong to the page domain.
 domain Page
+  depends on Debugger
+  depends on DOM
+  depends on Network
 
   # Resource type as it was perceived by the rendering engine.
   type ResourceType extends string
@@ -5375,6 +5404,7 @@ experimental domain Tethering
       string connectionId
 
 experimental domain Tracing
+  depends on IO
 
   # Configuration for memory dump. Used only when "memory-infra" category is enabled.
   type MemoryDumpConfig extends object

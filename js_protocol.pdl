@@ -8,6 +8,7 @@ version
 
 # This domain is deprecated - use Runtime or Log instead.
 deprecated domain Console
+  depends on Runtime
 
   # Console message.
   type ConsoleMessage extends object
@@ -60,6 +61,7 @@ deprecated domain Console
 # Debugger domain exposes JavaScript debugging capabilities. It allows setting and removing
 # breakpoints, stepping through execution, exploring stack traces, etc.
 domain Debugger
+  depends on Runtime
 
   # Breakpoint identifier.
   type BreakpointId extends string
@@ -526,6 +528,7 @@ domain Debugger
       experimental optional Runtime.StackTrace stackTrace
 
 experimental domain HeapProfiler
+  depends on Runtime
 
   # Heap snapshot object id.
   type HeapSnapshotObjectId extends string
@@ -635,6 +638,8 @@ experimental domain HeapProfiler
   event resetProfiles
 
 domain Profiler
+  depends on Runtime
+  depends on Debugger
 
   # Profile node. Holds callsite information, execution statistics and child nodes.
   type ProfileNode extends object

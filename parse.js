@@ -8,9 +8,15 @@ let item;
 let subitems;
 let description;
 
-const primitiveTypes = new Set(['integer', 'number', 'boolean', 'string', 'ojject', 'any']);
+const primitiveTypes = new Set(['integer', 'number', 'boolean', 'string', 'object', 'any', 'array']);
 
-function assignType(item, type) {
+function assignType(item, type, isArray) {
+  if (isArray) {
+    item.type = 'array';
+    item.items = {};
+    assignType(item.items, type);
+    return;
+  }
   if (type === 'enum')
     type = 'string';
   if (primitiveTypes.has(type))
@@ -57,12 +63,21 @@ function parse(data) {
       continue;
     }
 
-    match = line.match(/^  (experimental )?(deprecated )?type (.*) extends (.*)/);
+    match = line.match(/^  depends on ([^\s]+)/);
+    if (match) {
+      if (!domain.dependencies)
+        domain.dependencies = [];
+      domain.dependencies.push(match[1]);
+      continue;
+    }
+
+    match = line.match(/^  (experimental )?(deprecated )?type (.*) extends (array of )?([^\s]+)?/);
     if (match) {
       if (!domain.types)
         domain.types = [];
-      item = createItem(match[1], match[2], match[3]);
-      assignType(item, match[4]);
+      item = createItem(match[1], match[2]);
+      item.id = match[3];
+      assignType(item, match[5], match[4]);
       domain.types.push(item);
       continue;
     }
@@ -89,13 +104,7 @@ function parse(data) {
       let param = createItem(match[1], match[6]);
       if (match[3])
         param.optional = true;
-      if (match[4]) {
-        param.type = 'array';
-        param.items = {};
-        assignType(param.items, match[5]);
-      } else {
-        assignType(param, match[5]);
-      }
+      assignType(param, match[5], match[4]);
       if (match[5] === 'enum')
         enumliterals = param.enum = [];
       subitems.push(param);

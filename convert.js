@@ -29,6 +29,11 @@ version
       result.push(``);
       printDescription(result, domain.description, ``);
       result.push(`${domain.experimental ? 'experimental ' : ''}${domain.deprecated ? 'deprecated ' : ''}domain ${domain.domain}`);
+
+      (domain.dependencies || []).forEach(dep => {
+        result.push(`  depends on ${dep}`);
+      });
+
       (domain.types || []).forEach(type => printType(result, type));
 
       if (domain.commands)
@@ -47,7 +52,10 @@ version
 function printType(result, type) {
   result.push(``);
   printDescription(result, type.description, `  `);
-  result.push(`  ${type.experimental ? 'experimental ' : ''}${type.deprecated ? 'deprecated ' : ''}type ${type.id} extends ${type.type}`);
+  let typename = type.type;
+  if (typename === 'array')
+    typename = `array of ${type.items['$ref'] || type.items.type}`;
+  result.push(`  ${type.experimental ? 'experimental ' : ''}${type.deprecated ? 'deprecated ' : ''}type ${type.id} extends ${typename}`);
   if (type.properties && type.properties.length) {
     result.push(`    properties`);
     type.properties.forEach(param => printParam(result, param));

@@ -9,14 +9,20 @@ item = None
 subitems = None
 description = ''
 
-primitiveTypes = ['integer', 'number', 'boolean', 'string', 'ojject', 'any']
+primitiveTypes = ['integer', 'number', 'boolean', 'string', 'object', 'any', 'array']
 
 def main():
   with open(pdl_file) as f: content = f.read()
   parse(content)
 
 
-def assignType(item, type):
+def assignType(item, type, isArray=False):
+  if isArray:
+    item['type'] = 'array'
+    item['items'] = {}
+    assignType(item['items'], type)
+    return
+
   if type == 'enum':
     type = 'string'
   if type in primitiveTypes:
@@ -25,7 +31,7 @@ def assignType(item, type):
     item['$ref'] = type
 
 
-def createItem(experimental, deprecated, name=''):
+def createItem(experimental, deprecated, name=None):
   result = {}
   if experimental:
     result['experimental'] = True
@@ -63,12 +69,20 @@ def parse(data):
       protocol['domains'].append(domain)
       continue
 
-    match = re.compile('^  (experimental )?(deprecated )?type (.*) extends (.*)').match(line)
+    match = re.compile('^  depends on ([^\s]+)').match(line)
+    if match:
+      if not 'dependencies' in domain:
+        domain['dependencies'] = []
+      domain['dependencies'].append(match.group(1))
+      continue
+
+    match = re.compile('^  (experimental )?(deprecated )?type (.*) extends (array of )?([^\s]+)').match(line)
     if match:
       if not 'types' in domain:
         domain['types'] = []
-      item = createItem(match.group(1), match.group(2), match.group(3))
-      assignType(item, match.group(4))
+      item = createItem(match.group(1), match.group(2))
+      item['id'] = match.group(3)
+      assignType(item, match.group(5), match.group(4))
       domain['types'].append(item)
       continue
 
@@ -95,12 +109,7 @@ def parse(data):
       param = createItem(match.group(1), match.group(2), match.group(6))
       if match.group(3):
         param['optional'] = True
-      if match.group(4):
-        param['type'] = 'array'
-        param['items'] = {}
-        assignType(param['items'], match.group(5))
-      else:
-        assignType(param, match.group(5))
+      assignType(param, match.group(5), match.group(4))
       if match.group(5) == 'enum':
         enumliterals = param['enum'] = []
       subitems.append(param)
@@ -149,12 +158,14 @@ def main(argv):
         sys.stderr.write("Usage: %s <protocol.pdl> <out_protocol.json>\n" % sys.argv[0])
         return 1
 
-    input_file = open(os.path.normpath(argv[0]), "r")
+    input_file = open(os.path.normpath(argv[1]), "r")
     pdl_string = input_file.read()
     parse(pdl_string)
-    output_file = open(argv[-1], "w")
+    output_file = open(argv[1].replace('.pdl', '.json'), "w")
     json.dump(protocol, output_file, indent=4, sort_keys=False, separators=(',', ': '))
     output_file.close()
+    with open(os.path.normpath(argv[0]), 'a') as _:
+      pass
 
 
 if __name__ == '__main__':
