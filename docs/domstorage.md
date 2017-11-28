@@ -3,49 +3,77 @@
 
 Query and modify DOM storage.
 
-#### DOMStorage.clear()
-- parameters
-  - `storageId` <StorageId> 
+#### type: DOMStorage.StorageId = object
 
-#### DOMStorage.disable()
+DOM Storage identifier.
+
+*properties*
+  - `securityOrigin` <string]> Security origin for the storage
+  - `isLocalStorage` <boolean]> Whether the storage is local storage (not session storage)
+
+#### type: DOMStorage.Item = array
+
+DOM Storage item.
+
+#### command: DOMStorage.clear()
+
+*parameters*
+- `storageId` <[DOMStorage.StorageId]]> 
+
+#### command: DOMStorage.disable()
 
 Disables storage tracking, prevents storage events from being sent to the client.
 
-#### DOMStorage.enable()
+#### command: DOMStorage.enable()
 
 Enables storage tracking, storage events will now be delivered to the client.
 
-#### DOMStorage.getDOMStorageItems()
-- parameters
-  - `storageId` <StorageId> 
-- returns
-  - `entries` array of <Item> 
+#### command: DOMStorage.getDOMStorageItems()
 
-#### DOMStorage.removeDOMStorageItem()
-- parameters
-  - `storageId` <StorageId> 
-  - `key` <[string]> 
+*parameters*
+- `storageId` <[DOMStorage.StorageId]]> 
 
-#### DOMStorage.setDOMStorageItem()
-- parameters
-  - `storageId` <StorageId> 
-  - `key` <[string]> 
-  - `value` <[string]> 
+*returns*
+- `entries` <array of [DOMStorage.Item]> 
+
+#### command: DOMStorage.removeDOMStorageItem()
+
+*parameters*
+- `storageId` <[DOMStorage.StorageId]]> 
+- `key` <string]> 
+
+#### command: DOMStorage.setDOMStorageItem()
+
+*parameters*
+- `storageId` <[DOMStorage.StorageId]]> 
+- `key` <string]> 
+- `value` <string]> 
 
 #### event: DOMStorage.domStorageItemAdded
-- `storageId` <StorageId> 
-- `key` <[string]> 
-- `newValue` <[string]> 
+
+*returns*
+- `storageId` <[DOMStorage.StorageId]]> 
+- `key` <string]> 
+- `newValue` <string]> 
 
 #### event: DOMStorage.domStorageItemRemoved
-- `storageId` <StorageId> 
-- `key` <[string]> 
+
+*returns*
+- `storageId` <[DOMStorage.StorageId]]> 
+- `key` <string]> 
 
 #### event: DOMStorage.domStorageItemUpdated
-- `storageId` <StorageId> 
-- `key` <[string]> 
-- `oldValue` <[string]> 
-- `newValue` <[string]> 
+
+*returns*
+- `storageId` <[DOMStorage.StorageId]]> 
+- `key` <string]> 
+- `oldValue` <string]> 
+- `newValue` <string]> 
 
 #### event: DOMStorage.domStorageItemsCleared
-- `storageId` <StorageId> 
+
+*returns*
+- `storageId` <[DOMStorage.StorageId]]> 
+
+[DOMStorage.StorageId]: domstorage.md#domstoragestorageid
+[DOMStorage.Item]: domstorage.md#domstorageitem

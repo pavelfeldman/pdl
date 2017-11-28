@@ -165,12 +165,18 @@ function parse(data) {
   return protocol;
 }
 
-function mdType(parameter) {
-  if (parameter.type === 'array')
-    return `array of ${mdType(parameter.items)}`;
-  if (parameter.type)
-    return `<[${parameter.type}]>`;
-  return `<${parameter['$ref']}>`;
+function fqType(type, domain, usedTypes) {
+  const result = type.includes('.') ? type : domain.domain + '.' + type;
+  usedTypes.add(result);
+  return result;
+}
+
+function mdType(parameter, domain, usedTypes) {
+  if (parameter.type === 'array') {
+    const items = parameter.items;
+    return `<array of ${items.type ? items.type : '[' + fqType(items['$ref'], domain, usedTypes) + ']'}>`;
+  }
+  return `<${parameter.type ? parameter.type  : '[' + fqType(parameter['$ref'], domain, usedTypes) + ']'}]>`;
 }
 
 function formatDescription(item) {
@@ -184,33 +190,54 @@ function formatDescription(item) {
 function markdown(schema) {
   for (let domain of schema.domains) {
     const result = [];
+    const usedTypes = new Set();
     result.push(`\n### domain: ${domain.domain}`);
     if (domain.description)
       result.push(`\n${domain.description}`);
 
+    for (let type of (domain.types || [])) {
+      result.push(`\n#### type: ${domain.domain}.${type.id} = ${type.type}`);
+      if (type.description)
+        result.push(`\n${type.description}`);
+      if (type.properties && type.properties.length) {
+        result.push(`\n*properties*`);
+        for (let property of type.properties)
+          result.push(`  - \`${property.name}\` ${mdType(property, domain, usedTypes)} ${formatDescription(property)}`);
+      }
+    }
+
     for (let command of (domain.commands || [])) {
-      result.push(`\n#### ${domain.domain}.${command.name}()`);
-      if (command.parameters && command.parameters.length) {
-        result.push(`- parameters`);
-        for (let parameter of command.parameters)
-          result.push(`  - \`${parameter.name}\` ${mdType(parameter)} ${formatDescription(parameter)}`);
-      }
-      if (command.returns && command.returns.length) {
-        result.push(`- returns`);
-        for (let parameter of command.returns)
-          result.push(`  - \`${parameter.name}\` ${mdType(parameter)} ${formatDescription(parameter)}`);
-      }
+      result.push(`\n#### command: ${domain.domain}.${command.name}()`);
       if (command.description)
         result.push(`\n${command.description}`);
+      if (command.parameters && command.parameters.length) {
+        result.push(`\n*parameters*`);
+        for (let parameter of command.parameters)
+          result.push(`- \`${parameter.name}\` ${mdType(parameter, domain, usedTypes)} ${formatDescription(parameter)}`);
+      }
+      if (command.returns && command.returns.length) {
+        result.push(`\n*returns*`);
+        for (let parameter of command.returns)
+          result.push(`- \`${parameter.name}\` ${mdType(parameter, domain, usedTypes)} ${formatDescription(parameter)}`);
+      }
     }
 
     for (let event of (domain.events || [])) {
       result.push(`\n#### event: ${domain.domain}.${event.name}`);
-      for (let parameter of (event.parameters || []))
-        result.push(`- \`${parameter.name}\` ${mdType(parameter)} ${formatDescription(parameter)}`);
       if (event.description)
         result.push(`\n${event.description}`);
+      if (event.parameters && event.parameters.length) {
+        result.push(`\n*returns*`);
+        for (let parameter of event.parameters)
+          result.push(`- \`${parameter.name}\` ${mdType(parameter, domain, usedTypes)} ${formatDescription(parameter)}`);
+      }
     }
+
+    result.push(``);
+    for (let type of usedTypes) {
+      result.push(`[${type}]: ${domain.domain.toLowerCase()}.md#${type.replace('.', '').toLowerCase()}`);
+    }
+
     fs.writeFileSync(`docs/${domain.domain.toLowerCase()}.md`, result.join('\n'));
   }
 }
