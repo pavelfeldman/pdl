@@ -1,11 +1,11 @@
 const fs = require('fs')
 
-fs.readFile('js_protocol.pdl', 'utf8', (err, data) => parse(data));
+fs.readFile(process.argv[2], 'utf8', (err, data) => {
+  const schema = parse(data);
+  // console.log(JSON.stringify(schema, '', 2));
+  console.log(markdown(schema));
+});
 
-let protocol = { domains: [], version: {} };
-let domain;
-let item;
-let subitems;
 let description;
 
 const primitiveTypes = new Set(['integer', 'number', 'boolean', 'string', 'object', 'any', 'array']);
@@ -33,27 +33,35 @@ function createItem(experimental, deprecated, name) {
     result.deprecated = true;
   if (name)
     result.name = name;
-  if (description) {
+  if (description)
     result.description = description.trim();
-    description = '';
-  }
   return result;
 }
 
 function parse(data) {
+  const protocol = { domains: [], version: {} };
+  let domain;
+  let item;
+  let subitems;
+  let nukeDescription = false;
   const lines = data.split('\n');
   for (let i = 0; i < lines.length; ++i) {
+    if (nukeDescription) {
+      description = '';
+      nukeDescription = false;
+    }
     const line = lines[i];
     const trimLine = line.trim();
-    if (!trimLine) {
-      description = '';
-      continue;
-    }
 
     if (trimLine.startsWith('#')) {
-      description += trimLine.substring(1);
+      description += '\n' + trimLine.substring(2);
       continue;
+    } else {
+      nukeDescription = true;
     }
+
+    if (!trimLine)
+      continue;
 
     let match = line.match(/^(experimental )?(deprecated )?domain (.*)/);
     if (match) {
@@ -101,7 +109,7 @@ function parse(data) {
 
     match = line.match(/^      (experimental )?(deprecated )?(optional )?(array of )?([^\s]+) ([^\s]+)/);
     if (match) {
-      let param = createItem(match[1], match[6]);
+      let param = createItem(match[1], match[2], match[6]);
       if (match[3])
         param.optional = true;
       assignType(param, match[5], match[4]);
@@ -123,7 +131,7 @@ function parse(data) {
       continue;
     }
 
-    match = line.match(/^  version/);
+    match = line.match(/^version/);
     if (match)
       continue;
 
@@ -151,8 +159,25 @@ function parse(data) {
       enumliterals.push(trimLine);
       continue;
     }
-
     console.log(`Error in line: ${i+1}, ${line}`);
+
   }
-  console.log(JSON.stringify(protocol, '', 2));
+  return protocol;
+}
+
+function markdown(schema) {
+  const result = [];
+  for (let domain of schema.domains) {
+    result.push(`\n### ${domain.domain}`);
+    if (domain.description)
+      result.push(`\n${domain.description}`);
+    for (let command of (domain.commands || [])) {
+      const params = (command.parameters || []).map(p => p.name);
+      result.push(`\n#### \`${command.name}(${params.join(', ')})\``);
+      if (command.description)
+        result.push(`\n${command.description}`);
+    }
+    result.push(`\n---`);
+  }
+  return result.join('\n');
 }
