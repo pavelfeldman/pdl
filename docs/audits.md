@@ -3,8 +3,10 @@
 
 Audits domain allows investigation of page violations and possible improvements.
 
+---
 
-#### command: Audits.getEncodedResponse()
+
+#### command: Audits.getEncodedResponse
 
 Returns the response body and size if it were re-encoded with the specified settings. Only
 applies to images.
@@ -20,7 +22,7 @@ applies to images.
 -  `originalSize` <[integer]> Size before re-encoding
 -  `encodedSize` <[integer]> Size after re-encoding
 
-[Network.RequestId]: network.md#type-networkrequestid--string "Network.RequestId"
+[Network.RequestId]: network.md#type-networkrequestid "Network.RequestId"
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON boolean"
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON string"
 [number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON number"

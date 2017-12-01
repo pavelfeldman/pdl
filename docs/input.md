@@ -1,29 +1,10 @@
 
 ### domain: Input
 
-
-#### type: Input.TouchPoint = object
-
-*properties*
--  `x` <[number]> X coordinate of the event relative to the main frame's viewport in CSS pixels
--  `y` <[number]> Y coordinate of the event relative to the main frame's viewport in CSS pixels. 0 refers to
-the top of the viewport and Y increases as it proceeds towards the bottom of the viewport
-- *optional* `radiusX` <[number]> X radius of the touch area (default: 1.0)
-- *optional* `radiusY` <[number]> Y radius of the touch area (default: 1.0)
-- *optional* `rotationAngle` <[number]> Rotation angle (default: 0.0)
-- *optional* `force` <[number]> Force (default: 1.0)
-- *optional* `id` <[number]> Identifier used to track touch sources between events, must be unique within an event
+---
 
 
-#### type: Input.GestureSourceType = string
-
-
-#### type: Input.TimeSinceEpoch = number
-
-UTC time in seconds, counted from January 1, 1970.
-
-
-#### command: Input.dispatchKeyEvent()
+#### command: Input.dispatchKeyEvent
 
 Dispatches a key event to the page.
 
@@ -48,8 +29,10 @@ modifiers, keyboard layout, etc (e.g., 'AltGr') (default: "")
 - *optional* `location` <[integer]> Whether the event was from the left or right side of the keyboard. 1=Left, 2=Right (default:
 0)
 
+---
 
-#### command: Input.dispatchMouseEvent()
+
+#### command: Input.dispatchMouseEvent
 
 Dispatches a mouse event to the page.
 
@@ -66,8 +49,10 @@ the top of the viewport and Y increases as it proceeds towards the bottom of the
 - *optional* `deltaX` <[number]> X delta in CSS pixels for mouse wheel event (default: 0)
 - *optional* `deltaY` <[number]> Y delta in CSS pixels for mouse wheel event (default: 0)
 
+---
 
-#### command: Input.dispatchTouchEvent()
+
+#### command: Input.dispatchTouchEvent
 
 Dispatches a touch event to the page.
 
@@ -81,8 +66,10 @@ one by one
 (default: 0)
 - *optional* `timestamp` <[Input.TimeSinceEpoch]> Time at which the event occurred
 
+---
 
-#### command: Input.emulateTouchFromMouseEvent() 🌱
+
+#### command: Input.emulateTouchFromMouseEvent 🌱
 
 Emulates touch event from the mouse event parameters.
 
@@ -98,16 +85,20 @@ Emulates touch event from the mouse event parameters.
 (default: 0)
 - *optional* `clickCount` <[integer]> Number of times the mouse button was clicked (default: 0)
 
+---
 
-#### command: Input.setIgnoreInputEvents()
+
+#### command: Input.setIgnoreInputEvents
 
 Ignores input events (useful while auditing page).
 
 *parameters*
 -  `ignore` <[boolean]> Ignores input events processing when set to true
 
+---
 
-#### command: Input.synthesizePinchGesture() 🌱
+
+#### command: Input.synthesizePinchGesture 🌱
 
 Synthesizes a pinch gesture over a time period by issuing appropriate touch events.
 
@@ -119,8 +110,10 @@ Synthesizes a pinch gesture over a time period by issuing appropriate touch even
 - *optional* `gestureSourceType` <[Input.GestureSourceType]> Which type of input events to be generated (default: 'default', which queries the platform
 for the preferred input type)
 
+---
 
-#### command: Input.synthesizeScrollGesture() 🌱
+
+#### command: Input.synthesizeScrollGesture 🌱
 
 Synthesizes a scroll gesture over a time period by issuing appropriate touch events.
 
@@ -141,8 +134,10 @@ for the preferred input type)
 - *optional* `repeatDelayMs` <[integer]> The number of milliseconds delay between each repeat. (default: 250)
 - *optional* `interactionMarkerName` <[string]> The name of the interaction markers to generate, if not empty (default: "")
 
+---
 
-#### command: Input.synthesizeTapGesture() 🌱
+
+#### command: Input.synthesizeTapGesture 🌱
 
 Synthesizes a tap gesture over a time period by issuing appropriate touch events.
 
@@ -154,9 +149,72 @@ Synthesizes a tap gesture over a time period by issuing appropriate touch events
 - *optional* `gestureSourceType` <[Input.GestureSourceType]> Which type of input events to be generated (default: 'default', which queries the platform
 for the preferred input type)
 
-[Input.TimeSinceEpoch]: input.md#type-inputtimesinceepoch--number "Input.TimeSinceEpoch"
-[Input.TouchPoint]: input.md#type-inputtouchpoint--object "Input.TouchPoint"
-[Input.GestureSourceType]: input.md#type-inputgesturesourcetype--string "Input.GestureSourceType"
+---
+
+
+#### type: Input.TouchPoint
+
+*base type*
+- **object**
+
+*properties*
+-  `x` <[number]> X coordinate of the event relative to the main frame's viewport in CSS pixels
+-  `y` <[number]> Y coordinate of the event relative to the main frame's viewport in CSS pixels. 0 refers to
+the top of the viewport and Y increases as it proceeds towards the bottom of the viewport
+- *optional* `radiusX` <[number]> X radius of the touch area (default: 1.0)
+- *optional* `radiusY` <[number]> Y radius of the touch area (default: 1.0)
+- *optional* `rotationAngle` <[number]> Rotation angle (default: 0.0)
+- *optional* `force` <[number]> Force (default: 1.0)
+- *optional* `id` <[number]> Identifier used to track touch sources between events, must be unique within an event
+
+*accepted by command*
+- [Input.dispatchTouchEvent]
+
+---
+
+
+#### type: Input.GestureSourceType
+
+*base type*
+- **string**
+
+*accepted by command*
+- [Input.synthesizePinchGesture]
+- [Input.synthesizeScrollGesture]
+- [Input.synthesizeTapGesture]
+
+---
+
+
+#### type: Input.TimeSinceEpoch
+
+UTC time in seconds, counted from January 1, 1970.
+
+*base type*
+- **number**
+
+*accepted by command*
+- [Input.dispatchKeyEvent]
+- [Input.dispatchMouseEvent]
+- [Input.dispatchTouchEvent]
+- [Input.emulateTouchFromMouseEvent]
+
+[Input.dispatchTouchEvent]: input.md#command-inputdispatchtouchevent "Input.dispatchTouchEvent"
+[Input.synthesizePinchGesture]: input.md#command-inputsynthesizepinchgesture "Input.synthesizePinchGesture"
+[Input.synthesizeScrollGesture]: input.md#command-inputsynthesizescrollgesture "Input.synthesizeScrollGesture"
+[Input.synthesizeTapGesture]: input.md#command-inputsynthesizetapgesture "Input.synthesizeTapGesture"
+[Input.dispatchKeyEvent]: input.md#command-inputdispatchkeyevent "Input.dispatchKeyEvent"
+[Input.dispatchMouseEvent]: input.md#command-inputdispatchmouseevent "Input.dispatchMouseEvent"
+[Input.dispatchTouchEvent]: input.md#command-inputdispatchtouchevent "Input.dispatchTouchEvent"
+[Input.emulateTouchFromMouseEvent]: input.md#command-inputemulatetouchfrommouseevent "Input.emulateTouchFromMouseEvent"
+[Input.TimeSinceEpoch]: input.md#type-inputtimesinceepoch "Input.TimeSinceEpoch"
+[Input.TimeSinceEpoch]: input.md#type-inputtimesinceepoch "Input.TimeSinceEpoch"
+[Input.TouchPoint]: input.md#type-inputtouchpoint "Input.TouchPoint"
+[Input.TimeSinceEpoch]: input.md#type-inputtimesinceepoch "Input.TimeSinceEpoch"
+[Input.TimeSinceEpoch]: input.md#type-inputtimesinceepoch "Input.TimeSinceEpoch"
+[Input.GestureSourceType]: input.md#type-inputgesturesourcetype "Input.GestureSourceType"
+[Input.GestureSourceType]: input.md#type-inputgesturesourcetype "Input.GestureSourceType"
+[Input.GestureSourceType]: input.md#type-inputgesturesourcetype "Input.GestureSourceType"
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON boolean"
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON string"
 [number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON number"

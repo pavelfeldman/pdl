@@ -1,15 +1,21 @@
 
 ### domain: Inspector 🌱
 
+---
 
-#### command: Inspector.disable()
+
+#### command: Inspector.disable
 
 Disables inspector domain notifications.
 
+---
 
-#### command: Inspector.enable()
+
+#### command: Inspector.enable
 
 Enables inspector domain notifications.
+
+---
 
 
 #### event: Inspector.detached
@@ -18,6 +24,8 @@ Fired when remote debugging connection is about to be terminated. Contains detac
 
 *parameters*
 -  `reason` <[string]> The reason why connection has been terminated
+
+---
 
 
 #### event: Inspector.targetCrashed

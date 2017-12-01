@@ -1,22 +1,10 @@
 
 ### domain: Storage 🌱
 
-
-#### type: Storage.StorageType = string
-
-Enum of possible storage types.
+---
 
 
-#### type: Storage.UsageForType = object
-
-Usage for a storage type.
-
-*properties*
--  `storageType` <[Storage.StorageType]> Name of storage type
--  `usage` <[number]> Storage usage (bytes)
-
-
-#### command: Storage.clearDataForOrigin()
+#### command: Storage.clearDataForOrigin
 
 Clears storage for origin.
 
@@ -24,8 +12,10 @@ Clears storage for origin.
 -  `origin` <[string]> Security origin
 -  `storageTypes` <[string]> Comma separated origin names
 
+---
 
-#### command: Storage.getUsageAndQuota()
+
+#### command: Storage.getUsageAndQuota
 
 Returns usage and quota in bytes.
 
@@ -37,37 +27,47 @@ Returns usage and quota in bytes.
 -  `quota` <[number]> Storage quota (bytes)
 -  `usageBreakdown` <array of [Storage.UsageForType]> Storage usage per type (bytes)
 
+---
 
-#### command: Storage.trackCacheStorageForOrigin()
+
+#### command: Storage.trackCacheStorageForOrigin
 
 Registers origin to be notified when an update occurs to its cache storage list.
 
 *parameters*
 -  `origin` <[string]> Security origin
 
+---
 
-#### command: Storage.trackIndexedDBForOrigin()
+
+#### command: Storage.trackIndexedDBForOrigin
 
 Registers origin to be notified when an update occurs to its IndexedDB.
 
 *parameters*
 -  `origin` <[string]> Security origin
 
+---
 
-#### command: Storage.untrackCacheStorageForOrigin()
+
+#### command: Storage.untrackCacheStorageForOrigin
 
 Unregisters origin from receiving notifications for cache storage.
 
 *parameters*
 -  `origin` <[string]> Security origin
 
+---
 
-#### command: Storage.untrackIndexedDBForOrigin()
+
+#### command: Storage.untrackIndexedDBForOrigin
 
 Unregisters origin from receiving notifications for IndexedDB.
 
 *parameters*
 -  `origin` <[string]> Security origin
+
+---
 
 
 #### event: Storage.cacheStorageContentUpdated
@@ -78,6 +78,8 @@ A cache's contents have been modified.
 -  `origin` <[string]> Origin to update
 -  `cacheName` <[string]> Name of cache in origin
 
+---
+
 
 #### event: Storage.cacheStorageListUpdated
 
@@ -85,6 +87,8 @@ A cache has been added/deleted.
 
 *parameters*
 -  `origin` <[string]> Origin to update
+
+---
 
 
 #### event: Storage.indexedDBContentUpdated
@@ -96,6 +100,8 @@ The origin's IndexedDB object store has been modified.
 -  `databaseName` <[string]> Database to update
 -  `objectStoreName` <[string]> ObjectStore to update
 
+---
+
 
 #### event: Storage.indexedDBListUpdated
 
@@ -104,8 +110,40 @@ The origin's IndexedDB database list has been modified.
 *parameters*
 -  `origin` <[string]> Origin to update
 
-[Storage.StorageType]: storage.md#type-storagestoragetype--string "Storage.StorageType"
-[Storage.UsageForType]: storage.md#type-storageusagefortype--object "Storage.UsageForType"
+---
+
+
+#### type: Storage.StorageType
+
+Enum of possible storage types.
+
+*base type*
+- **string**
+
+*property of type*
+- [Storage.UsageForType]
+
+---
+
+
+#### type: Storage.UsageForType
+
+Usage for a storage type.
+
+*base type*
+- **object**
+
+*properties*
+-  `storageType` <[Storage.StorageType]> Name of storage type
+-  `usage` <[number]> Storage usage (bytes)
+
+*returned from command*
+- [Storage.getUsageAndQuota]
+
+[Storage.UsageForType]: storage.md#type-storageusagefortype "Storage.UsageForType"
+[Storage.getUsageAndQuota]: storage.md#command-storagegetusageandquota "Storage.getUsageAndQuota"
+[Storage.StorageType]: storage.md#type-storagestoragetype "Storage.StorageType"
+[Storage.UsageForType]: storage.md#type-storageusagefortype "Storage.UsageForType"
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON boolean"
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON string"
 [number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON number"

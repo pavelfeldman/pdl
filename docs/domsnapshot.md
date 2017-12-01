@@ -3,10 +3,33 @@
 
 This domain facilitates obtaining document snapshots with DOM, layout, and style information.
 
+---
 
-#### type: DOMSnapshot.DOMNode = object
+
+#### command: DOMSnapshot.getSnapshot
+
+Returns a document snapshot, including the full DOM tree of the root node (including iframes,
+template contents, and imported documents) in a flattened array, as well as layout and
+white-listed computed style information for the nodes. Shadow DOM in the returned DOM tree is
+flattened.
+
+*parameters*
+-  `computedStyleWhitelist` <array of [string]> Whitelist of computed styles to return
+
+*returns*
+-  `domNodes` <array of [DOMSnapshot.DOMNode]> The nodes in the DOM tree. The DOMNode at index 0 corresponds to the root document
+-  `layoutTreeNodes` <array of [DOMSnapshot.LayoutTreeNode]> The nodes in the layout tree
+-  `computedStyles` <array of [DOMSnapshot.ComputedStyle]> Whitelisted ComputedStyle properties for each node in the layout tree
+
+---
+
+
+#### type: DOMSnapshot.DOMNode
 
 A Node in the DOM tree.
+
+*base type*
+- **object**
 
 *properties*
 -  `nodeType` <[integer]> `Node`'s nodeType
@@ -42,21 +65,37 @@ any
 event listeners attached via JavaScript as well as anchor tags that naturally navigate when
 clicked
 
+*returned from command*
+- [DOMSnapshot.getSnapshot]
 
-#### type: DOMSnapshot.InlineTextBox = object
+---
+
+
+#### type: DOMSnapshot.InlineTextBox
 
 Details of post layout rendered text positions. The exact layout should not be regarded as
 stable and may change between versions.
+
+*base type*
+- **object**
 
 *properties*
 -  `boundingBox` <[DOM.Rect]> The absolute position bounding box
 -  `startCharacterIndex` <[integer]> The starting index in characters, for this post layout textbox substring
 -  `numCharacters` <[integer]> The number of characters in this post layout textbox substring
 
+*property of type*
+- [DOMSnapshot.LayoutTreeNode]
 
-#### type: DOMSnapshot.LayoutTreeNode = object
+---
+
+
+#### type: DOMSnapshot.LayoutTreeNode
 
 Details of an element in the DOM tree with a LayoutObject.
+
+*base type*
+- **object**
 
 *properties*
 -  `domNodeIndex` <[integer]> The index of the related DOM node in the `domNodes` array returned by `getSnapshot`
@@ -65,48 +104,60 @@ Details of an element in the DOM tree with a LayoutObject.
 - *optional* `inlineTextNodes` <array of [DOMSnapshot.InlineTextBox]> The post-layout inline text nodes, if any
 - *optional* `styleIndex` <[integer]> Index into the `computedStyles` array returned by `getSnapshot`
 
+*returned from command*
+- [DOMSnapshot.getSnapshot]
 
-#### type: DOMSnapshot.ComputedStyle = object
+---
+
+
+#### type: DOMSnapshot.ComputedStyle
 
 A subset of the full ComputedStyle as defined by the request whitelist.
+
+*base type*
+- **object**
 
 *properties*
 -  `properties` <array of [DOMSnapshot.NameValue]> Name/value pairs of computed style properties
 
+*returned from command*
+- [DOMSnapshot.getSnapshot]
 
-#### type: DOMSnapshot.NameValue = object
+---
+
+
+#### type: DOMSnapshot.NameValue
 
 A name/value pair.
+
+*base type*
+- **object**
 
 *properties*
 -  `name` <[string]> Attribute/property name
 -  `value` <[string]> Attribute/property value
 
+*property of type*
+- [DOMSnapshot.ComputedStyle]
+- [DOMSnapshot.DOMNode]
 
-#### command: DOMSnapshot.getSnapshot()
-
-Returns a document snapshot, including the full DOM tree of the root node (including iframes,
-template contents, and imported documents) in a flattened array, as well as layout and
-white-listed computed style information for the nodes. Shadow DOM in the returned DOM tree is
-flattened.
-
-*parameters*
--  `computedStyleWhitelist` <array of [string]> Whitelist of computed styles to return
-
-*returns*
--  `domNodes` <array of [DOMSnapshot.DOMNode]> The nodes in the DOM tree. The DOMNode at index 0 corresponds to the root document
--  `layoutTreeNodes` <array of [DOMSnapshot.LayoutTreeNode]> The nodes in the layout tree
--  `computedStyles` <array of [DOMSnapshot.ComputedStyle]> Whitelisted ComputedStyle properties for each node in the layout tree
-
-[DOM.BackendNodeId]: dom.md#type-dombackendnodeid--integer "DOM.BackendNodeId"
-[DOMSnapshot.NameValue]: domsnapshot.md#type-domsnapshotnamevalue--object "DOMSnapshot.NameValue"
-[Page.FrameId]: page.md#type-pageframeid--string "Page.FrameId"
-[DOM.PseudoType]: dom.md#type-dompseudotype--string "DOM.PseudoType"
-[DOM.Rect]: dom.md#type-domrect--object "DOM.Rect"
-[DOMSnapshot.InlineTextBox]: domsnapshot.md#type-domsnapshotinlinetextbox--object "DOMSnapshot.InlineTextBox"
-[DOMSnapshot.DOMNode]: domsnapshot.md#type-domsnapshotdomnode--object "DOMSnapshot.DOMNode"
-[DOMSnapshot.LayoutTreeNode]: domsnapshot.md#type-domsnapshotlayouttreenode--object "DOMSnapshot.LayoutTreeNode"
-[DOMSnapshot.ComputedStyle]: domsnapshot.md#type-domsnapshotcomputedstyle--object "DOMSnapshot.ComputedStyle"
+[DOMSnapshot.getSnapshot]: domsnapshot.md#command-domsnapshotgetsnapshot "DOMSnapshot.getSnapshot"
+[DOMSnapshot.LayoutTreeNode]: domsnapshot.md#type-domsnapshotlayouttreenode "DOMSnapshot.LayoutTreeNode"
+[DOMSnapshot.getSnapshot]: domsnapshot.md#command-domsnapshotgetsnapshot "DOMSnapshot.getSnapshot"
+[DOMSnapshot.getSnapshot]: domsnapshot.md#command-domsnapshotgetsnapshot "DOMSnapshot.getSnapshot"
+[DOMSnapshot.ComputedStyle]: domsnapshot.md#type-domsnapshotcomputedstyle "DOMSnapshot.ComputedStyle"
+[DOMSnapshot.DOMNode]: domsnapshot.md#type-domsnapshotdomnode "DOMSnapshot.DOMNode"
+[DOM.BackendNodeId]: dom.md#type-dombackendnodeid "DOM.BackendNodeId"
+[DOMSnapshot.NameValue]: domsnapshot.md#type-domsnapshotnamevalue "DOMSnapshot.NameValue"
+[Page.FrameId]: page.md#type-pageframeid "Page.FrameId"
+[DOM.PseudoType]: dom.md#type-dompseudotype "DOM.PseudoType"
+[DOM.Rect]: dom.md#type-domrect "DOM.Rect"
+[DOM.Rect]: dom.md#type-domrect "DOM.Rect"
+[DOMSnapshot.InlineTextBox]: domsnapshot.md#type-domsnapshotinlinetextbox "DOMSnapshot.InlineTextBox"
+[DOMSnapshot.NameValue]: domsnapshot.md#type-domsnapshotnamevalue "DOMSnapshot.NameValue"
+[DOMSnapshot.DOMNode]: domsnapshot.md#type-domsnapshotdomnode "DOMSnapshot.DOMNode"
+[DOMSnapshot.LayoutTreeNode]: domsnapshot.md#type-domsnapshotlayouttreenode "DOMSnapshot.LayoutTreeNode"
+[DOMSnapshot.ComputedStyle]: domsnapshot.md#type-domsnapshotcomputedstyle "DOMSnapshot.ComputedStyle"
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON boolean"
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON string"
 [number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON number"

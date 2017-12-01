@@ -1,13 +1,17 @@
 
 ### domain: DeviceOrientation 🌱
 
+---
 
-#### command: DeviceOrientation.clearDeviceOrientationOverride()
+
+#### command: DeviceOrientation.clearDeviceOrientationOverride
 
 Clears the overridden Device Orientation.
 
+---
 
-#### command: DeviceOrientation.setDeviceOrientationOverride()
+
+#### command: DeviceOrientation.setDeviceOrientationOverride
 
 Overrides the Device Orientation.
 

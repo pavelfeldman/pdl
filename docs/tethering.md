@@ -3,21 +3,27 @@
 
 The Tethering domain defines methods and events for browser port binding.
 
+---
 
-#### command: Tethering.bind()
+
+#### command: Tethering.bind
 
 Request browser port binding.
 
 *parameters*
 -  `port` <[integer]> Port number to bind
 
+---
 
-#### command: Tethering.unbind()
+
+#### command: Tethering.unbind
 
 Request browser port unbinding.
 
 *parameters*
 -  `port` <[integer]> Port number to unbind
+
+---
 
 
 #### event: Tethering.accepted

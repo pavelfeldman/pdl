@@ -3,155 +3,10 @@
 
 Actions and events related to the inspected page belong to the page domain.
 
-
-#### type: Page.ResourceType = string
-
-Resource type as it was perceived by the rendering engine.
+---
 
 
-#### type: Page.FrameId = string
-
-Unique frame identifier.
-
-
-#### type: Page.Frame = object
-
-Information about the Frame on the page.
-
-*properties*
--  `id` <[string]> Frame unique identifier
--  `loaderId` <[Network.LoaderId]> Identifier of the loader associated with this frame
--  `url` <[string]> Frame document's URL
--  `securityOrigin` <[string]> Frame document's security origin
--  `mimeType` <[string]> Frame document's mimeType as determined by the browser
-- *optional* `parentId` <[string]> Parent frame identifier
-- *optional* `name` <[string]> Frame's name as specified in the tag
-- *optional* `unreachableUrl` <[string]> 🌱 If the frame failed to load, this contains the URL that could not be loaded
-
-
-#### type: Page.FrameResource = object
-
-Information about the Resource on the page.
-
-*properties*
--  `url` <[string]> Resource URL
--  `type` <[Page.ResourceType]> Type of this resource
--  `mimeType` <[string]> Resource mimeType as determined by the browser
-- *optional* `lastModified` <[Network.TimeSinceEpoch]> last-modified timestamp as reported by server
-- *optional* `contentSize` <[number]> Resource content size
-- *optional* `failed` <[boolean]> True if the resource failed to load
-- *optional* `canceled` <[boolean]> True if the resource was canceled during loading
-
-
-#### type: Page.FrameResourceTree = object
-
-Information about the Frame hierarchy along with their cached resources.
-
-*properties*
--  `frame` <[Page.Frame]> Frame information for this tree item
-- *optional* `childFrames` <array of [Page.FrameResourceTree]> Child frames
--  `resources` <array of [Page.FrameResource]> Information about frame resources
-
-
-#### type: Page.FrameTree = object
-
-Information about the Frame hierarchy.
-
-*properties*
--  `frame` <[Page.Frame]> Frame information for this tree item
-- *optional* `childFrames` <array of [Page.FrameTree]> Child frames
-
-
-#### type: Page.ScriptIdentifier = string
-
-Unique script identifier.
-
-
-#### type: Page.TransitionType = string
-
-Transition type.
-
-
-#### type: Page.NavigationEntry = object
-
-Navigation history entry.
-
-*properties*
--  `id` <[integer]> Unique id of the navigation history entry
--  `url` <[string]> URL of the navigation history entry
--  `userTypedURL` <[string]> URL that the user typed in the url bar
--  `title` <[string]> Title of the navigation history entry
--  `transitionType` <[Page.TransitionType]> Transition type
-
-
-#### type: Page.ScreencastFrameMetadata = object
-
-Screencast frame metadata.
-
-*properties*
--  `offsetTop` <[number]> Top offset in DIP
--  `pageScaleFactor` <[number]> Page scale factor
--  `deviceWidth` <[number]> Device screen width in DIP
--  `deviceHeight` <[number]> Device screen height in DIP
--  `scrollOffsetX` <[number]> Position of horizontal scroll in CSS pixels
--  `scrollOffsetY` <[number]> Position of vertical scroll in CSS pixels
-- *optional* `timestamp` <[Network.TimeSinceEpoch]> Frame swap timestamp
-
-
-#### type: Page.DialogType = string
-
-Javascript dialog type.
-
-
-#### type: Page.AppManifestError = object
-
-Error while paring app manifest.
-
-*properties*
--  `message` <[string]> Error message
--  `critical` <[integer]> If criticial, this is a non-recoverable parse error
--  `line` <[integer]> Error line
--  `column` <[integer]> Error column
-
-
-#### type: Page.LayoutViewport = object
-
-Layout viewport position and dimensions.
-
-*properties*
--  `pageX` <[integer]> Horizontal offset relative to the document (CSS pixels)
--  `pageY` <[integer]> Vertical offset relative to the document (CSS pixels)
--  `clientWidth` <[integer]> Width (CSS pixels), excludes scrollbar if present
--  `clientHeight` <[integer]> Height (CSS pixels), excludes scrollbar if present
-
-
-#### type: Page.VisualViewport = object
-
-Visual viewport position, dimensions, and scale.
-
-*properties*
--  `offsetX` <[number]> Horizontal offset relative to the layout viewport (CSS pixels)
--  `offsetY` <[number]> Vertical offset relative to the layout viewport (CSS pixels)
--  `pageX` <[number]> Horizontal offset relative to the document (CSS pixels)
--  `pageY` <[number]> Vertical offset relative to the document (CSS pixels)
--  `clientWidth` <[number]> Width (CSS pixels), excludes scrollbar if present
--  `clientHeight` <[number]> Height (CSS pixels), excludes scrollbar if present
--  `scale` <[number]> Scale relative to the ideal viewport (size at width=device-width)
-
-
-#### type: Page.Viewport = object
-
-Viewport for capturing screenshot.
-
-*properties*
--  `x` <[number]> X offset in CSS pixels
--  `y` <[number]> Y offset in CSS pixels
--  `width` <[number]> Rectangle width in CSS pixels
--  `height` <[number]> Rectangle height in CSS pixels
--  `scale` <[number]> Page scale factor
-
-
-#### command: Page.addScriptToEvaluateOnLoad() 🌱 🍂
+#### command: Page.addScriptToEvaluateOnLoad 🌱 🍂
 
 Deprecated, please use addScriptToEvaluateOnNewDocument instead.
 
@@ -161,8 +16,10 @@ Deprecated, please use addScriptToEvaluateOnNewDocument instead.
 *returns*
 -  `identifier` <[Page.ScriptIdentifier]> Identifier of the added script
 
+---
 
-#### command: Page.addScriptToEvaluateOnNewDocument()
+
+#### command: Page.addScriptToEvaluateOnNewDocument
 
 Evaluates given script in every frame upon creation (before loading frame's scripts).
 
@@ -172,13 +29,17 @@ Evaluates given script in every frame upon creation (before loading frame's scri
 *returns*
 -  `identifier` <[Page.ScriptIdentifier]> Identifier of the added script
 
+---
 
-#### command: Page.bringToFront()
+
+#### command: Page.bringToFront
 
 Brings page to front (activates tab).
 
+---
 
-#### command: Page.captureScreenshot()
+
+#### command: Page.captureScreenshot
 
 Capture page screenshot.
 
@@ -191,23 +52,31 @@ Capture page screenshot.
 *returns*
 -  `data` <[string]> Base64-encoded image data
 
+---
 
-#### command: Page.clearDeviceMetricsOverride() 🌱 🍂
+
+#### command: Page.clearDeviceMetricsOverride 🌱 🍂
 
 Clears the overriden device metrics.
 
+---
 
-#### command: Page.clearDeviceOrientationOverride() 🌱 🍂
+
+#### command: Page.clearDeviceOrientationOverride 🌱 🍂
 
 Clears the overridden Device Orientation.
 
+---
 
-#### command: Page.clearGeolocationOverride() 🍂
+
+#### command: Page.clearGeolocationOverride 🍂
 
 Clears the overriden Geolocation Position and Error.
 
+---
 
-#### command: Page.createIsolatedWorld()
+
+#### command: Page.createIsolatedWorld
 
 Creates an isolated world for the given frame.
 
@@ -220,8 +89,10 @@ option, use with caution
 *returns*
 -  `executionContextId` <[Runtime.ExecutionContextId]> Execution context of the isolated world
 
+---
 
-#### command: Page.deleteCookie() 🌱 🍂
+
+#### command: Page.deleteCookie 🌱 🍂
 
 Deletes browser cookie with given name, domain and path.
 
@@ -229,26 +100,34 @@ Deletes browser cookie with given name, domain and path.
 -  `cookieName` <[string]> Name of the cookie to remove
 -  `url` <[string]> URL to match cooke domain and path
 
+---
 
-#### command: Page.disable()
+
+#### command: Page.disable
 
 Disables page domain notifications.
 
+---
 
-#### command: Page.enable()
+
+#### command: Page.enable
 
 Enables page domain notifications.
 
+---
 
-#### command: Page.getAppManifest()
+
+#### command: Page.getAppManifest
 
 *returns*
 -  `url` <[string]> Manifest location
 -  `errors` <array of [Page.AppManifestError]> 
 - *optional* `data` <[string]> Manifest content
 
+---
 
-#### command: Page.getCookies() 🌱 🍂
+
+#### command: Page.getCookies 🌱 🍂
 
 Returns all browser cookies. Depending on the backend support, will return detailed cookie
 information in the `cookies` field.
@@ -256,16 +135,20 @@ information in the `cookies` field.
 *returns*
 -  `cookies` <array of [Network.Cookie]> Array of cookie objects
 
+---
 
-#### command: Page.getFrameTree()
+
+#### command: Page.getFrameTree
 
 Returns present frame tree structure.
 
 *returns*
 -  `frameTree` <[Page.FrameTree]> Present frame tree structure
 
+---
 
-#### command: Page.getLayoutMetrics()
+
+#### command: Page.getLayoutMetrics
 
 Returns metrics relating to the layouting of the page, such as viewport bounds/scale.
 
@@ -274,8 +157,10 @@ Returns metrics relating to the layouting of the page, such as viewport bounds/s
 -  `visualViewport` <[Page.VisualViewport]> Metrics relating to the visual viewport
 -  `contentSize` <[DOM.Rect]> Size of scrollable area
 
+---
 
-#### command: Page.getNavigationHistory()
+
+#### command: Page.getNavigationHistory
 
 Returns navigation history for the current page.
 
@@ -283,8 +168,10 @@ Returns navigation history for the current page.
 -  `currentIndex` <[integer]> Index of the current navigation history entry
 -  `entries` <array of [Page.NavigationEntry]> Array of navigation history entries
 
+---
 
-#### command: Page.getResourceContent() 🌱
+
+#### command: Page.getResourceContent 🌱
 
 Returns content of the given resource.
 
@@ -296,16 +183,20 @@ Returns content of the given resource.
 -  `content` <[string]> Resource content
 -  `base64Encoded` <[boolean]> True, if content was served as base64
 
+---
 
-#### command: Page.getResourceTree() 🌱
+
+#### command: Page.getResourceTree 🌱
 
 Returns present frame / resource tree structure.
 
 *returns*
 -  `frameTree` <[Page.FrameResourceTree]> Present frame / resource tree structure
 
+---
 
-#### command: Page.handleJavaScriptDialog()
+
+#### command: Page.handleJavaScriptDialog
 
 Accepts or dismisses a JavaScript initiated dialog (alert, confirm, prompt, or onbeforeunload).
 
@@ -314,8 +205,10 @@ Accepts or dismisses a JavaScript initiated dialog (alert, confirm, prompt, or o
 - *optional* `promptText` <[string]> The text to enter into the dialog prompt before accepting. Used only if this is a prompt
 dialog
 
+---
 
-#### command: Page.navigate()
+
+#### command: Page.navigate
 
 Navigates current page to the given URL.
 
@@ -329,16 +222,20 @@ Navigates current page to the given URL.
 - *optional* `loaderId` <[Network.LoaderId]> Loader identifier
 - *optional* `errorText` <[string]> User friendly error message, present if and only if navigation has failed
 
+---
 
-#### command: Page.navigateToHistoryEntry()
+
+#### command: Page.navigateToHistoryEntry
 
 Navigates current page to the given history entry.
 
 *parameters*
 -  `entryId` <[integer]> Unique id of the entry to navigate to
 
+---
 
-#### command: Page.printToPDF()
+
+#### command: Page.printToPDF
 
 Print page as PDF.
 
@@ -361,8 +258,10 @@ Defaults to false
 *returns*
 -  `data` <[string]> Base64-encoded pdf data
 
+---
 
-#### command: Page.reload()
+
+#### command: Page.reload
 
 Reloads given page optionally ignoring the cache.
 
@@ -370,35 +269,45 @@ Reloads given page optionally ignoring the cache.
 - *optional* `ignoreCache` <[boolean]> If true, browser cache is ignored (as if the user pressed Shift+refresh)
 - *optional* `scriptToEvaluateOnLoad` <[string]> If set, the script will be injected into all frames of the inspected page after reload
 
+---
 
-#### command: Page.removeScriptToEvaluateOnLoad() 🌱 🍂
+
+#### command: Page.removeScriptToEvaluateOnLoad 🌱 🍂
 
 Deprecated, please use removeScriptToEvaluateOnNewDocument instead.
 
 *parameters*
 -  `identifier` <[Page.ScriptIdentifier]> 
 
+---
 
-#### command: Page.removeScriptToEvaluateOnNewDocument()
+
+#### command: Page.removeScriptToEvaluateOnNewDocument
 
 Removes given script from the list.
 
 *parameters*
 -  `identifier` <[Page.ScriptIdentifier]> 
 
+---
 
-#### command: Page.requestAppBanner() 🌱
+
+#### command: Page.requestAppBanner 🌱
+
+---
 
 
-#### command: Page.screencastFrameAck() 🌱
+#### command: Page.screencastFrameAck 🌱
 
 Acknowledges that a screencast frame has been received by the frontend.
 
 *parameters*
 -  `sessionId` <[integer]> Frame number
 
+---
 
-#### command: Page.searchInResource() 🌱
+
+#### command: Page.searchInResource 🌱
 
 Searches for given string in resource content.
 
@@ -412,24 +321,30 @@ Searches for given string in resource content.
 *returns*
 -  `result` <array of [Debugger.SearchMatch]> List of search matches
 
+---
 
-#### command: Page.setAdBlockingEnabled() 🌱
+
+#### command: Page.setAdBlockingEnabled 🌱
 
 Enable Chrome's experimental ad filter on all sites.
 
 *parameters*
 -  `enabled` <[boolean]> Whether to block ads
 
+---
 
-#### command: Page.setAutoAttachToCreatedPages() 🌱
+
+#### command: Page.setAutoAttachToCreatedPages 🌱
 
 Controls whether browser will open a new inspector window for connected pages.
 
 *parameters*
 -  `autoAttach` <[boolean]> If true, browser will open a new inspector window for every page created from this one
 
+---
 
-#### command: Page.setDeviceMetricsOverride() 🌱 🍂
+
+#### command: Page.setDeviceMetricsOverride 🌱 🍂
 
 Overrides the values of device screen dimensions (window.screen.width, window.screen.height,
 window.innerWidth, window.innerHeight, and "device-width"/"device-height"-related CSS media
@@ -450,8 +365,10 @@ autosizing and more
 - *optional* `screenOrientation` <[Emulation.ScreenOrientation]> Screen orientation override
 - *optional* `viewport` <[Page.Viewport]> The viewport dimensions and scale. If not set, the override is cleared
 
+---
 
-#### command: Page.setDeviceOrientationOverride() 🌱 🍂
+
+#### command: Page.setDeviceOrientationOverride 🌱 🍂
 
 Overrides the Device Orientation.
 
@@ -460,8 +377,10 @@ Overrides the Device Orientation.
 -  `beta` <[number]> Mock beta
 -  `gamma` <[number]> Mock gamma
 
+---
 
-#### command: Page.setDocumentContent()
+
+#### command: Page.setDocumentContent
 
 Sets given markup as the document's HTML.
 
@@ -469,8 +388,10 @@ Sets given markup as the document's HTML.
 -  `frameId` <[Page.FrameId]> Frame id to set HTML for
 -  `html` <[string]> HTML content to set
 
+---
 
-#### command: Page.setDownloadBehavior() 🌱
+
+#### command: Page.setDownloadBehavior 🌱
 
 Set the behavior when downloading a file.
 
@@ -479,8 +400,10 @@ Set the behavior when downloading a file.
 available (otherwise deny)
 - *optional* `downloadPath` <[string]> The default path to save downloaded files to. This is requred if behavior is set to 'allow'
 
+---
 
-#### command: Page.setGeolocationOverride() 🍂
+
+#### command: Page.setGeolocationOverride 🍂
 
 Overrides the Geolocation Position or Error. Omitting any of the parameters emulates position
 unavailable.
@@ -490,16 +413,20 @@ unavailable.
 - *optional* `longitude` <[number]> Mock longitude
 - *optional* `accuracy` <[number]> Mock accuracy
 
+---
 
-#### command: Page.setLifecycleEventsEnabled() 🌱
+
+#### command: Page.setLifecycleEventsEnabled 🌱
 
 Controls whether page will emit lifecycle events.
 
 *parameters*
 -  `enabled` <[boolean]> If true, starts emitting lifecycle events
 
+---
 
-#### command: Page.setTouchEmulationEnabled() 🌱 🍂
+
+#### command: Page.setTouchEmulationEnabled 🌱 🍂
 
 Toggles mouse event-based touch event emulation.
 
@@ -507,8 +434,10 @@ Toggles mouse event-based touch event emulation.
 -  `enabled` <[boolean]> Whether the touch event emulation should be enabled
 - *optional* `configuration` <[string]> Touch/gesture events configuration. Default: current platform
 
+---
 
-#### command: Page.startScreencast() 🌱
+
+#### command: Page.startScreencast 🌱
 
 Starts sending each frame using the `screencastFrame` event.
 
@@ -519,21 +448,29 @@ Starts sending each frame using the `screencastFrame` event.
 - *optional* `maxHeight` <[integer]> Maximum screenshot height
 - *optional* `everyNthFrame` <[integer]> Send every n-th frame
 
+---
 
-#### command: Page.stopLoading()
+
+#### command: Page.stopLoading
 
 Force the page stop all navigations and pending resource fetches.
 
+---
 
-#### command: Page.stopScreencast() 🌱
+
+#### command: Page.stopScreencast 🌱
 
 Stops sending each frame in the `screencastFrame`.
+
+---
 
 
 #### event: Page.domContentEventFired
 
 *parameters*
 -  `timestamp` <[Network.MonotonicTime]> 
+
+---
 
 
 #### event: Page.frameAttached
@@ -545,6 +482,8 @@ Fired when frame has been attached to its parent.
 -  `parentFrameId` <[Page.FrameId]> Parent frame identifier
 - *optional* `stack` <[Runtime.StackTrace]> JavaScript stack trace of when frame was attached, only set if frame initiated from script
 
+---
+
 
 #### event: Page.frameClearedScheduledNavigation 🌱
 
@@ -552,6 +491,8 @@ Fired when frame no longer has a scheduled navigation.
 
 *parameters*
 -  `frameId` <[Page.FrameId]> Id of the frame that has cleared its scheduled navigation
+
+---
 
 
 #### event: Page.frameDetached
@@ -561,6 +502,8 @@ Fired when frame has been detached from its parent.
 *parameters*
 -  `frameId` <[Page.FrameId]> Id of the frame that has been detached
 
+---
+
 
 #### event: Page.frameNavigated
 
@@ -569,8 +512,12 @@ Fired once navigation of the frame has completed. Frame is now associated with t
 *parameters*
 -  `frame` <[Page.Frame]> Frame object
 
+---
+
 
 #### event: Page.frameResized 🌱
+
+---
 
 
 #### event: Page.frameScheduledNavigation 🌱
@@ -584,6 +531,8 @@ guaranteed to start
 -  `reason` <[string]> The reason for the navigation
 -  `url` <[string]> The destination URL for the scheduled navigation
 
+---
+
 
 #### event: Page.frameStartedLoading 🌱
 
@@ -591,6 +540,8 @@ Fired when frame has started loading.
 
 *parameters*
 -  `frameId` <[Page.FrameId]> Id of the frame that has started loading
+
+---
 
 
 #### event: Page.frameStoppedLoading 🌱
@@ -600,15 +551,21 @@ Fired when frame has stopped loading.
 *parameters*
 -  `frameId` <[Page.FrameId]> Id of the frame that has stopped loading
 
+---
+
 
 #### event: Page.interstitialHidden
 
 Fired when interstitial page was hidden
 
+---
+
 
 #### event: Page.interstitialShown
 
 Fired when interstitial page was shown
+
+---
 
 
 #### event: Page.javascriptDialogClosed
@@ -619,6 +576,8 @@ closed.
 *parameters*
 -  `result` <[boolean]> Whether dialog was confirmed
 -  `userInput` <[string]> User input in case of prompt
+
+---
 
 
 #### event: Page.javascriptDialogOpening
@@ -632,6 +591,8 @@ open.
 -  `type` <[Page.DialogType]> Dialog type
 - *optional* `defaultPrompt` <[string]> Default dialog prompt
 
+---
+
 
 #### event: Page.lifecycleEvent
 
@@ -643,11 +604,15 @@ Fired for top level page lifecycle events such as navigation, load, paint, etc.
 -  `name` <[string]> 
 -  `timestamp` <[Network.MonotonicTime]> 
 
+---
+
 
 #### event: Page.loadEventFired
 
 *parameters*
 -  `timestamp` <[Network.MonotonicTime]> 
+
+---
 
 
 #### event: Page.screencastFrame 🌱
@@ -659,6 +624,8 @@ Compressed image data requested by the `startScreencast`.
 -  `metadata` <[Page.ScreencastFrameMetadata]> Screencast frame metadata
 -  `sessionId` <[integer]> Frame number
 
+---
+
 
 #### event: Page.screencastVisibilityChanged 🌱
 
@@ -666,6 +633,8 @@ Fired when the page with currently enabled screencast was shown or hidden `.
 
 *parameters*
 -  `visible` <[boolean]> True if the page is visible
+
+---
 
 
 #### event: Page.windowOpen
@@ -679,30 +648,437 @@ etc.
 -  `windowFeatures` <array of [string]> An array of enabled window features
 -  `userGesture` <[boolean]> Whether or not it was triggered by user gesture
 
-[Network.LoaderId]: network.md#type-networkloaderid--string "Network.LoaderId"
-[Page.ResourceType]: page.md#type-pageresourcetype--string "Page.ResourceType"
-[Network.TimeSinceEpoch]: network.md#type-networktimesinceepoch--number "Network.TimeSinceEpoch"
-[Page.Frame]: page.md#type-pageframe--object "Page.Frame"
-[Page.FrameResourceTree]: page.md#type-pageframeresourcetree--object "Page.FrameResourceTree"
-[Page.FrameResource]: page.md#type-pageframeresource--object "Page.FrameResource"
-[Page.FrameTree]: page.md#type-pageframetree--object "Page.FrameTree"
-[Page.TransitionType]: page.md#type-pagetransitiontype--string "Page.TransitionType"
-[Page.ScriptIdentifier]: page.md#type-pagescriptidentifier--string "Page.ScriptIdentifier"
-[Page.Viewport]: page.md#type-pageviewport--object "Page.Viewport"
-[Page.FrameId]: page.md#type-pageframeid--string "Page.FrameId"
-[Runtime.ExecutionContextId]: runtime.md#type-runtimeexecutioncontextid--integer "Runtime.ExecutionContextId"
-[Page.AppManifestError]: page.md#type-pageappmanifesterror--object "Page.AppManifestError"
-[Network.Cookie]: network.md#type-networkcookie--object "Network.Cookie"
-[Page.LayoutViewport]: page.md#type-pagelayoutviewport--object "Page.LayoutViewport"
-[Page.VisualViewport]: page.md#type-pagevisualviewport--object "Page.VisualViewport"
-[DOM.Rect]: dom.md#type-domrect--object "DOM.Rect"
-[Page.NavigationEntry]: page.md#type-pagenavigationentry--object "Page.NavigationEntry"
-[Debugger.SearchMatch]: debugger.md#type-debuggersearchmatch--object "Debugger.SearchMatch"
-[Emulation.ScreenOrientation]: emulation.md#type-emulationscreenorientation--object "Emulation.ScreenOrientation"
-[Network.MonotonicTime]: network.md#type-networkmonotonictime--number "Network.MonotonicTime"
-[Runtime.StackTrace]: runtime.md#type-runtimestacktrace--object "Runtime.StackTrace"
-[Page.DialogType]: page.md#type-pagedialogtype--string "Page.DialogType"
-[Page.ScreencastFrameMetadata]: page.md#type-pagescreencastframemetadata--object "Page.ScreencastFrameMetadata"
+---
+
+
+#### type: Page.ResourceType
+
+Resource type as it was perceived by the rendering engine.
+
+*base type*
+- **string**
+
+*property of type*
+- [Network.CachedResource]
+- [Page.FrameResource]
+- [Network.RequestPattern]
+
+*parameter in event*
+- [Network.loadingFailed]
+- [Network.requestIntercepted]
+- [Network.requestWillBeSent]
+- [Network.responseReceived]
+
+---
+
+
+#### type: Page.FrameId
+
+Unique frame identifier.
+
+*base type*
+- **string**
+
+*property of type*
+- [CSS.CSSStyleSheetHeader]
+- [DOMSnapshot.DOMNode]
+- [ApplicationCache.FrameWithManifest]
+- [DOM.Node]
+
+*accepted by command*
+- [Page.createIsolatedWorld]
+- [CSS.createStyleSheet]
+- [ApplicationCache.getApplicationCacheForFrame]
+- [ApplicationCache.getManifestForFrame]
+- [Page.getResourceContent]
+- [Overlay.highlightFrame]
+- [Page.searchInResource]
+- [Page.setDocumentContent]
+
+*parameter in event*
+- [ApplicationCache.applicationCacheStatusUpdated]
+- [Page.frameAttached]
+- [Page.frameClearedScheduledNavigation]
+- [Page.frameDetached]
+- [Page.frameScheduledNavigation]
+- [Page.frameStartedLoading]
+- [Page.frameStoppedLoading]
+- [Page.lifecycleEvent]
+- [Network.requestIntercepted]
+- [Network.requestWillBeSent]
+- [Network.responseReceived]
+
+*returned from command*
+- [Page.navigate]
+
+---
+
+
+#### type: Page.Frame
+
+Information about the Frame on the page.
+
+*base type*
+- **object**
+
+*properties*
+-  `id` <[string]> Frame unique identifier
+-  `loaderId` <[Network.LoaderId]> Identifier of the loader associated with this frame
+-  `url` <[string]> Frame document's URL
+-  `securityOrigin` <[string]> Frame document's security origin
+-  `mimeType` <[string]> Frame document's mimeType as determined by the browser
+- *optional* `parentId` <[string]> Parent frame identifier
+- *optional* `name` <[string]> Frame's name as specified in the tag
+- *optional* `unreachableUrl` <[string]> 🌱 If the frame failed to load, this contains the URL that could not be loaded
+
+*property of type*
+- [Page.FrameResourceTree]
+- [Page.FrameTree]
+
+*parameter in event*
+- [Page.frameNavigated]
+
+---
+
+
+#### type: Page.FrameResource
+
+Information about the Resource on the page.
+
+*base type*
+- **object**
+
+*properties*
+-  `url` <[string]> Resource URL
+-  `type` <[Page.ResourceType]> Type of this resource
+-  `mimeType` <[string]> Resource mimeType as determined by the browser
+- *optional* `lastModified` <[Network.TimeSinceEpoch]> last-modified timestamp as reported by server
+- *optional* `contentSize` <[number]> Resource content size
+- *optional* `failed` <[boolean]> True if the resource failed to load
+- *optional* `canceled` <[boolean]> True if the resource was canceled during loading
+
+*property of type*
+- [Page.FrameResourceTree]
+
+---
+
+
+#### type: Page.FrameResourceTree
+
+Information about the Frame hierarchy along with their cached resources.
+
+*base type*
+- **object**
+
+*properties*
+-  `frame` <[Page.Frame]> Frame information for this tree item
+- *optional* `childFrames` <array of [Page.FrameResourceTree]> Child frames
+-  `resources` <array of [Page.FrameResource]> Information about frame resources
+
+*property of type*
+- [Page.FrameResourceTree]
+
+*returned from command*
+- [Page.getResourceTree]
+
+---
+
+
+#### type: Page.FrameTree
+
+Information about the Frame hierarchy.
+
+*base type*
+- **object**
+
+*properties*
+-  `frame` <[Page.Frame]> Frame information for this tree item
+- *optional* `childFrames` <array of [Page.FrameTree]> Child frames
+
+*property of type*
+- [Page.FrameTree]
+
+*returned from command*
+- [Page.getFrameTree]
+
+---
+
+
+#### type: Page.ScriptIdentifier
+
+Unique script identifier.
+
+*base type*
+- **string**
+
+*returned from command*
+- [Page.addScriptToEvaluateOnLoad]
+- [Page.addScriptToEvaluateOnNewDocument]
+
+*accepted by command*
+- [Page.removeScriptToEvaluateOnLoad]
+- [Page.removeScriptToEvaluateOnNewDocument]
+
+---
+
+
+#### type: Page.TransitionType
+
+Transition type.
+
+*base type*
+- **string**
+
+*property of type*
+- [Page.NavigationEntry]
+
+*accepted by command*
+- [Page.navigate]
+
+---
+
+
+#### type: Page.NavigationEntry
+
+Navigation history entry.
+
+*base type*
+- **object**
+
+*properties*
+-  `id` <[integer]> Unique id of the navigation history entry
+-  `url` <[string]> URL of the navigation history entry
+-  `userTypedURL` <[string]> URL that the user typed in the url bar
+-  `title` <[string]> Title of the navigation history entry
+-  `transitionType` <[Page.TransitionType]> Transition type
+
+*returned from command*
+- [Page.getNavigationHistory]
+
+---
+
+
+#### type: Page.ScreencastFrameMetadata
+
+Screencast frame metadata.
+
+*base type*
+- **object**
+
+*properties*
+-  `offsetTop` <[number]> Top offset in DIP
+-  `pageScaleFactor` <[number]> Page scale factor
+-  `deviceWidth` <[number]> Device screen width in DIP
+-  `deviceHeight` <[number]> Device screen height in DIP
+-  `scrollOffsetX` <[number]> Position of horizontal scroll in CSS pixels
+-  `scrollOffsetY` <[number]> Position of vertical scroll in CSS pixels
+- *optional* `timestamp` <[Network.TimeSinceEpoch]> Frame swap timestamp
+
+*parameter in event*
+- [Page.screencastFrame]
+
+---
+
+
+#### type: Page.DialogType
+
+Javascript dialog type.
+
+*base type*
+- **string**
+
+*parameter in event*
+- [Page.javascriptDialogOpening]
+
+---
+
+
+#### type: Page.AppManifestError
+
+Error while paring app manifest.
+
+*base type*
+- **object**
+
+*properties*
+-  `message` <[string]> Error message
+-  `critical` <[integer]> If criticial, this is a non-recoverable parse error
+-  `line` <[integer]> Error line
+-  `column` <[integer]> Error column
+
+*returned from command*
+- [Page.getAppManifest]
+
+---
+
+
+#### type: Page.LayoutViewport
+
+Layout viewport position and dimensions.
+
+*base type*
+- **object**
+
+*properties*
+-  `pageX` <[integer]> Horizontal offset relative to the document (CSS pixels)
+-  `pageY` <[integer]> Vertical offset relative to the document (CSS pixels)
+-  `clientWidth` <[integer]> Width (CSS pixels), excludes scrollbar if present
+-  `clientHeight` <[integer]> Height (CSS pixels), excludes scrollbar if present
+
+*returned from command*
+- [Page.getLayoutMetrics]
+
+---
+
+
+#### type: Page.VisualViewport
+
+Visual viewport position, dimensions, and scale.
+
+*base type*
+- **object**
+
+*properties*
+-  `offsetX` <[number]> Horizontal offset relative to the layout viewport (CSS pixels)
+-  `offsetY` <[number]> Vertical offset relative to the layout viewport (CSS pixels)
+-  `pageX` <[number]> Horizontal offset relative to the document (CSS pixels)
+-  `pageY` <[number]> Vertical offset relative to the document (CSS pixels)
+-  `clientWidth` <[number]> Width (CSS pixels), excludes scrollbar if present
+-  `clientHeight` <[number]> Height (CSS pixels), excludes scrollbar if present
+-  `scale` <[number]> Scale relative to the ideal viewport (size at width=device-width)
+
+*returned from command*
+- [Page.getLayoutMetrics]
+
+---
+
+
+#### type: Page.Viewport
+
+Viewport for capturing screenshot.
+
+*base type*
+- **object**
+
+*properties*
+-  `x` <[number]> X offset in CSS pixels
+-  `y` <[number]> Y offset in CSS pixels
+-  `width` <[number]> Rectangle width in CSS pixels
+-  `height` <[number]> Rectangle height in CSS pixels
+-  `scale` <[number]> Page scale factor
+
+*accepted by command*
+- [Page.captureScreenshot]
+- [Emulation.setDeviceMetricsOverride]
+- [Page.setDeviceMetricsOverride]
+
+*parameter in event*
+- [Overlay.screenshotRequested]
+
+[Network.CachedResource]: network.md#type-networkcachedresource "Network.CachedResource"
+[Page.FrameResource]: page.md#type-pageframeresource "Page.FrameResource"
+[Network.RequestPattern]: network.md#type-networkrequestpattern "Network.RequestPattern"
+[Network.loadingFailed]: network.md#event-networkloadingfailed "Network.loadingFailed"
+[Network.requestIntercepted]: network.md#event-networkrequestintercepted "Network.requestIntercepted"
+[Network.requestWillBeSent]: network.md#event-networkrequestwillbesent "Network.requestWillBeSent"
+[Network.responseReceived]: network.md#event-networkresponsereceived "Network.responseReceived"
+[CSS.CSSStyleSheetHeader]: css.md#type-csscssstylesheetheader "CSS.CSSStyleSheetHeader"
+[DOMSnapshot.DOMNode]: domsnapshot.md#type-domsnapshotdomnode "DOMSnapshot.DOMNode"
+[ApplicationCache.FrameWithManifest]: applicationcache.md#type-applicationcacheframewithmanifest "ApplicationCache.FrameWithManifest"
+[DOM.Node]: dom.md#type-domnode "DOM.Node"
+[Page.createIsolatedWorld]: page.md#command-pagecreateisolatedworld "Page.createIsolatedWorld"
+[CSS.createStyleSheet]: css.md#command-csscreatestylesheet "CSS.createStyleSheet"
+[ApplicationCache.getApplicationCacheForFrame]: applicationcache.md#command-applicationcachegetapplicationcacheforframe "ApplicationCache.getApplicationCacheForFrame"
+[ApplicationCache.getManifestForFrame]: applicationcache.md#command-applicationcachegetmanifestforframe "ApplicationCache.getManifestForFrame"
+[Page.getResourceContent]: page.md#command-pagegetresourcecontent "Page.getResourceContent"
+[Overlay.highlightFrame]: overlay.md#command-overlayhighlightframe "Overlay.highlightFrame"
+[Page.searchInResource]: page.md#command-pagesearchinresource "Page.searchInResource"
+[Page.setDocumentContent]: page.md#command-pagesetdocumentcontent "Page.setDocumentContent"
+[ApplicationCache.applicationCacheStatusUpdated]: applicationcache.md#event-applicationcacheapplicationcachestatusupdated "ApplicationCache.applicationCacheStatusUpdated"
+[Page.frameAttached]: page.md#event-pageframeattached "Page.frameAttached"
+[Page.frameClearedScheduledNavigation]: page.md#event-pageframeclearedschedulednavigation "Page.frameClearedScheduledNavigation"
+[Page.frameDetached]: page.md#event-pageframedetached "Page.frameDetached"
+[Page.frameScheduledNavigation]: page.md#event-pageframeschedulednavigation "Page.frameScheduledNavigation"
+[Page.frameStartedLoading]: page.md#event-pageframestartedloading "Page.frameStartedLoading"
+[Page.frameStoppedLoading]: page.md#event-pageframestoppedloading "Page.frameStoppedLoading"
+[Page.lifecycleEvent]: page.md#event-pagelifecycleevent "Page.lifecycleEvent"
+[Network.requestIntercepted]: network.md#event-networkrequestintercepted "Network.requestIntercepted"
+[Network.requestWillBeSent]: network.md#event-networkrequestwillbesent "Network.requestWillBeSent"
+[Network.responseReceived]: network.md#event-networkresponsereceived "Network.responseReceived"
+[Page.navigate]: page.md#command-pagenavigate "Page.navigate"
+[Page.FrameResourceTree]: page.md#type-pageframeresourcetree "Page.FrameResourceTree"
+[Page.FrameTree]: page.md#type-pageframetree "Page.FrameTree"
+[Page.frameNavigated]: page.md#event-pageframenavigated "Page.frameNavigated"
+[Page.FrameResourceTree]: page.md#type-pageframeresourcetree "Page.FrameResourceTree"
+[Page.FrameResourceTree]: page.md#type-pageframeresourcetree "Page.FrameResourceTree"
+[Page.getResourceTree]: page.md#command-pagegetresourcetree "Page.getResourceTree"
+[Page.FrameTree]: page.md#type-pageframetree "Page.FrameTree"
+[Page.getFrameTree]: page.md#command-pagegetframetree "Page.getFrameTree"
+[Page.addScriptToEvaluateOnLoad]: page.md#command-pageaddscripttoevaluateonload "Page.addScriptToEvaluateOnLoad"
+[Page.addScriptToEvaluateOnNewDocument]: page.md#command-pageaddscripttoevaluateonnewdocument "Page.addScriptToEvaluateOnNewDocument"
+[Page.removeScriptToEvaluateOnLoad]: page.md#command-pageremovescripttoevaluateonload "Page.removeScriptToEvaluateOnLoad"
+[Page.removeScriptToEvaluateOnNewDocument]: page.md#command-pageremovescripttoevaluateonnewdocument "Page.removeScriptToEvaluateOnNewDocument"
+[Page.NavigationEntry]: page.md#type-pagenavigationentry "Page.NavigationEntry"
+[Page.navigate]: page.md#command-pagenavigate "Page.navigate"
+[Page.getNavigationHistory]: page.md#command-pagegetnavigationhistory "Page.getNavigationHistory"
+[Page.screencastFrame]: page.md#event-pagescreencastframe "Page.screencastFrame"
+[Page.javascriptDialogOpening]: page.md#event-pagejavascriptdialogopening "Page.javascriptDialogOpening"
+[Page.getAppManifest]: page.md#command-pagegetappmanifest "Page.getAppManifest"
+[Page.getLayoutMetrics]: page.md#command-pagegetlayoutmetrics "Page.getLayoutMetrics"
+[Page.getLayoutMetrics]: page.md#command-pagegetlayoutmetrics "Page.getLayoutMetrics"
+[Page.captureScreenshot]: page.md#command-pagecapturescreenshot "Page.captureScreenshot"
+[Emulation.setDeviceMetricsOverride]: emulation.md#command-emulationsetdevicemetricsoverride "Emulation.setDeviceMetricsOverride"
+[Page.setDeviceMetricsOverride]: page.md#command-pagesetdevicemetricsoverride "Page.setDeviceMetricsOverride"
+[Overlay.screenshotRequested]: overlay.md#event-overlayscreenshotrequested "Overlay.screenshotRequested"
+[Network.LoaderId]: network.md#type-networkloaderid "Network.LoaderId"
+[Page.ResourceType]: page.md#type-pageresourcetype "Page.ResourceType"
+[Network.TimeSinceEpoch]: network.md#type-networktimesinceepoch "Network.TimeSinceEpoch"
+[Page.Frame]: page.md#type-pageframe "Page.Frame"
+[Page.FrameResourceTree]: page.md#type-pageframeresourcetree "Page.FrameResourceTree"
+[Page.FrameResource]: page.md#type-pageframeresource "Page.FrameResource"
+[Page.Frame]: page.md#type-pageframe "Page.Frame"
+[Page.FrameTree]: page.md#type-pageframetree "Page.FrameTree"
+[Page.TransitionType]: page.md#type-pagetransitiontype "Page.TransitionType"
+[Network.TimeSinceEpoch]: network.md#type-networktimesinceepoch "Network.TimeSinceEpoch"
+[Page.ScriptIdentifier]: page.md#type-pagescriptidentifier "Page.ScriptIdentifier"
+[Page.ScriptIdentifier]: page.md#type-pagescriptidentifier "Page.ScriptIdentifier"
+[Page.Viewport]: page.md#type-pageviewport "Page.Viewport"
+[Page.FrameId]: page.md#type-pageframeid "Page.FrameId"
+[Runtime.ExecutionContextId]: runtime.md#type-runtimeexecutioncontextid "Runtime.ExecutionContextId"
+[Page.AppManifestError]: page.md#type-pageappmanifesterror "Page.AppManifestError"
+[Network.Cookie]: network.md#type-networkcookie "Network.Cookie"
+[Page.FrameTree]: page.md#type-pageframetree "Page.FrameTree"
+[Page.LayoutViewport]: page.md#type-pagelayoutviewport "Page.LayoutViewport"
+[Page.VisualViewport]: page.md#type-pagevisualviewport "Page.VisualViewport"
+[DOM.Rect]: dom.md#type-domrect "DOM.Rect"
+[Page.NavigationEntry]: page.md#type-pagenavigationentry "Page.NavigationEntry"
+[Page.FrameId]: page.md#type-pageframeid "Page.FrameId"
+[Page.FrameResourceTree]: page.md#type-pageframeresourcetree "Page.FrameResourceTree"
+[Page.TransitionType]: page.md#type-pagetransitiontype "Page.TransitionType"
+[Page.FrameId]: page.md#type-pageframeid "Page.FrameId"
+[Network.LoaderId]: network.md#type-networkloaderid "Network.LoaderId"
+[Page.ScriptIdentifier]: page.md#type-pagescriptidentifier "Page.ScriptIdentifier"
+[Page.ScriptIdentifier]: page.md#type-pagescriptidentifier "Page.ScriptIdentifier"
+[Page.FrameId]: page.md#type-pageframeid "Page.FrameId"
+[Debugger.SearchMatch]: debugger.md#type-debuggersearchmatch "Debugger.SearchMatch"
+[Emulation.ScreenOrientation]: emulation.md#type-emulationscreenorientation "Emulation.ScreenOrientation"
+[Page.Viewport]: page.md#type-pageviewport "Page.Viewport"
+[Page.FrameId]: page.md#type-pageframeid "Page.FrameId"
+[Network.MonotonicTime]: network.md#type-networkmonotonictime "Network.MonotonicTime"
+[Page.FrameId]: page.md#type-pageframeid "Page.FrameId"
+[Runtime.StackTrace]: runtime.md#type-runtimestacktrace "Runtime.StackTrace"
+[Page.FrameId]: page.md#type-pageframeid "Page.FrameId"
+[Page.FrameId]: page.md#type-pageframeid "Page.FrameId"
+[Page.Frame]: page.md#type-pageframe "Page.Frame"
+[Page.FrameId]: page.md#type-pageframeid "Page.FrameId"
+[Page.FrameId]: page.md#type-pageframeid "Page.FrameId"
+[Page.FrameId]: page.md#type-pageframeid "Page.FrameId"
+[Page.DialogType]: page.md#type-pagedialogtype "Page.DialogType"
+[Page.FrameId]: page.md#type-pageframeid "Page.FrameId"
+[Network.LoaderId]: network.md#type-networkloaderid "Network.LoaderId"
+[Network.MonotonicTime]: network.md#type-networkmonotonictime "Network.MonotonicTime"
+[Network.MonotonicTime]: network.md#type-networkmonotonictime "Network.MonotonicTime"
+[Page.ScreencastFrameMetadata]: page.md#type-pagescreencastframemetadata "Page.ScreencastFrameMetadata"
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON boolean"
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON string"
 [number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON number"

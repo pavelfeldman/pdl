@@ -3,17 +3,10 @@
 
 This domain provides experimental commands only supported in headless mode.
 
-
-#### type: HeadlessExperimental.ScreenshotParams = object
-
-Encoding options for a screenshot.
-
-*properties*
-- *optional* `format` <[string]> Image compression format (defaults to png)
-- *optional* `quality` <[integer]> Compression quality from range [0..100] (jpeg only)
+---
 
 
-#### command: HeadlessExperimental.beginFrame()
+#### command: HeadlessExperimental.beginFrame
 
 Sends a BeginFrame to the target and returns when the frame was completed. Optionally captures a
 screenshot from the resulting frame. Requires that the target was created with enabled
@@ -35,21 +28,29 @@ display
 -  `mainFrameContentUpdated` <[boolean]> Whether the main frame submitted a new display frame in response to this BeginFrame
 - *optional* `screenshotData` <[string]> Base64-encoded image data of the screenshot, if one was requested and successfully taken
 
+---
 
-#### command: HeadlessExperimental.disable()
+
+#### command: HeadlessExperimental.disable
 
 Disables headless events for the target.
 
+---
 
-#### command: HeadlessExperimental.enable()
+
+#### command: HeadlessExperimental.enable
 
 Enables headless events for the target.
+
+---
 
 
 #### event: HeadlessExperimental.mainFrameReadyForScreenshots
 
 Issued when the main frame has first submitted a frame to the browser. May only be fired while a
 BeginFrame is in flight. Before this event, screenshotting requests may fail.
+
+---
 
 
 #### event: HeadlessExperimental.needsBeginFramesChanged
@@ -59,8 +60,26 @@ Issued when the target starts or stops needing BeginFrames.
 *parameters*
 -  `needsBeginFrames` <[boolean]> True if BeginFrames are needed, false otherwise
 
-[Runtime.Timestamp]: runtime.md#type-runtimetimestamp--number "Runtime.Timestamp"
-[HeadlessExperimental.ScreenshotParams]: headlessexperimental.md#type-headlessexperimentalscreenshotparams--object "HeadlessExperimental.ScreenshotParams"
+---
+
+
+#### type: HeadlessExperimental.ScreenshotParams
+
+Encoding options for a screenshot.
+
+*base type*
+- **object**
+
+*properties*
+- *optional* `format` <[string]> Image compression format (defaults to png)
+- *optional* `quality` <[integer]> Compression quality from range [0..100] (jpeg only)
+
+*accepted by command*
+- [HeadlessExperimental.beginFrame]
+
+[HeadlessExperimental.beginFrame]: headlessexperimental.md#command-headlessexperimentalbeginframe "HeadlessExperimental.beginFrame"
+[Runtime.Timestamp]: runtime.md#type-runtimetimestamp "Runtime.Timestamp"
+[HeadlessExperimental.ScreenshotParams]: headlessexperimental.md#type-headlessexperimentalscreenshotparams "HeadlessExperimental.ScreenshotParams"
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON boolean"
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON string"
 [number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON number"

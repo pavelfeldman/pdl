@@ -3,22 +3,20 @@
 
 Input/Output operations for streams produced by DevTools.
 
-
-#### type: IO.StreamHandle = string
-
-This is either obtained from another method or specifed as `blob:&lt;uuid&gt;` where
-`&lt;uuid&gt` is an UUID of a Blob.
+---
 
 
-#### command: IO.close()
+#### command: IO.close
 
 Close the stream, discard any temporary backing storage.
 
 *parameters*
 -  `handle` <[IO.StreamHandle]> Handle of the stream to close
 
+---
 
-#### command: IO.read()
+
+#### command: IO.read
 
 Read a chunk of the stream
 
@@ -33,8 +31,10 @@ following the last read)
 -  `data` <[string]> Data that were read
 -  `eof` <[boolean]> Set if the end-of-file condition occured while reading
 
+---
 
-#### command: IO.resolveBlob()
+
+#### command: IO.resolveBlob
 
 Return UUID of Blob object specified by a remote object id.
 
@@ -44,8 +44,30 @@ Return UUID of Blob object specified by a remote object id.
 *returns*
 -  `uuid` <[string]> UUID of the specified Blob
 
-[IO.StreamHandle]: io.md#type-iostreamhandle--string "IO.StreamHandle"
-[Runtime.RemoteObjectId]: runtime.md#type-runtimeremoteobjectid--string "Runtime.RemoteObjectId"
+---
+
+
+#### type: IO.StreamHandle
+
+This is either obtained from another method or specifed as `blob:&lt;uuid&gt;` where
+`&lt;uuid&gt` is an UUID of a Blob.
+
+*base type*
+- **string**
+
+*accepted by command*
+- [IO.close]
+- [IO.read]
+
+*parameter in event*
+- [Tracing.tracingComplete]
+
+[IO.close]: io.md#command-ioclose "IO.close"
+[IO.read]: io.md#command-ioread "IO.read"
+[Tracing.tracingComplete]: tracing.md#event-tracingtracingcomplete "Tracing.tracingComplete"
+[IO.StreamHandle]: io.md#type-iostreamhandle "IO.StreamHandle"
+[IO.StreamHandle]: io.md#type-iostreamhandle "IO.StreamHandle"
+[Runtime.RemoteObjectId]: runtime.md#type-runtimeremoteobjectid "Runtime.RemoteObjectId"
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON boolean"
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON string"
 [number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON number"

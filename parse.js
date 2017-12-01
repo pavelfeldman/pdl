@@ -4,27 +4,34 @@ fs.readFile('js_protocol.pdl', 'utf8', (err, data) => {
   const js_schema = parse(data);
   fs.readFile('browser_protocol.pdl', 'utf8', (err, data) => {
     const browser_schema = parse(data);
-    markdown({domains: js_schema.domains.concat(browser_schema.domains)});
+    const schema = {domains: js_schema.domains.concat(browser_schema.domains)};
+    traceUsages(schema);
+    markdown(schema);
   });
 });
+
+// Generic JSON converter.
 
 let description;
 
 const primitiveTypes = new Set(['integer', 'number', 'boolean', 'string', 'object', 'any', 'array']);
 
-function assignType(item, type, isArray) {
+function assignType(domainName, item, type, isArray) {
   if (isArray) {
     item.type = 'array';
     item.items = {};
-    assignType(item.items, type);
+    assignType(domainName, item.items, type);
     return;
   }
   if (type === 'enum')
     type = 'string';
-  if (primitiveTypes.has(type))
+  if (primitiveTypes.has(type)) {
     item.type = type;
-  else
+  } else {
+    if (!type.includes('.'))
+      type = domainName + '.' + type;
     item['$ref'] = type;
+  }
 }
 
 function createItem(experimental, deprecated, name) {
@@ -87,7 +94,7 @@ function parse(data) {
         domain.types = [];
       item = createItem(match[1], match[2]);
       item.id = match[3];
-      assignType(item, match[5], match[4]);
+      assignType(domain.domain, item, match[5], match[4]);
       domain.types.push(item);
       continue;
     }
@@ -114,7 +121,7 @@ function parse(data) {
       let param = createItem(match[1], match[2], match[6]);
       if (match[3])
         param.optional = true;
-      assignType(param, match[5], match[4]);
+      assignType(domain.domain, param, match[5], match[4]);
       if (match[5] === 'enum')
         enumliterals = param.enum = [];
       subitems.push(param);
@@ -167,18 +174,63 @@ function parse(data) {
   return protocol;
 }
 
-function fqType(type, domain, usedTypes) {
-  const result = type.includes('.') ? type : domain.domain + '.' + type;
-  usedTypes.add(result);
-  return result;
+// Markdown generator
+
+function traceUsages(schema) {
+  const types = new Map();
+  for (const domain of schema.domains) {
+    domain.name = domain.domain;
+    for (const type of (domain.types || [])) {
+      type.usages = new Map();
+      type.name = type.id;
+      types.set(`${domain.name}.${type.name}`, type);
+    }
+  }
+
+  for (const domain of schema.domains) {
+    domain.usedTypes = [];
+    for (const type of (domain.types || [])) {
+      type.domain = domain;
+      for (const param of type.properties || [])
+        traceType(param, 'property of type', 'type', type);
+    }
+    for (const command of (domain.commands || [])) {
+      command.domain = domain;
+      for (const param of command.parameters || [])
+        traceType(param, 'accepted by command', 'command', command);
+      for (const param of command.returns || [])
+        traceType(param, 'returned from command', 'command', command);
+    }
+    for (const event of (domain.events || [])) {
+      event.domain = domain;
+      for (const param of event.parameters || [])
+        traceType(param, 'parameter in event', 'event', event);
+    }
+  }
+
+  function traceType(param, usage, prefix, item) {
+    const typeName = param['$ref'] || (param.items && param.items['$ref']);
+    if (!typeName)
+      return;
+    const type = types.get(typeName);
+    let usages = type.usages.get(usage);
+    if (!usages) {
+      usages = [];
+      type.usages.set(usage, usages);
+    }
+    if (usages.find(x => x.item === item))
+      return;
+    usages.push({prefix, item});
+    item.domain.usedTypes.push(type);
+  }
 }
 
-function mdType(parameter, domain, usedTypes) {
+function mdType(parameter) {
   if (parameter.type === 'array') {
     const items = parameter.items;
-    return `<array of [${items.type ? items.type : fqType(items['$ref'], domain, usedTypes)}]>`;
+    return `<array of [${items.type ? items.type : items['$ref']}]>`;
   }
-  return `<[${parameter.type ? parameter.type  : fqType(parameter['$ref'], domain, usedTypes)}]>`;
+  return `<[${parameter.type ? parameter.type  : parameter['$ref']}]>`;
 }
 
 function formatDescription(item) {
@@ -189,78 +241,100 @@ function formatDescription(item) {
   return item.description;
 }
 
-function supertype(domains, domainName, typeName) {
-  for (let domain of domains) {
-    if (domain.domain !== domainName)
-      continue;
-    for (let type of domain.types || []) {
-      if (type.id !== typeName)
-        continue;
-      return type.type;
-    }
-  }
-  return '';
-}
-
 function experimental(item) {
   return (item.experimental ? ' 🌱' : '') + (item.deprecated ? ' 🍂' : '');
 }
 
-function formatParameter(parameter, domain, usedTypes) {
-  return `- ${parameter.optional ? '*optional* ' : ' '}\`${parameter.name}\` ${mdType(parameter, domain, usedTypes)}${experimental(parameter)} ${formatDescription(parameter)}`;
+function formatParameter(parameter) {
+  return `- ${parameter.optional ? '*optional* ' : ' '}\`${parameter.name}\` ${mdType(parameter)}${experimental(parameter)} ${formatDescription(parameter)}`;
 }
 
 function markdown(schema) {
-  for (let domain of schema.domains) {
+  for (const domain of schema.domains) {
     const result = [];
-    const usedTypes = new Set();
-    result.push(`\n### domain: ${domain.domain}${experimental(domain)}`);
+    const usedTypes = new Map();
+    result.push(`\n### domain: ${domain.name}${experimental(domain)}`);
     if (domain.description)
       result.push(`\n${domain.description}`);
 
-    for (let type of (domain.types || [])) {
-      result.push(`\n\n#### type: ${domain.domain}.${type.id} = ${type.type}`);
-      if (type.description)
-        result.push(`\n${type.description}`);
-      if (type.properties && type.properties.length) {
-        result.push(`\n*properties*`);
-        for (let property of type.properties)
-          result.push(formatParameter(property, domain, usedTypes));
-      }
-    }
-
-    for (let command of (domain.commands || [])) {
-      result.push(`\n\n#### command: ${domain.domain}.${command.name}()${experimental(command)}`);
+    for (const command of (domain.commands || [])) {
+      const title = `${domain.name}.${command.name}${experimental(command)}`;
+      result.push(`\n---\n`);
+      result.push(`\n#### command: ${title}`);
       if (command.description)
         result.push(`\n${command.description}`);
       if (command.parameters && command.parameters.length) {
         result.push(`\n*parameters*`);
-        for (let parameter of command.parameters)
-          result.push(formatParameter(parameter, domain, usedTypes));
+        for (const parameter of command.parameters)
+          result.push(formatParameter(parameter));
       }
       if (command.returns && command.returns.length) {
         result.push(`\n*returns*`);
-        for (let parameter of command.returns)
-          result.push(formatParameter(parameter, domain, usedTypes));
+        for (const parameter of command.returns)
+          result.push(formatParameter(parameter));
       }
     }
 
-    for (let event of (domain.events || [])) {
-      result.push(`\n\n#### event: ${domain.domain}.${event.name}${experimental(event)}`);
+    for (const event of (domain.events || [])) {
+      const title = `${domain.name}.${event.name}${experimental(event)}`;
+      result.push(`\n---\n`);
+      result.push(`\n#### event: ${title}`);
       if (event.description)
         result.push(`\n${event.description}`);
       if (event.parameters && event.parameters.length) {
         result.push(`\n*parameters*`);
-        for (let parameter of event.parameters)
-          result.push(formatParameter(parameter, domain, usedTypes));
+        for (const parameter of event.parameters)
+          result.push(formatParameter(parameter));
+      }
+    }
+
+    for (const type of (domain.types || [])) {
+      const title = `${domain.name}.${type.name}`;
+      result.push(`\n---\n`);
+      result.push(`\n#### type: ${title}`);
+      if (type.description)
+        result.push(`\n${type.description}`);
+      result.push(`\n*base type*`);
+      result.push(`- **${type.type}**`);
+      if (type.properties && type.properties.length) {
+        result.push(`\n*properties*`);
+        for (const property of type.properties)
+          result.push(formatParameter(property));
+      }
+
+      for (const usageType of type.usages.keys()) {
+        const usages = type.usages.get(usageType);
+        result.push(`\n*${usageType}*`);
+        usages.sort((a, b) => {
+          if (a.item.name > b.item.name)
+            return 1;
+          return a.item.name < b.item.name ? -1 : 0;
+        });
+        for (const usage of usages)
+          result.push(`- [${usage.item.domain.name}.${usage.item.name}]`);
       }
     }
 
     result.push(``);
-    for (let type of usedTypes) {
-      const [domain, name] = type.split('.');
-      result.push(`[${type}]: ${domain.toLowerCase()}.md#type-${type.replace('.', '').toLowerCase()}--${supertype(schema.domains, domain, name)} "${type}"`);
+
+    // Generate links to commands, events and types for type usages.
+    for (const type of (domain.types || [])) {
+      for (const usageType of type.usages.keys()) {
+        const usages = type.usages.get(usageType);
+        for (const {item, prefix} of usages) {
+          const domainName = item.domain.name;
+          result.push(`[${domainName}.${item.name}]: ${domainName.toLowerCase()}.md#${prefix}-${domainName.toLowerCase()}${item.name.toLowerCase()} "${domainName}.${item.name}"`);
+        }
+      }
     }
+
+    // Generate links to used types.
+    for (const type of domain.usedTypes) {
+      const domainName = type.domain.name.toLowerCase();
+      const name = type.name.toLowerCase();
+      result.push(`[${type.domain.name}.${type.name}]: ${domainName}.md#type-${domainName}${name} "${type.domain.name}.${type.name}"`);
+    }
+
     result.push(`[boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON boolean"`);
     result.push(`[string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON string"`);
     result.push(`[number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON number"`);
@@ -268,6 +342,6 @@ function markdown(schema) {
     result.push(`[object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON object"`);
     result.push(`[any]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON any"`);
 
-    fs.writeFileSync(`docs/${domain.domain.toLowerCase()}.md`, result.join('\n'));
+    fs.writeFileSync(`docs/${domain.name.toLowerCase()}.md`, result.join('\n'));
   }
 }

@@ -1,30 +1,82 @@
 
 ### domain: Accessibility 🌱
 
+---
 
-#### type: Accessibility.AXNodeId = string
+
+#### command: Accessibility.getPartialAXTree 🌱
+
+Fetches the accessibility node and partial accessibility tree for this DOM node, if it exists.
+
+*parameters*
+-  `nodeId` <[DOM.NodeId]> ID of node to get the partial accessibility tree for
+- *optional* `fetchRelatives` <[boolean]> Whether to fetch this nodes ancestors, siblings and children. Defaults to true
+
+*returns*
+-  `nodes` <array of [Accessibility.AXNode]> The `Accessibility.AXNode` for this DOM node, if it exists, plus its ancestors, siblings and
+children, if requested
+
+---
+
+
+#### type: Accessibility.AXNodeId
 
 Unique accessibility node identifier.
 
+*base type*
+- **string**
 
-#### type: Accessibility.AXValueType = string
+*property of type*
+- [Accessibility.AXNode]
+
+---
+
+
+#### type: Accessibility.AXValueType
 
 Enum of possible property types.
 
+*base type*
+- **string**
 
-#### type: Accessibility.AXValueSourceType = string
+*property of type*
+- [Accessibility.AXValue]
+
+---
+
+
+#### type: Accessibility.AXValueSourceType
 
 Enum of possible property sources.
 
+*base type*
+- **string**
 
-#### type: Accessibility.AXValueNativeSourceType = string
+*property of type*
+- [Accessibility.AXValueSource]
+
+---
+
+
+#### type: Accessibility.AXValueNativeSourceType
 
 Enum of possible native property sources (as a subtype of a particular AXValueSourceType).
 
+*base type*
+- **string**
 
-#### type: Accessibility.AXValueSource = object
+*property of type*
+- [Accessibility.AXValueSource]
+
+---
+
+
+#### type: Accessibility.AXValueSource
 
 A single source for a computed AX property.
+
+*base type*
+- **object**
 
 *properties*
 -  `type` <[Accessibility.AXValueSourceType]> What type of source this is
@@ -37,25 +89,49 @@ A single source for a computed AX property.
 - *optional* `invalid` <[boolean]> Whether the value for this property is invalid
 - *optional* `invalidReason` <[string]> Reason for the value being invalid, if it is
 
+*property of type*
+- [Accessibility.AXValue]
 
-#### type: Accessibility.AXRelatedNode = object
+---
+
+
+#### type: Accessibility.AXRelatedNode
+
+*base type*
+- **object**
 
 *properties*
 -  `backendDOMNodeId` <[DOM.BackendNodeId]> The BackendNodeId of the related DOM node
 - *optional* `idref` <[string]> The IDRef value provided, if any
 - *optional* `text` <[string]> The text alternative of this node in the current context
 
+*property of type*
+- [Accessibility.AXValue]
 
-#### type: Accessibility.AXProperty = object
+---
+
+
+#### type: Accessibility.AXProperty
+
+*base type*
+- **object**
 
 *properties*
 -  `name` <[Accessibility.AXPropertyName]> The name of this property
 -  `value` <[Accessibility.AXValue]> The value of this property
 
+*property of type*
+- [Accessibility.AXNode]
 
-#### type: Accessibility.AXValue = object
+---
+
+
+#### type: Accessibility.AXValue
 
 A single computed AX property.
+
+*base type*
+- **object**
 
 *properties*
 -  `type` <[Accessibility.AXValueType]> The type of this value
@@ -63,8 +139,15 @@ A single computed AX property.
 - *optional* `relatedNodes` <array of [Accessibility.AXRelatedNode]> One or more related nodes, if applicable
 - *optional* `sources` <array of [Accessibility.AXValueSource]> The sources which contributed to the computation of this property
 
+*property of type*
+- [Accessibility.AXNode]
+- [Accessibility.AXProperty]
+- [Accessibility.AXValueSource]
 
-#### type: Accessibility.AXPropertyName = string
+---
+
+
+#### type: Accessibility.AXPropertyName
 
 Values of AXProperty name: from 'busy' to 'roledescription' - states which apply to every AX
 node, from 'live' to 'root' - attributes which apply to nodes in live regions, from
@@ -72,10 +155,21 @@ node, from 'live' to 'root' - attributes which apply to nodes in live regions, f
 - states which apply to widgets, from 'activedescendant' to 'owns' - relationships between
 elements other than parent/child/sibling.
 
+*base type*
+- **string**
 
-#### type: Accessibility.AXNode = object
+*property of type*
+- [Accessibility.AXProperty]
+
+---
+
+
+#### type: Accessibility.AXNode
 
 A node in the accessibility tree.
+
+*base type*
+- **object**
 
 *properties*
 -  `nodeId` <[Accessibility.AXNodeId]> Unique identifier for this node
@@ -89,31 +183,36 @@ A node in the accessibility tree.
 - *optional* `childIds` <array of [Accessibility.AXNodeId]> IDs for each of this node's child nodes
 - *optional* `backendDOMNodeId` <[DOM.BackendNodeId]> The backend ID for the associated DOM node, if any
 
+*returned from command*
+- [Accessibility.getPartialAXTree]
 
-#### command: Accessibility.getPartialAXTree() 🌱
-
-Fetches the accessibility node and partial accessibility tree for this DOM node, if it exists.
-
-*parameters*
--  `nodeId` <[DOM.NodeId]> ID of node to get the partial accessibility tree for
-- *optional* `fetchRelatives` <[boolean]> Whether to fetch this nodes ancestors, siblings and children. Defaults to true
-
-*returns*
--  `nodes` <array of [Accessibility.AXNode]> The `Accessibility.AXNode` for this DOM node, if it exists, plus its ancestors, siblings and
-children, if requested
-
-[Accessibility.AXValueSourceType]: accessibility.md#type-accessibilityaxvaluesourcetype--string "Accessibility.AXValueSourceType"
-[Accessibility.AXValue]: accessibility.md#type-accessibilityaxvalue--object "Accessibility.AXValue"
-[Accessibility.AXValueNativeSourceType]: accessibility.md#type-accessibilityaxvaluenativesourcetype--string "Accessibility.AXValueNativeSourceType"
-[DOM.BackendNodeId]: dom.md#type-dombackendnodeid--integer "DOM.BackendNodeId"
-[Accessibility.AXPropertyName]: accessibility.md#type-accessibilityaxpropertyname--string "Accessibility.AXPropertyName"
-[Accessibility.AXValueType]: accessibility.md#type-accessibilityaxvaluetype--string "Accessibility.AXValueType"
-[Accessibility.AXRelatedNode]: accessibility.md#type-accessibilityaxrelatednode--object "Accessibility.AXRelatedNode"
-[Accessibility.AXValueSource]: accessibility.md#type-accessibilityaxvaluesource--object "Accessibility.AXValueSource"
-[Accessibility.AXNodeId]: accessibility.md#type-accessibilityaxnodeid--string "Accessibility.AXNodeId"
-[Accessibility.AXProperty]: accessibility.md#type-accessibilityaxproperty--object "Accessibility.AXProperty"
-[DOM.NodeId]: dom.md#type-domnodeid--integer "DOM.NodeId"
-[Accessibility.AXNode]: accessibility.md#type-accessibilityaxnode--object "Accessibility.AXNode"
+[Accessibility.AXNode]: accessibility.md#type-accessibilityaxnode "Accessibility.AXNode"
+[Accessibility.AXValue]: accessibility.md#type-accessibilityaxvalue "Accessibility.AXValue"
+[Accessibility.AXValueSource]: accessibility.md#type-accessibilityaxvaluesource "Accessibility.AXValueSource"
+[Accessibility.AXValueSource]: accessibility.md#type-accessibilityaxvaluesource "Accessibility.AXValueSource"
+[Accessibility.AXValue]: accessibility.md#type-accessibilityaxvalue "Accessibility.AXValue"
+[Accessibility.AXValue]: accessibility.md#type-accessibilityaxvalue "Accessibility.AXValue"
+[Accessibility.AXNode]: accessibility.md#type-accessibilityaxnode "Accessibility.AXNode"
+[Accessibility.AXNode]: accessibility.md#type-accessibilityaxnode "Accessibility.AXNode"
+[Accessibility.AXProperty]: accessibility.md#type-accessibilityaxproperty "Accessibility.AXProperty"
+[Accessibility.AXValueSource]: accessibility.md#type-accessibilityaxvaluesource "Accessibility.AXValueSource"
+[Accessibility.AXProperty]: accessibility.md#type-accessibilityaxproperty "Accessibility.AXProperty"
+[Accessibility.getPartialAXTree]: accessibility.md#command-accessibilitygetpartialaxtree "Accessibility.getPartialAXTree"
+[Accessibility.AXValueSourceType]: accessibility.md#type-accessibilityaxvaluesourcetype "Accessibility.AXValueSourceType"
+[Accessibility.AXValue]: accessibility.md#type-accessibilityaxvalue "Accessibility.AXValue"
+[Accessibility.AXValueNativeSourceType]: accessibility.md#type-accessibilityaxvaluenativesourcetype "Accessibility.AXValueNativeSourceType"
+[DOM.BackendNodeId]: dom.md#type-dombackendnodeid "DOM.BackendNodeId"
+[Accessibility.AXPropertyName]: accessibility.md#type-accessibilityaxpropertyname "Accessibility.AXPropertyName"
+[Accessibility.AXValue]: accessibility.md#type-accessibilityaxvalue "Accessibility.AXValue"
+[Accessibility.AXValueType]: accessibility.md#type-accessibilityaxvaluetype "Accessibility.AXValueType"
+[Accessibility.AXRelatedNode]: accessibility.md#type-accessibilityaxrelatednode "Accessibility.AXRelatedNode"
+[Accessibility.AXValueSource]: accessibility.md#type-accessibilityaxvaluesource "Accessibility.AXValueSource"
+[Accessibility.AXNodeId]: accessibility.md#type-accessibilityaxnodeid "Accessibility.AXNodeId"
+[Accessibility.AXProperty]: accessibility.md#type-accessibilityaxproperty "Accessibility.AXProperty"
+[Accessibility.AXValue]: accessibility.md#type-accessibilityaxvalue "Accessibility.AXValue"
+[DOM.BackendNodeId]: dom.md#type-dombackendnodeid "DOM.BackendNodeId"
+[DOM.NodeId]: dom.md#type-domnodeid "DOM.NodeId"
+[Accessibility.AXNode]: accessibility.md#type-accessibilityaxnode "Accessibility.AXNode"
 [boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON boolean"
 [string]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON string"
 [number]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON number"
