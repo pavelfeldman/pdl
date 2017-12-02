@@ -1,4 +1,10 @@
 const fs = require('fs')
+const marked = require('marked');
+const highlight = require('highlight.js');
+
+marked.setOptions({
+  highlight: code => highlight.highlightAuto(code).value
+});
 
 fs.readFile('js_protocol.pdl', 'utf8', (err, data) => {
   const js_schema = parse(data);
@@ -7,6 +13,7 @@ fs.readFile('js_protocol.pdl', 'utf8', (err, data) => {
     const schema = {domains: js_schema.domains.concat(browser_schema.domains)};
     traceUsages(schema);
     markdown(schema);
+    html(schema);
   });
 });
 
@@ -323,7 +330,7 @@ function markdown(schema) {
         const usages = type.usages.get(usageType);
         for (const {item, prefix} of usages) {
           const domainName = item.domain.name;
-          result.push(`[${domainName}.${item.name}]: ${domainName.toLowerCase()}.md#${prefix}-${domainName.toLowerCase()}${item.name.toLowerCase()} "${domainName}.${item.name}"`);
+          result.push(`[${domainName}.${item.name}]: ${domainName.toLowerCase()}.html#${prefix}-${domainName.toLowerCase()}-${item.name.toLowerCase()} "${domainName}.${item.name}"`);
         }
       }
     }
@@ -332,7 +339,7 @@ function markdown(schema) {
     for (const type of domain.usedTypes) {
       const domainName = type.domain.name.toLowerCase();
       const name = type.name.toLowerCase();
-      result.push(`[${type.domain.name}.${type.name}]: ${domainName}.md#type-${domainName}${name} "${type.domain.name}.${type.name}"`);
+      result.push(`[${type.domain.name}.${type.name}]: ${domainName}.html#type-${domainName}-${name} "${type.domain.name}.${type.name}"`);
     }
 
     result.push(`[boolean]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON boolean"`);
@@ -342,6 +349,14 @@ function markdown(schema) {
     result.push(`[object]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON object"`);
     result.push(`[any]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON "JSON any"`);
 
-    fs.writeFileSync(`docs/${domain.name.toLowerCase()}.md`, result.join('\n'));
+    fs.writeFileSync(`docs/md/${domain.name.toLowerCase()}.md`, result.join('\n'));
+  }
+}
+
+function html(schema) {
+  for (const domain of schema.domains) {
+    const md = fs.readFileSync(`docs/md/${domain.name.toLowerCase()}.md`, 'utf8');
+debugger;
+    fs.writeFileSync(`docs/html/${domain.name.toLowerCase()}.html`, marked(md));
   }
 }
