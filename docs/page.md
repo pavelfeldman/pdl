@@ -723,12 +723,12 @@ Information about the Frame on the page.
 
 *properties*
 -  `id` <[string]> Frame unique identifier
+- *optional* `parentId` <[string]> Parent frame identifier
 -  `loaderId` <[Network.LoaderId]> Identifier of the loader associated with this frame
+- *optional* `name` <[string]> Frame's name as specified in the tag
 -  `url` <[string]> Frame document's URL
 -  `securityOrigin` <[string]> Frame document's security origin
 -  `mimeType` <[string]> Frame document's mimeType as determined by the browser
-- *optional* `parentId` <[string]> Parent frame identifier
-- *optional* `name` <[string]> Frame's name as specified in the tag
 - *optional* `unreachableUrl` <[string]> 🌱 If the frame failed to load, this contains the URL that could not be loaded
 
 *property of type*

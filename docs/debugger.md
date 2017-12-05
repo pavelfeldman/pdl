@@ -1,14 +1,8 @@
 
 ### domain: Debugger
 
-`Debugger` domain exposes JavaScript debugging capabilities. It allows setting and removing
-breakpoints, stepping through the execution, exploring stack traces, etc.
-
-Enabling `Debugger` domain leads to reporting all the compiled scripts to the user by means
-of the `Debugger.scriptParsed` and `Debugger.scriptFailedToParsed` notifications, hence
-introduces performance pentalty.
-
-This domain should not be used for automation, but should rather be used for debugging.
+Debugger domain exposes JavaScript debugging capabilities. It allows setting and removing
+breakpoints, stepping through execution, exploring stack traces, etc.
 
 ---
 
@@ -445,12 +439,7 @@ scripts upon enabling debugger.
 
 #### type: Debugger.BreakpointId
 
-Breakpoint identifier. Setting a breakpoint via `Debugger.setBreakpoint` or `setBreakpointByUrl`
-returns a handle to the breakpoint in the form of `BreakpointId`. This `BreakpointId` can be
-later used to remove the breakpoint with `Debugger.removeBreakpoint`.
-
-Every time breakpoint is resolved into the new script location, `Debugger.breakpointResolved` is
-issued with the details on that location.
+Breakpoint identifier.
 
 *base type*
 - **string**
@@ -470,8 +459,7 @@ issued with the details on that location.
 
 #### type: Debugger.CallFrameId
 
-Identifies the call frame as a part of the stack. This identifier is only valid while the virtual
-machine is paused.
+Call frame identifier.
 
 *base type*
 - **string**
@@ -489,8 +477,7 @@ machine is paused.
 
 #### type: Debugger.Location
 
-Specifies the location within the source code in form of script identifier, line and column
-numbers.
+Location in the source code.
 
 *base type*
 - **object**
@@ -523,7 +510,7 @@ numbers.
 
 #### type: Debugger.ScriptPosition
 
-Location scoped to a given script.
+Location in the source code.
 
 *base type*
 - **object**

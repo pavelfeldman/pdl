@@ -6,8 +6,7 @@ version
   major 1
   minor 3
 
-# `Console` domain is deprecated. It was previously used for the `console.*` messages, errors and
-# warnings. You should now use `Runtime` domain for these instead.
+# This domain is deprecated - use Runtime or Log instead.
 deprecated domain Console
   depends on Runtime
 
@@ -46,12 +45,11 @@ deprecated domain Console
   # Does nothing.
   command clearMessages
 
-  # Disables `Console` domain, prevents further console messages from being reported via
-  # `Console.messageAdded`.
+  # Disables console domain, prevents further console messages from being reported to the client.
   command disable
 
-  # Enables `Console` domain, sends the messages collected so far to the client by means of the
-  # `Console.messageAdded` notification.
+  # Enables console domain, sends the messages collected so far to the client by means of the
+  # `messageAdded` notification.
   command enable
 
   # Issued when new console message is added.
@@ -60,31 +58,18 @@ deprecated domain Console
       # Console message that has been added.
       ConsoleMessage message
 
-# `Debugger` domain exposes JavaScript debugging capabilities. It allows setting and removing
-# breakpoints, stepping through the execution, exploring stack traces, etc.
-#
-# Enabling `Debugger` domain leads to reporting all the compiled scripts to the user by means
-# of the `Debugger.scriptParsed` and `Debugger.scriptFailedToParsed` notifications, hence
-# introduces performance pentalty.
-#
-# This domain should not be used for automation, but should rather be used for debugging.
+# Debugger domain exposes JavaScript debugging capabilities. It allows setting and removing
+# breakpoints, stepping through execution, exploring stack traces, etc.
 domain Debugger
   depends on Runtime
 
-  # Breakpoint identifier. Setting a breakpoint via `Debugger.setBreakpoint` or `setBreakpointByUrl`
-  # returns a handle to the breakpoint in the form of `BreakpointId`. This `BreakpointId` can be
-  # later used to remove the breakpoint with `Debugger.removeBreakpoint`.
-  #
-  # Every time breakpoint is resolved into the new script location, `Debugger.breakpointResolved` is
-  # issued with the details on that location.
+  # Breakpoint identifier.
   type BreakpointId extends string
 
-  # Identifies the call frame as a part of the stack. This identifier is only valid while the virtual
-  # machine is paused.
+  # Call frame identifier.
   type CallFrameId extends string
 
-  # Specifies the location within the source code in form of script identifier, line and column
-  # numbers.
+  # Location in the source code.
   type Location extends object
     properties
       # Script identifier as reported in the `Debugger.scriptParsed`.
@@ -94,7 +79,7 @@ domain Debugger
       # Column number in the script (0-based).
       optional integer columnNumber
 
-  # Location scoped to a given script.
+  # Location in the source code.
   experimental type ScriptPosition extends object
     properties
       integer lineNumber

@@ -1,8 +1,7 @@
 
 ### domain: Console 🍂
 
-`Console` domain is deprecated. It was previously used for the `console.*` messages, errors and
-warnings. You should now use `Runtime` domain for these instead.
+This domain is deprecated - use Runtime or Log instead.
 
 ---
 
@@ -16,16 +15,15 @@ Does nothing.
 
 #### command: Console.disable
 
-Disables `Console` domain, prevents further console messages from being reported via
-`Console.messageAdded`.
+Disables console domain, prevents further console messages from being reported to the client.
 
 ---
 
 
 #### command: Console.enable
 
-Enables `Console` domain, sends the messages collected so far to the client by means of the
-`Console.messageAdded` notification.
+Enables console domain, sends the messages collected so far to the client by means of the
+`messageAdded` notification.
 
 ---
 

@@ -63,7 +63,9 @@ function parse(data) {
     const trimLine = line.trim();
 
     if (trimLine.startsWith('#')) {
-      description += '\n' + trimLine.substring(2);
+      if (description)
+        description += '\n';
+      description += trimLine.substring(2);
       continue;
     } else {
       nukeDescription = true;
